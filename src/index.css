@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #212529;
+}
+
+@font-face {
+  font-family: 'Pacifico-Regular';
+  font-weight: 400;
+  font-style: normal;
+  src: url('./fonts/Pacifico-Regular.eot')format('eot'),
+    url('./fonts/Pacifico-Regular.woff2')format('woff2'),
+    url('./fonts/Pacifico-Regular.woff')format('woff')
+}
+
+@font-face {
+  font-family: 'YanoneKaffeesatz-Bold';
+  font-weight: 400;
+  font-style: normal;
+  src: url('./fonts/YanoneKaffeesatz-Bold.ttf')format('ttf')
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
