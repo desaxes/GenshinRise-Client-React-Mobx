@@ -8,6 +8,7 @@ import { Weapons } from "./pages/weapons"
 import { Rise } from "./pages/rise"
 import { Resources } from "./pages/resources"
 import { Rolls } from "./pages/rolls"
+import { Statistic } from "./pages/statistic"
 
 export const publicRoutes = [
     {
@@ -44,7 +45,7 @@ export const publicRoutes = [
     },
     {
         path: STAT_ROUTE,
-        component: <Main />
+        component: <Statistic />
     },
     {
         path: '*',

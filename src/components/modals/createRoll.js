@@ -33,7 +33,18 @@ export const CreateRoll = observer((props) => {
             rewardName: isChar ? char.name : weapon.name,
             stars: +stars,
             img: isChar ? char.img : weapon.img
-        }, bannerEndPoint).then(res => setSuccess(true))
+        }, bannerEndPoint).then(res => {
+            setSuccess(true)
+            if(bannerEndPoint==='standart'){
+                    props.updateStandart(true)
+            }
+            else if(bannerEndPoint==='event'){
+                props.updateEvent(true)
+            }
+            else if(bannerEndPoint==='weapon'){
+                props.updateWeapon(true)
+            }
+        })
     }
     useEffect(() => {
         setTimeout(() => setSuccess(false), 2000)
