@@ -12,7 +12,7 @@ import { CreateWeaponMaterial } from '../components/modals/createWM'
 import { CreateEWMaterial } from '../components/modals/createEWM'
 import { CreateWeapon } from '../components/modals/createWeapon'
 
-export const Admin = () => {
+const Admin = () => {
     const [modalStoneShow, setModalStoneShow] = useState(false)
     const [modalBMShow, setModalBMShow] = useState(false)
     const [modalEMShow, setModalEMShow] = useState(false)
@@ -60,3 +60,4 @@ export const Admin = () => {
         </div>
     )
 }
+export default Admin

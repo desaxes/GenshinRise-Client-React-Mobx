@@ -19,7 +19,7 @@ import { WeaponProgress } from '../components/weaponProgress';
 import { CharOptionsForMain } from '../components/modals/charOptionForMain';
 import { WeaponOptionsForMain } from '../components/modals/weaponOptionsForMain';
 
-export const Main = observer(() => {
+const Main = observer(() => {
     const { materials } = useContext(AppContext)
     const { chars } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
@@ -48,63 +48,66 @@ export const Main = observer(() => {
     }
     useEffect(() => {
         getTalents().then(res => {
-            if (n != 0) {
-                materials.setTodayTalents(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
-            }
-            else {
-                materials.setTodayTalents(res.data.map(e => e.id))
-            }
-            if (group === 'collection') {
-                getCharsFromCol().then(res => {
-                    const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
-                    chars.setChars({ chars: filtered, total: filtered.length })
+            if (res) {
+                if (n != 0) {
+                    materials.setTodayTalents(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
+                }
+                else {
+                    materials.setTodayTalents(res.data.map(e => e.id))
+                }
+                if (group === 'collection') {
+                    getCharsFromCol().then(res => {
+                        const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
+                        chars.setChars({ chars: filtered, total: filtered.length })
 
-                })
-            }
-            else if (group === 'rise') {
-                getCharsFromRise().then(res => {
-                    const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
-                    chars.setChars({ chars: filtered, total: filtered.length })
-                })
-            }
-            else if (group === 'all') {
-                getChars().then(res => {
-                    const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
-                    chars.setChars({ chars: filtered, total: filtered.length })
-                })
+                    })
+                }
+                else if (group === 'rise') {
+                    getCharsFromRise().then(res => {
+                        const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
+                        chars.setChars({ chars: filtered, total: filtered.length })
+                    })
+                }
+                else if (group === 'all') {
+                    getChars().then(res => {
+                        const filtered = res.data.chars.filter(e => materials.todayTalents.some(t => t === e.talentMaterialId))
+                        chars.setChars({ chars: filtered, total: filtered.length })
+                    })
+                }
             }
         })
         getWeaponMaterials().then(res => {
-            if (n != 0) {
-                weapons.setTodayMaterials(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
-                console.log(weapons.todayMaterials)
-            }
-            else {
-                weapons.setTodayMaterials(res.data.map(e => e.id))
-            }
-            if (group === 'collection') {
-                getWeaponsFromCol().then(res => {
-                    const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
-                    weapons.setWeapons({ weapons: filtered, total: filtered.length })
-                })
-            }
-            else if (group === 'rise') {
-                getWeaponsFromRise().then(res => {
-                    const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
-                    weapons.setWeapons({ weapons: filtered, total: filtered.length })
-                })
-            }
-            else if (group === 'all') {
-                getWeapons().then(res => {
-                    const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
-                    weapons.setWeapons({ weapons: filtered, total: filtered.length })
-                })
+            if (res) {
+                if (n != 0) {
+                    weapons.setTodayMaterials(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
+                }
+                else {
+                    weapons.setTodayMaterials(res.data.map(e => e.id))
+                }
+                if (group === 'collection') {
+                    getWeaponsFromCol().then(res => {
+                        const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
+                        weapons.setWeapons({ weapons: filtered, total: filtered.length })
+                    })
+                }
+                else if (group === 'rise') {
+                    getWeaponsFromRise().then(res => {
+                        const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
+                        weapons.setWeapons({ weapons: filtered, total: filtered.length })
+                    })
+                }
+                else if (group === 'all') {
+                    getWeapons().then(res => {
+                        const filtered = res.data.weapons.filter(e => weapons.todayMaterials.some(t => t === e.weaponMaterialId))
+                        weapons.setWeapons({ weapons: filtered, total: filtered.length })
+                    })
+                }
             }
         })
     }, [group, n, chars, materials, weapons])
     useEffect(() => {
-        getCharsFromRise().then(res => { setRise(res.data.chars); app.setUpdated(false) })
-        getWeaponsFromRise().then(res => { setWeaponRise(res.data.weapons); app.setUpdated(false) })
+        getCharsFromRise().then(res => { res && setRise(res.data.chars); app.setUpdated(false) })
+        getWeaponsFromRise().then(res => { res && setWeaponRise(res.data.weapons); app.setUpdated(false) })
     }, [app.updated, app])
     let characters = chars.chars.chars.map(e => <Char gridpart={4} key={e.id} char={e} onShow={createModal} />)
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
@@ -188,3 +191,4 @@ export const Main = observer(() => {
         </Container >
     )
 })
+export default Main

@@ -14,7 +14,7 @@ import { getWeapons } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { WeaponOptions } from '../components/modals/weaponOptions';
 
-export const Weapons = observer(() => {
+const Weapons = observer(() => {
     const { weapons } = useContext(AppContext)
     const [weaponId, setWeaponId] = useState()
     const [modalOptions, setModalOptions] = useState(false)
@@ -33,7 +33,7 @@ export const Weapons = observer(() => {
         if (weapons.searchBy !== '') {
             query = query + 'name=' + weapons.searchBy + '&'
         }
-        getWeapons(query).then(res => weapons.setWeapons(res.data))
+        getWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
     }, [weapons.weapon, weapons.stars, weapons.searchBy, weapons])
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
@@ -85,7 +85,7 @@ export const Weapons = observer(() => {
                             />
                         </Form>
                         <Row className='d-flex justify-content-center'
-                            jstf='space-between' gap='30px' style={{width:'100%'}}
+                            jstf='space-between' gap='30px' style={{ width: '100%' }}
                         >
                             {weaponsArray}
                         </Row>
@@ -100,3 +100,4 @@ export const Weapons = observer(() => {
         </>
     )
 })
+export default Weapons

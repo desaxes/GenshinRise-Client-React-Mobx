@@ -22,9 +22,9 @@ export const CreateWeapon = observer((props) => {
     let [stars, setStars] = useState('')
     let [starsNumber, setStarsNumber] = useState('')
     useEffect(() => {
-        getEnemyWeaponMaterials().then(res => (materials.setEnemyWeaponMaterials(res.data)))
-        getEnemyMaterials().then(res => (materials.setEnemyMaterials(res.data)))
-        getWeaponMaterials().then(res => (materials.setWeaponMaterials(res.data)))
+        getEnemyWeaponMaterials().then(res => res && (materials.setEnemyWeaponMaterials(res.data)))
+        getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+        getWeaponMaterials().then(res => res && (materials.setWeaponMaterials(res.data)))
     }, [materials])
     const select = e => {
         setFile(e.target.files[0])

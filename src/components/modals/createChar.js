@@ -33,12 +33,12 @@ export const CreateCharacter = observer((props) => {
     let [size, setSize] = useState('')
     let [sizeNumber, setSizeNumber] = useState('')
     useEffect(() => {
-        getStones().then(res => (materials.setStones(res.data)))
-        getEnemyMaterials().then(res => (materials.setEnemyMaterials(res.data)))
-        getBossMaterials().then(res => (materials.setBossMaterials(res.data)))
-        getLocalSpecialtys().then(res => (materials.setLocalSpecialtys(res.data)))
-        getTalents().then(res => (materials.setTalents(res.data)))
-        getWBMaterials().then(res => (materials.setWeekBossMaterials(res.data)))
+        getStones().then(res => res && (materials.setStones(res.data)))
+        getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+        getBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
+        getLocalSpecialtys().then(res => res && (materials.setLocalSpecialtys(res.data)))
+        getTalents().then(res => res && (materials.setTalents(res.data)))
+        getWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
     }, [materials])
     const select = e => {
         setFile(e.target.files[0])
@@ -67,12 +67,12 @@ export const CreateCharacter = observer((props) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Header closeButton style={{backgroundColor: '#212529', border: '2px solid yellow'}}>
-                <Modal.Title id="contained-modal-title-vcenter" style={{color:'yellow'}}>
+            <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
+                <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
                     Создание Персонажа
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{backgroundColor: '#212529', border: '2px solid yellow'}}>
+            <Modal.Body style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Form>
                     <Form.Control value={name} onChange={e => { setName(e.target.value) }} className='mt-2 mb-2' placeholder='Enter name' />
                     <Dropdown className='mt-2 mb-2'>
@@ -242,7 +242,7 @@ export const CreateCharacter = observer((props) => {
                     <Form.Control onChange={select} className='mt-2 mb-2' type='file' />
                 </Form>
             </Modal.Body>
-            <Modal.Footer style={{backgroundColor: '#212529', border: '2px solid yellow'}}>
+            <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button disabled={
                     !name || !stone || !bossmat || !spec || !enemymat || !talent || !wbmat || !weapon || !region || !sex || !stars || !file
                 } variant='outline-success' onClick={addChar}>Добавить Персонажа</Button>

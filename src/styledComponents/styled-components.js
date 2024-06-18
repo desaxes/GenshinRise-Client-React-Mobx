@@ -28,6 +28,7 @@ gap:${props => props.gap};
 margin:${props => props.margin};
 padding:${props => props.padding};
 box-shadow:${props => props.shadow};
+background-color:${props => props.bg};
 border-radius:${props => props.br};
 border:${props => props.border};
 cursor:${props => props.cursor};
@@ -40,6 +41,7 @@ position:relative;
 `
 export const StyledImg = styled.img`
 width:${props => props.width ? props.width : '250px'};
+opacity:${props => props.opacity ? props.opacity : '100%'};
 border-radius:${props => props.br ? props.br : '15px'};
 background-color:${props => props.bg ? props.bg : 'transparent'};
 `

@@ -13,7 +13,7 @@ import { Weapon } from '../components/weapon';
 import { WeaponOptions } from '../components/modals/weaponOptions';
 import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsForCollection';
 
-export const Collection = observer(() => {
+const Collection = observer(() => {
     const { chars } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
     const [id, setId] = useState()
@@ -25,8 +25,8 @@ export const Collection = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
-        getCharsFromCol().then(res => chars.setChars(res.data))
-        getWeaponsFromCol().then(res => weapons.setWeapons(res.data))
+        getCharsFromCol().then(res => { res && chars.setChars(res.data) })
+        getWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
     }, [chars, weapons])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
@@ -68,3 +68,5 @@ export const Collection = observer(() => {
         </>
     )
 })
+
+export default Collection

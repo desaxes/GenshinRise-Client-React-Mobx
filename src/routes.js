@@ -1,51 +1,53 @@
+import React, { Suspense } from 'react'
 import { Navigate } from "react-router-dom"
-import { Admin } from "./pages/admin"
-import { Collection } from "./pages/collection"
-import { Main } from "./pages/main"
 import { ADMIN_ROUTE, COLLECT_ROUTE, CHAR_ROUTE, MAIN_PAGE, WEAPON_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, RES_ROUTE } from "./utils/constants"
-import { Characters } from "./pages/characters"
-import { Weapons } from "./pages/weapons"
-import { Rise } from "./pages/rise"
-import { Resources } from "./pages/resources"
-import { Rolls } from "./pages/rolls"
-import { Statistic } from "./pages/statistic"
+
+const Admin = React.lazy(() => import("./pages/admin"))
+const Collection = React.lazy(() => import("./pages/collection"))
+const Main = React.lazy(() => import("./pages/main"))
+const Characters = React.lazy(() => import("./pages/characters"))
+const Weapons = React.lazy(() => import("./pages/weapons"))
+const Rise = React.lazy(() => import("./pages/rise"))
+const Resources = React.lazy(() => import("./pages/resources"))
+const Rolls = React.lazy(() => import("./pages/rolls"))
+const Statistic = React.lazy(() => import("./pages/statistic"))
 
 export const publicRoutes = [
     {
         path: ADMIN_ROUTE,
-        component: <Admin />
+        component: <Suspense><Admin /></Suspense>
     },
     {
         path: MAIN_PAGE,
-        component: <Main />
+        component: <Suspense><Main /></Suspense>
     },
     {
         path: CHAR_ROUTE,
-        component: <Characters />
+        component: <Suspense><Characters /></Suspense>
     },
     {
         path: WEAPON_ROUTE,
-        component: <Weapons />
+        component: <Suspense><Weapons /></Suspense>
     },
     {
         path: COLLECT_ROUTE,
-        component: <Collection />
+        component: <Suspense><Collection /></Suspense>
     },
     {
         path: RISE_ROUTE,
-        component: <Rise />
+        component: <Suspense><Rise /></Suspense>
     },
     {
         path: RES_ROUTE,
-        component: <Resources />
+        component: <Suspense><Resources /></Suspense>
     },
     {
         path: ROLL_ROUTE,
-        component: <Rolls />
+        component: <Suspense><Rolls /></Suspense>
     },
     {
         path: STAT_ROUTE,
-        component: <Statistic />
+        component: <Suspense><Statistic /></Suspense>
     },
     {
         path: '*',

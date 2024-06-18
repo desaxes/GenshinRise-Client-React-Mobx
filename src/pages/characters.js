@@ -11,7 +11,7 @@ import { StyledTitle } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite';
 import Form from 'react-bootstrap/Form';
 
-export const Characters = observer(() => {
+const Characters = observer(() => {
     const { chars } = useContext(AppContext)
     const [charId, setCharId] = useState()
     const [modalOptions, setModalOptions] = useState(false)
@@ -42,7 +42,7 @@ export const Characters = observer(() => {
         if (chars.searchBy !== '') {
             query = query + 'name=' + chars.searchBy + '&'
         }
-        getChars(query).then(res => chars.setChars(res.data))
+        getChars(query).then(res => { res && chars.setChars(res.data) })
         // getStones().then(res => materials.setElements(res.data.map(e => e.id)))
     }, [chars.element, chars.weapon, chars.region, chars.stars, chars.sex, chars.size, chars.searchBy, chars])
     let characters = chars.chars.chars.map(e => <Char gridpart={4} key={e.id} char={e} onShow={createModal} />)
@@ -154,3 +154,4 @@ export const Characters = observer(() => {
     )
 }
 )
+export default Characters

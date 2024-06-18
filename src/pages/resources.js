@@ -14,7 +14,7 @@ import { deleteTimer, getLocalSpecialtys, getTimers } from '../http/materialAPI'
 import { Material } from '../components/material';
 import { MatOtions } from '../components/modals/matOptions';
 
-export const Resources = observer(() => {
+const Resources = observer(() => {
     const { materials } = useContext(AppContext)
     const { app } = useContext(AppContext)
     const [matId, setMatId] = useState()
@@ -25,25 +25,29 @@ export const Resources = observer(() => {
     }
     useEffect(() => {
         getTimers().then(res => {
-            for (let i = 0; i < res.data.length; i++) {
-                const date = new Date
-                if (date.getTime() - res.data[i].time > 172800000) {
-                    deleteTimer(res.data[i].materialId)
+            if (res) {
+                for (let i = 0; i < res.data.length; i++) {
+                    const date = new Date
+                    if (date.getTime() - res.data[i].time > 172800000) {
+                        deleteTimer(res.data[i].materialId)
+                    }
                 }
+                getTimers().then(res => {
+                    materials.setTimers(res.data)
+                    app.setUpdated(false)
+                })
             }
-            getTimers().then(res => {
-                materials.setTimers(res.data)
-                app.setUpdated(false)
-            })
         })
     }, [materials.region, materials, app.updated])
     useEffect(() => {
         getLocalSpecialtys().then(res => {
-            if (materials.region != '') {
-                materials.setLocalSpecialtys(res.data.filter(e => +e.regionId === materials.region))
-            }
-            else {
-                materials.setLocalSpecialtys(res.data)
+            if (res) {
+                if (materials.region != '') {
+                    materials.setLocalSpecialtys(res.data.filter(e => +e.regionId === materials.region))
+                }
+                else {
+                    materials.setLocalSpecialtys(res.data)
+                }
             }
         })
     }, [materials.timers])
@@ -72,7 +76,7 @@ export const Resources = observer(() => {
                             display='grid' dir='column' width='100%'
                             jstf='space-between' gap='30px'
                         >
-                            {mats}
+                            {mats.length?mats:<StyledTitle color="red" fz='22px'>Нет Данных с Сервера</StyledTitle>}
                         </Row>
                     </Col>
                 </Row>
@@ -86,3 +90,4 @@ export const Resources = observer(() => {
     )
 }
 )
+export default Resources

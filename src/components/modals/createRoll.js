@@ -13,13 +13,14 @@ export const CreateRoll = observer((props) => {
     const [char, setChar] = useState('')
     const [weapon, setWeapon] = useState('')
     const [stars, setStars] = useState('')
-    const [bannerType, setBannerType] = useState('')
+    // const [bannerType, setBannerType] = useState('')
     const [bannerEndPoint, setBannerEndPoint] = useState('')
     const [rewardType, setRewardType] = useState('')
     const [isChar, setIsChar] = useState('')
     const [date, setDate] = useState('')
     const [success, setSuccess] = useState(false)
     useEffect(() => {
+        setBannerEndPoint(props.bannerType)
         getChars().then(res => chars.setChars(res.data))
         getWeapons().then(res => weapons.setWeapons(res.data))
     }, [])
@@ -59,21 +60,11 @@ export const CreateRoll = observer((props) => {
         >
             <Modal.Header style={{ backgroundColor: '#212529', border: '2px solid yellow' }} closeButton>
                 <Modal.Title style={{ color: 'yellow' }} id="contained-modal-title-vcenter" >
-                    Добавить Крутку
+                    Добавить Молитву
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
                 <StyledBox>
-                    <Dropdown className='mt-2 mb-2'>
-                        <Dropdown.Toggle variant='outline-warning'>
-                            {bannerType === '' ? 'Выберите Тип Баннера' : bannerType}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => { setBannerEndPoint('standart'); setBannerType('Стандартный') }}>Стандартный</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setBannerEndPoint('event'); setBannerType('Ивентовый') }}>Ивентовый</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setBannerEndPoint('weapon'); setBannerType('Оружейный') }}>Оружейный</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {stars === '' ? 'Выберите Редкость Награды' : stars}
@@ -131,7 +122,7 @@ export const CreateRoll = observer((props) => {
                 </StyledBox>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
-                <Button disabled={!stars || isChar ? !char : !weapon || !rewardType || !date || !bannerType} variant='outline-warning' onClick={addRoll}>Добавить</Button>
+                <Button disabled={!stars || isChar ? !char : !weapon || !rewardType || !date } variant='outline-warning' onClick={addRoll}>Добавить</Button>
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 {success && <p style={{ color: 'yellow', position: 'absolute', right: '20px' }}>Добавлено!</p>}
             </Modal.Footer>

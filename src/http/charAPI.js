@@ -135,3 +135,12 @@ export const removeMaxValues = async (id) => {
         console.log(e)
     }
 }
+export const getCharStatistic = async () => {
+    try {
+        const res = await $host.get('stat/chars/')
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

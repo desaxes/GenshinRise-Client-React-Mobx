@@ -12,7 +12,7 @@ import { getWeaponsFromRise } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { RisingModalWeapon } from '../components/modals/risingModalWeapon';
 
-export const Rise = observer(() => {
+const Rise = observer(() => {
     const { chars } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
     const [id, setId] = useState()
@@ -24,8 +24,8 @@ export const Rise = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
-        getCharsFromRise().then(res => chars.setChars(res.data))
-        getWeaponsFromRise().then(res => weapons.setWeapons(res.data))
+        getCharsFromRise().then(res => { res && chars.setChars(res.data) })
+        getWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
     }, [chars, weapons])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     let weaponArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
@@ -67,3 +67,4 @@ export const Rise = observer(() => {
     )
 
 })
+export default Rise

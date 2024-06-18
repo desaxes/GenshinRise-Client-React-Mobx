@@ -1,16 +1,25 @@
 import { $authHost, $host } from ".";
 
 export const createBossMaterial = async (formdata) => {
-    const res = await $authHost.post('lvlup/bmat', formdata)
-    return res
+    try {
+        const res = await $authHost.post('lvlup/bmat', formdata)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getBossMaterials = async () => {
-    const res = await $host.get('lvlup/bmat')
-    return res
+    try {
+        const res = await $host.get('lvlup/bmat')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getBossMaterialById = async (id) => {
-    const res = await $host.get('lvlup/bmat/' + id)
-    return res
+    try {
+        const res = await $host.get('lvlup/bmat/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createStone = async (formData) => {
     try {
@@ -22,132 +31,123 @@ export const createStone = async (formData) => {
     }
 }
 export const getStones = async () => {
-    const res = await $host.get('lvlup/stone')
-    return res
+    try {
+        const res = await $host.get('lvlup/stone')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getStoneById = async (id) => {
-    const res = await $host.get('lvlup/stone/' + id)
-    return res
+    try {
+        const res = await $host.get('lvlup/stone/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createEnemyMaterials = async (formdata) => {
-    const res = await $authHost.post('lvlup/emat', formdata)
-    return res
+    try {
+        const res = await $authHost.post('lvlup/emat', formdata)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getEnemyMaterials = async () => {
-    const res = await $host.get('lvlup/emat')
-    return res
+    try {
+        const res = await $host.get('lvlup/emat')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getEnemyMaterialById = async (id) => {
-    const res = await $host.get('lvlup/emat/' + id)
-    return res
+    try {
+        const res = await $host.get('lvlup/emat/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createLocalSpecialtys = async (formdata) => {
-    const res = await $authHost.post('lvlup/ls', formdata)
-    return res
+    try {
+        const res = await $authHost.post('lvlup/ls', formdata)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getLocalSpecialtys = async () => {
-    const res = await $host.get('lvlup/ls')
-    return res
+    try {
+        const res = await $host.get('lvlup/ls')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getLocalSpecialtyById = async (id) => {
-    const res = await $host.get('lvlup/ls/' + id)
-    return res
+    try {
+        const res = await $host.get('lvlup/ls/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createTalents = async (formdata) => {
-    const res = await $authHost.post('talent/book', formdata)
-    return res
+    try {
+        const res = await $authHost.post('talent/book', formdata)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getTalents = async () => {
-    const res = await $host.get('talent/book')
-    return res
+    try {
+        const res = await $host.get('talent/book')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getTalentById = async (id) => {
-    const res = await $host.get('talent/book/' + id)
-    return res
+    try {
+        const res = await $host.get('talent/book/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createWBMaterials = async (formdata) => {
-    const res = await $authHost.post('talent/wbmat', formdata)
-    return res
+    try {
+        const res = await $authHost.post('talent/wbmat', formdata)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getWBMaterials = async () => {
-    const res = await $host.get('talent/wbmat')
-    return res
+    try {
+        const res = await $host.get('talent/wbmat')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const getWBMaterialById = async (id) => {
-    const res = await $host.get('talent/wbmat/' + id)
-    return res
+    try {
+        const res = await $host.get('talent/wbmat/' + id)
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 
 
 export const getTimers = async () => {
-    const res = await $host.get('lvlup/timers')
-    return res
+    try {
+        const res = await $host.get('lvlup/timers')
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const createTimer = async (id) => {
-    const res = await $authHost.post('lvlup/timers', {id})
-    return res
+    try {
+        const res = await $authHost.post('lvlup/timers', { id })
+        return res
+    }
+    catch (e) { console.log(e) }
 }
 export const deleteTimer = async (id) => {
-    const res = await $authHost.delete('lvlup/timers/' + id)
-    return res
-}
-
-
-
-export const createDevice = async (formData) => {
-    const res = await $authHost.post('characters', formData)
-    return res
-}
-export const getDevices = async (page, limit, brandId, typeId, name) => {
-    const res = await $host.get('api/device?page=' + page + '&limit=' + limit + '&brandId=' + brandId + '&typeId=' + typeId + '&name=' + name)
-    return res
-}
-export const getDeviceById = async (id) => {
-    const res = await $host.get('api/device/' + id)
-    return res
-}
-export const addDeviceToBasket = async (basketId, deviceId) => {
     try {
-        const res = await $host.post('api/basket', { basketId, deviceId })
+        const res = await $authHost.delete('lvlup/timers/' + id)
         return res
     }
-    catch (e) {
-        return e.message
-    }
-}
-export const getBasketById = async (userId) => {
-    try {
-        const res = await $host.get('api/basket?userId=' + userId)
-        return res
-    }
-    catch (e) {
-        return e.message
-    }
-}
-export const checkDevice = async (basketId, deviceId) => {
-    try {
-        const res = await $host.get('api/basket/check?basketId=' + basketId + '&deviceId=' + deviceId)
-        return res
-    }
-    catch (e) {
-        return e.message
-    }
-}
-export const removeDevice = async (basketId, deviceId) => {
-    try {
-        const res = await $host.delete('api/basket/drop?basketId=' + basketId + '&deviceId=' + deviceId)
-        return res
-    }
-    catch (e) {
-        return e.message
-    }
-}
-export const getDevicesFromBasket = async (basketId) => {
-    try {
-        const res = await $host.get('api/basket/devices?basketId=' + basketId)
-        return res
-    }
-    catch (e) {
-        return e.message
-    }
+    catch (e) { console.log(e) }
 }
