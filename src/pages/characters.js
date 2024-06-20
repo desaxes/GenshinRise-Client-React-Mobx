@@ -137,8 +137,7 @@ const Characters = observer(() => {
                             />
                         </Form>
                         <Row md={'auto'} className='d-flex justify-content-center'
-                            display='grid' dir='column' width='100%'
-                            jstf='space-between' gap='30px'
+                            style={{ width: '100%' }}
                         >
                             {characters}
                         </Row>

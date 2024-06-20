@@ -158,7 +158,7 @@ const Rolls = observer(() => {
                                 color='yellow' fz='22px'
                                 dec='underline' fs='italic'>
                                 Молитв с последней Леги : {weaponLegCount} <StyledImg width={'30px'} src={emolitva} /> /
-                                До гаранта нужно ≈ {(90 - weaponLegCount) * 160} <StyledImg width={'30px'} src={gem} />
+                                До гаранта нужно ≈ {(80 - weaponLegCount) * 160} <StyledImg width={'30px'} src={gem} />
                                 {/* или {90-weaponLegCount} <StyledImg width={'30px'} src={emolitva}/> */}
                             </StyledTitle>
                             <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Всего Молитв : {weaponRollCount}</StyledTitle>
