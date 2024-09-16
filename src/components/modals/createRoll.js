@@ -36,13 +36,13 @@ export const CreateRoll = observer((props) => {
             img: isChar ? char.img : weapon.img
         }, bannerEndPoint).then(res => {
             setSuccess(true)
-            if(bannerEndPoint==='standart'){
-                    props.updateStandart(true)
+            if (bannerEndPoint === 'standart') {
+                props.updateStandart(true)
             }
-            else if(bannerEndPoint==='event'){
+            else if (bannerEndPoint === 'event') {
                 props.updateEvent(true)
             }
-            else if(bannerEndPoint==='weapon'){
+            else if (bannerEndPoint === 'weapon') {
                 props.updateWeapon(true)
             }
         })
@@ -122,7 +122,7 @@ export const CreateRoll = observer((props) => {
                 </StyledBox>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
-                <Button disabled={!stars || isChar ? !char : !weapon || !rewardType || !date } variant='outline-warning' onClick={addRoll}>Добавить</Button>
+                <Button disabled={!stars || isChar ? !char : !weapon || !rewardType || !date || success} variant='outline-warning' onClick={addRoll}>Добавить</Button>
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 {success && <p style={{ color: 'yellow', position: 'absolute', right: '20px' }}>Добавлено!</p>}
             </Modal.Footer>

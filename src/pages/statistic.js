@@ -166,8 +166,8 @@ const Statistic = () => {
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Инадзума</StyledTitle>{regionTableRow[2]}</StyledBox>
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Сумеру</StyledTitle>{regionTableRow[3]}</StyledBox>
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Фонтейн</StyledTitle>{regionTableRow[4]}</StyledBox>
-                    <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Натлан</StyledTitle> <Col style={{ border: 'yellow solid 2px', height: '80px' }}></Col></StyledBox>
-                    <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Снежная</StyledTitle>{regionTableRow[5]}</StyledBox>
+                    <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Натлан</StyledTitle>{regionTableRow[5]}</StyledBox>
+                    <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">Снежная</StyledTitle>{regionTableRow[6]}</StyledBox>
                 </StyledBox>
             </Container>
         </>
