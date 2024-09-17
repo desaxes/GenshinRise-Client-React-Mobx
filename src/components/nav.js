@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from './link';
-import { ADMIN_ROUTE, CHAR_ROUTE, COLLECT_ROUTE, MAIN_PAGE, RES_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, WEAPON_ROUTE } from '../utils/constants';
+import { ADMIN_ROUTE, BANNER_ROUTE, CHAR_ROUTE, COLLECT_ROUTE, MAIN_PAGE, RES_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, WEAPON_ROUTE } from '../utils/constants';
 import { StyledBox } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite'
 import { useLocation } from 'react-router-dom';
@@ -78,6 +78,13 @@ export const NavBar = observer(() => {
                                         bg={location.pathname === STAT_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === STAT_ROUTE ? 'black' : 'white'}
                                     >Статистика</Link>
+                                </Col>
+                                                                <Col mb={'auto'} className='mb-2'>
+                                    <Link to={BANNER_ROUTE}
+                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        bg={location.pathname === BANNER_ROUTE ? 'yellow' : 'transparent'}
+                                        color={location.pathname === BANNER_ROUTE ? 'black' : 'white'}
+                                    >Баннеры</Link>
                                 </Col>
                             </Row>
                         </StyledBox>

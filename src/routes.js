@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { Navigate } from "react-router-dom"
-import { ADMIN_ROUTE, COLLECT_ROUTE, CHAR_ROUTE, MAIN_PAGE, WEAPON_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, RES_ROUTE } from "./utils/constants"
+import { ADMIN_ROUTE, COLLECT_ROUTE, CHAR_ROUTE, MAIN_PAGE, WEAPON_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, RES_ROUTE, BANNER_ROUTE } from "./utils/constants"
 
 const Admin = React.lazy(() => import("./pages/admin"))
 const Collection = React.lazy(() => import("./pages/collection"))
@@ -11,6 +11,7 @@ const Rise = React.lazy(() => import("./pages/rise"))
 const Resources = React.lazy(() => import("./pages/resources"))
 const Rolls = React.lazy(() => import("./pages/rolls"))
 const Statistic = React.lazy(() => import("./pages/statistic"))
+const Banners = React.lazy(() => import("./pages/banners"))
 
 export const publicRoutes = [
     {
@@ -48,6 +49,10 @@ export const publicRoutes = [
     {
         path: STAT_ROUTE,
         component: <Suspense><Statistic /></Suspense>
+    },
+    {
+        path: BANNER_ROUTE,
+        component: <Suspense><Banners /></Suspense>
     },
     {
         path: '*',

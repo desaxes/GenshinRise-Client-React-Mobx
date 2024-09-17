@@ -36,6 +36,15 @@ export const getEventRolls = async (query) => {
         console.log(e)
     }
 }
+export const getEventRollsForBanner = async (year, lmonth, lday, hmonth, hday) => {
+    try {
+        const res = await $host.get('rolls/event/banner?limit=1000&year=' + year + '&lmonth=' + lmonth + '&lday=' + lday + '&hmonth=' + hmonth + '&hday=' + hday)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getAllEventRolls = async (query) => {
     try {
         const res = await $host.get('rolls/event?limit=1000&' + query)
