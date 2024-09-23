@@ -20,6 +20,9 @@ const Banners = observer(() => {
         setBannerModal(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getBanners().then(res => setBanners(res.data))
     }, [])
     const bannersArray = banners?.banners.map(e => <Banner id={e.id} patchNumber={e.patchNumber} img1={e.img1} img2={e.img2} onShow={createBannerModal} />).reverse()

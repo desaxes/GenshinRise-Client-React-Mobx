@@ -24,6 +24,9 @@ const Rise = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getCharsFromRise().then(res => { res && chars.setChars(res.data) })
         getWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
     }, [chars, weapons])

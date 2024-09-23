@@ -25,6 +25,9 @@ const Collection = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getCharsFromCol().then(res => { res && chars.setChars(res.data) })
         getWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
     }, [chars, weapons])

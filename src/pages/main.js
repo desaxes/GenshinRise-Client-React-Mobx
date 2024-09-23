@@ -106,6 +106,9 @@ const Main = observer(() => {
         })
     }, [group, n, chars, materials, weapons])
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getCharsFromRise().then(res => { res && setRise(res.data.chars); app.setUpdated(false) })
         getWeaponsFromRise().then(res => { res && setWeaponRise(res.data.weapons); app.setUpdated(false) })
     }, [app.updated, app])

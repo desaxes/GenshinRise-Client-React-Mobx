@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/esm/Col'
 export const NavBar = observer(() => {
     const location = useLocation()
     return (
-        <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
+        <Navbar style={{position:'fixed',zIndex:'1000000',top:'0',width:'100%',marginBottom:'200px'}} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
             <Container fluid>
                 <Link weight='bold' fz='22px' to={MAIN_PAGE}>GENSHINRISE</Link>
                 <Navbar.Toggle aria-controls="navbarScroll" />
@@ -21,67 +21,67 @@ export const NavBar = observer(() => {
                         className="me-auto my-2 my-lg-0"
                         style={{ maxHeight: '100px' }}
                     >
-                        <StyledBox jstf='space-around' display='flex' align='center' padding='20px' gap='30px'>
+                        <StyledBox jstf='space-around' display='flex' align='center' padding='5px 10px' gap='30px'>
                             <Row>
                                 <Col mb={'auto'}>
                                     <Link to={MAIN_PAGE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === MAIN_PAGE ? 'yellow' : 'transparent'}
                                         color={location.pathname === MAIN_PAGE ? 'black' : 'white'}
                                     >Главная</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={CHAR_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action2"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action2"
                                         bg={location.pathname === CHAR_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === CHAR_ROUTE ? 'black' : 'white'}
                                     >Персонажи</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={WEAPON_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action3"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action3"
                                         bg={location.pathname === WEAPON_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === WEAPON_ROUTE ? 'black' : 'white'}
                                     >Оружие</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={RISE_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action4"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action4"
                                         bg={location.pathname === RISE_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === RISE_ROUTE ? 'black' : 'white'}
                                     >Возвышение</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={COLLECT_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action5"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action5"
                                         bg={location.pathname === COLLECT_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === COLLECT_ROUTE ? 'black' : 'white'}
                                     >Коллекция</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={RES_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === RES_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === RES_ROUTE ? 'black' : 'white'}
                                     >Ресурсы</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={ROLL_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === ROLL_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === ROLL_ROUTE ? 'black' : 'white'}
                                     >Молитвы</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={STAT_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === STAT_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === STAT_ROUTE ? 'black' : 'white'}
                                     >Статистика</Link>
                                 </Col>
                                                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={BANNER_ROUTE}
-                                        border='2px yellow solid' fz='20px' weight='bold' href="#action1"
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === BANNER_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === BANNER_ROUTE ? 'black' : 'white'}
                                     >Баннеры</Link>

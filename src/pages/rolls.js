@@ -43,6 +43,9 @@ const Rolls = observer(() => {
         setModalArchive(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getStandartRolls().then(res => {
             if (res) {
                 rolls.setStandartRolls(res.data)

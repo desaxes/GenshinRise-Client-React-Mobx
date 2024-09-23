@@ -40,6 +40,9 @@ const Resources = observer(() => {
         })
     }, [materials.region, materials, app.updated])
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getLocalSpecialtys().then(res => {
             if (res) {
                 if (materials.region != '') {

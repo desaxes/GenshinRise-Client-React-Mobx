@@ -23,6 +23,9 @@ const Weapons = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         let query = ''
         if (weapons.weapon !== '') {
             query = query + 'weaponId=' + weapons.weapon + '&'

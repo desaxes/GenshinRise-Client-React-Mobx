@@ -20,6 +20,9 @@ const Characters = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         let query = ''
         if (chars.element !== '') {
             query = query + 'stoneTypeId=' + chars.element + '&'

@@ -25,6 +25,9 @@ const Statistic = () => {
         })
     }, [])
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
+    useEffect(() => {
         getCharsFromCol().then(res => {
             setCol(res.data.chars.map(e => e.id))
         })
