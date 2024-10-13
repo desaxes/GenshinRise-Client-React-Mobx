@@ -1,26 +1,26 @@
-import { $authHost, $host } from ".";
+import { $authHost, $host } from "../";
 
-export const createChar = async (formdata) => {
+export const createZzzChar = async (formdata) => {
     try {
-        const res = await $authHost.post('genshin/characters', formdata)
+        const res = await $authHost.post('zzz/characters', formdata)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getChars = async (query) => {
+export const getZzzChars = async (query) => {
     try {
-        const res = await $host.get('genshin/characters?limit=100&' + query)
+        const res = await $host.get('zzz/characters?limit=100&' + query)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getCharById = async (id) => {
+export const getZzzCharById = async (id) => {
     try {
-        const res = await $host.get('genshin/characters/' + id)
+        const res = await $host.get('zzz/characters/' + id)
         return res
     }
     catch (e) {

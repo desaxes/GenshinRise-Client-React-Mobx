@@ -6,8 +6,10 @@ import { observer } from 'mobx-react-lite';
 import { getBossMaterials, getEnemyMaterials, getLocalSpecialtys, getStones, getTalents, getWBMaterials } from '../../http/materialAPI';
 import { createChar } from '../../http/charAPI';
 import { StyledBox } from '../../styledComponents/styled-components';
+import { getZzzBossMaterials, getZzzEnemyMaterials, getZzzTalents, getZzzWBMaterials } from '../../http/zzz/materialAPI';
+import { createZzzChar } from '../../http/zzz/charAPI';
 export const CreateCharacter = observer((props) => {
-    let { materials } = useContext(AppContext)
+    let { materials, app } = useContext(AppContext)
     let [name, setName] = useState('')
     let [file, setFile] = useState(null)
     let [stone, setStone] = useState('')
@@ -33,13 +35,21 @@ export const CreateCharacter = observer((props) => {
     let [size, setSize] = useState('')
     let [sizeNumber, setSizeNumber] = useState('')
     useEffect(() => {
-        getStones().then(res => res && (materials.setStones(res.data)))
-        getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
-        getBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
-        getLocalSpecialtys().then(res => res && (materials.setLocalSpecialtys(res.data)))
-        getTalents().then(res => res && (materials.setTalents(res.data)))
-        getWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
-    }, [materials])
+        if (app.game === 'Genshin') {
+            getStones().then(res => res && (materials.setStones(res.data)))
+            getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+            getBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
+            getLocalSpecialtys().then(res => res && (materials.setLocalSpecialtys(res.data)))
+            getTalents().then(res => res && (materials.setTalents(res.data)))
+            getWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
+        }
+        else if (app.game === 'Zzz') {
+            getZzzEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+            getZzzBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
+            getZzzTalents().then(res => res && (materials.setTalents(res.data)))
+            getZzzWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
+        }
+    }, [materials, app.game])
     const select = e => {
         setFile(e.target.files[0])
     }
@@ -58,7 +68,12 @@ export const CreateCharacter = observer((props) => {
         formData.append('stars', starsNumber)
         formData.append('size', sizeNumber)
         formData.append('img', file)
-        createChar(formData).then(res => props.onHide())
+        if (app.game==='Genshin') {
+            createChar(formData).then(res => props.onHide())
+        }
+        else if (app.game==='Zzz') {
+            createZzzChar(formData).then(res => props.onHide())
+        }
     }
     return (
         <Modal
@@ -66,6 +81,7 @@ export const CreateCharacter = observer((props) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            style={{ marginTop: '50px' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -75,7 +91,7 @@ export const CreateCharacter = observer((props) => {
             <Modal.Body style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Form>
                     <Form.Control value={name} onChange={e => { setName(e.target.value) }} className='mt-2 mb-2' placeholder='Enter name' />
-                    <Dropdown className='mt-2 mb-2'>
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {stone === '' ? 'Выберите Камень' : stone}
                         </Dropdown.Toggle>
@@ -91,7 +107,7 @@ export const CreateCharacter = observer((props) => {
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {bossmat === '' ? 'Выберите Материал Босса' : bossmat}
@@ -103,13 +119,13 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='boss material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/bossMaterials/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/bossMaterials/':'/zzz/bossMaterials/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown className='mt-2 mb-2' >
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2' >
                         <Dropdown.Toggle variant='outline-warning'>
                             {spec === '' ? 'Выберите Диковинку' : spec}
                         </Dropdown.Toggle>
@@ -125,10 +141,10 @@ export const CreateCharacter = observer((props) => {
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
-                            {enemymat === '' ? 'Выберите Материал Врага' : enemymat}
+                            {enemymat === '' ? (app.game === 'Genshin' ? 'Выберите Материал Врага' : 'Выберите Жетоны Специализации Персонажа') : enemymat}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {materials.enemyMaterials.map(e =>
@@ -137,11 +153,11 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img1}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img2}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img3}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -149,7 +165,7 @@ export const CreateCharacter = observer((props) => {
                     </Dropdown>
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
-                            {talent === '' ? 'Выберите книгу талантов' : talent}
+                            {talent === '' ? (app.game === 'Genshin' ? 'Выберите Книгу Талантов' : 'Выберите Тип Чипов') : talent}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {materials.talents.map(e =>
@@ -158,11 +174,11 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/talents/' + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img1}></img>
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/talents/' + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img2}></img>
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/talents/' + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img3}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -179,13 +195,13 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='week boss material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weekBossMaterials/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weekBossMaterials/':'/zzz/weekBossMaterials/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {weapon === '' ? 'Выберите Оружие' : weapon}
                         </Dropdown.Toggle>
@@ -196,8 +212,8 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setWeapon('Лук'); setWeaponId(4) }}>Лук</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setWeapon('Катализатор'); setWeaponId(5) }}>Катализатор</Dropdown.Item>
                         </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    </Dropdown>}
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {region === '' ? 'Выберите Регион' : region}
                         </Dropdown.Toggle>
@@ -210,7 +226,21 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setRegion('Натлан'); setRegionId(6) }}>Натлан</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setRegion('Снежная'); setRegionId(7) }}>Снежная</Dropdown.Item>
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown>}
+                    {app.game === 'Zzz' && <Dropdown className='mt-2 mb-2'>
+                        <Dropdown.Toggle variant='outline-warning'>
+                            {region === '' ? 'Выберите Фракцию' : region}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => { setRegion('Хитрые Зайцы'); setRegionId(1) }}>Хитрые Зайцы</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Комбинат Белобог'); setRegionId(2) }}>Комбинат Белобог</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Агентство домашнего персонала Виктория'); setRegionId(3) }}>Агентство домашнего персонала Виктория</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Отряд Обол'); setRegionId(4) }}>Отряд Обол</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Секция 6'); setRegionId(5) }}>Секция 6</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Особая группа отдела угрозыска'); setRegionId(6) }}>Особая группа отдела угрозыска</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Сыны Калидона'); setRegionId(7) }}>Сыны Калидона</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {sex === '' ? 'Выберите Пол' : sex}
@@ -229,7 +259,7 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setStars('Легендарный'); setStarsNumber(5) }}>Легендарный</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {size === '' ? 'Выберите Размер Модельки' : size}
                         </Dropdown.Toggle>
@@ -238,13 +268,13 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setSize('Средняя'); setSizeNumber(2) }}>Средняя</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setSize('Высокая'); setSizeNumber(3) }}>Высокая</Dropdown.Item>
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown>}
                     <Form.Control onChange={select} className='mt-2 mb-2' type='file' />
                 </Form>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button disabled={
-                    !name || !stone || !bossmat || !spec || !enemymat || !talent || !wbmat || !weapon || !region || !sex || !stars || !file
+                    !name || !bossmat || !enemymat || !talent || !wbmat || !region || !sex || !stars || !file
                 } variant='outline-success' onClick={addChar}>Добавить Персонажа</Button>
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
             </Modal.Footer>

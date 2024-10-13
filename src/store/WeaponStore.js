@@ -3,6 +3,7 @@ export default class WeaponStore {
     constructor() {
         this._weapon = ''
         this._stars = ''
+        this._material = ''
         this._weapons = {
             weapons: [],
             total: 0
@@ -55,6 +56,9 @@ export default class WeaponStore {
     setWeapon(weapon) {
         this._weapon = weapon
     }
+    setMaterial(material) {
+        this._material = material
+    }
     setStars(stars) {
         this._stars = stars
     }
@@ -69,6 +73,9 @@ export default class WeaponStore {
     }
     get weapon() {
         return this._weapon
+    }
+    get material() {
+        return this._material
     }
     get stars() {
         return this._stars

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,12 +9,30 @@ import { observer } from 'mobx-react-lite'
 import { useLocation } from 'react-router-dom';
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
+import { Button, Dropdown } from 'react-bootstrap';
+import { AppContext } from '..';
 export const NavBar = observer(() => {
     const location = useLocation()
+    const { app } = useContext(AppContext)
+    useEffect(() => {
+        console.log(app.game)
+    }, [app, app.game])
+    // const [state, setState] = useState('GenshinRise')
     return (
-        <Navbar style={{position:'fixed',zIndex:'1000000',top:'0',width:'100%',marginBottom:'200px'}} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
+        <Navbar style={{ position: 'fixed', zIndex: '1000000', top: '0', width: '100%', marginBottom: '200px' }} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Link weight='bold' fz='22px' to={MAIN_PAGE}>GENSHINRISE</Link>
+                <Dropdown style={{ margin: '0px 30px 0 10px' }}>
+                    <Dropdown.Toggle style={{ color: 'yellow', border: 'yellow 2px solid', background: 'transparent', fontSize: '24px', fontWeight: 'bold' }} variant="success" id="dropdown-basic">
+                        {app.game}Rise
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => app.setGame('Genshin')} href="#/action-1">Genshin</Dropdown.Item>
+                        <Dropdown.Item onClick={() => app.setGame('Honkai')} href="#/action-2">Honkai</Dropdown.Item>
+                        <Dropdown.Item onClick={() => app.setGame('Zzz')} href="#/action-3">ZZZ</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                {/* <Link weight='bold' fz='22px' to={MAIN_PAGE}>GENSHINRISE</Link> */}
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -22,7 +40,7 @@ export const NavBar = observer(() => {
                         style={{ maxHeight: '100px' }}
                     >
                         <StyledBox jstf='space-around' display='flex' align='center' padding='5px 10px' gap='30px'>
-                            <Row>
+                            <Row style={{ display: 'flex', alignItems: 'center' }}>
                                 <Col mb={'auto'}>
                                     <Link to={MAIN_PAGE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
@@ -58,13 +76,13 @@ export const NavBar = observer(() => {
                                         color={location.pathname === COLLECT_ROUTE ? 'black' : 'white'}
                                     >Коллекция</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                {app.game === 'Genshin' && <Col mb={'auto'} className='mb-2'>
                                     <Link to={RES_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === RES_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === RES_ROUTE ? 'black' : 'white'}
                                     >Ресурсы</Link>
-                                </Col>
+                                </Col>}
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={ROLL_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
@@ -79,7 +97,7 @@ export const NavBar = observer(() => {
                                         color={location.pathname === STAT_ROUTE ? 'black' : 'white'}
                                     >Статистика</Link>
                                 </Col>
-                                                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} className='mb-2'>
                                     <Link to={BANNER_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === BANNER_ROUTE ? 'yellow' : 'transparent'}

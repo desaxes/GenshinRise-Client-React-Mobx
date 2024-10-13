@@ -10,9 +10,10 @@ import { Button } from 'react-bootstrap/esm/';
 import { StyledTitle } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite';
 import Form from 'react-bootstrap/Form';
+import { getZzzChars } from '../http/zzz/charAPI';
 
 const Characters = observer(() => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const [charId, setCharId] = useState()
     const [modalOptions, setModalOptions] = useState(false)
     const createModal = (id) => {
@@ -26,6 +27,12 @@ const Characters = observer(() => {
         let query = ''
         if (chars.element !== '') {
             query = query + 'stoneTypeId=' + chars.element + '&'
+        }
+        if (chars.talent !== '') {
+            query = query + 'talentMaterialId=' + chars.talent + '&'
+        }
+        if (chars.material !== '') {
+            query = query + 'enemyMaterialId=' + chars.material + '&'
         }
         if (chars.weapon !== '') {
             query = query + 'weaponId=' + chars.weapon + '&'
@@ -45,20 +52,25 @@ const Characters = observer(() => {
         if (chars.searchBy !== '') {
             query = query + 'name=' + chars.searchBy + '&'
         }
-        getChars(query).then(res => { res && chars.setChars(res.data) })
+        if (app.game === 'Genshin') {
+            getChars(query).then(res => { res && chars.setChars(res.data) })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzChars(query).then(res => { res && chars.setChars(res.data) })
+        }
         // getStones().then(res => materials.setElements(res.data.map(e => e.id)))
-    }, [chars.element, chars.weapon, chars.region, chars.stars, chars.sex, chars.size, chars.searchBy, chars])
+    }, [app.game, chars.material, chars.talent, chars.element, chars.weapon, chars.region, chars.stars, chars.sex, chars.size, chars.searchBy, chars])
     let characters = chars.chars.chars.map(e => <Char gridpart={4} key={e.id} char={e} onShow={createModal} />)
     return (
         <>
             <Container >
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
-                        <StyledTitle color='yellow' fz='22px'>
+                        {app.game === 'Genshin' && <StyledTitle color='yellow' fz='22px'>
                             Стихия
-                        </StyledTitle >
-                        <Row className='mb-2'>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(1)} variant={chars.element === 1 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: '' }}>Анемо</Button></Col>
+                        </StyledTitle >}
+                        {app.game === 'Genshin' && <Row className='mb-2'>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(1)} variant={chars.element === 1 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Анемо</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(2)} variant={chars.element === 2 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Гео</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(3)} variant={chars.element === 3 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Электро</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(4)} variant={chars.element === 4 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Дендро</Button></Col>
@@ -66,29 +78,51 @@ const Characters = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(6)} variant={chars.element === 6 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Пиро</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(7)} variant={chars.element === 7 ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Крио</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement('')} variant={chars.element === '' ? 'warning' : 'outline-warning'} style={{ width: '85px', fontWeight: 'bold' }}>Все</Button></Col>
-                        </Row>
-                        <StyledTitle color='yellow' fz='22px'>
+                        </Row>}
+                        {app.game === 'Zzz' && <StyledTitle color='yellow' fz='22px'>
+                            Специализация
+                        </StyledTitle >}
+                        {app.game === 'Zzz' && <Row className='mb-2'>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial(1)} variant={chars.material === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Аномалия</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial(2)} variant={chars.material === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Нападение</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial(3)} variant={chars.material === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Устрашение</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial(4)} variant={chars.material === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Поддержка</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial(5)} variant={chars.material === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Оборона</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setMaterial('')} variant={chars.material === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
+                        </Row>}
+                        {app.game === 'Zzz' && <StyledTitle color='yellow' fz='22px'>
+                            Специализация
+                        </StyledTitle >}
+                        {app.game === 'Zzz' && <Row className='mb-2'>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent(1)} variant={chars.talent === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Поджог</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent(2)} variant={chars.talent === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Шок</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent(3)} variant={chars.talent === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Физа</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent(4)} variant={chars.talent === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Лед</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent(5)} variant={chars.talent === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Эфир</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setTalent('')} variant={chars.talent === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
+                        </Row>}
+                        {app.game === 'Genshin' && <StyledTitle color='yellow' fz='22px'>
                             Оружие
-                        </StyledTitle>
-                        <Row className='mb-2'>
+                        </StyledTitle>}
+                        {app.game === 'Genshin' && <Row className='mb-2'>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon(1)} variant={chars.weapon === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Одноручное</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon(2)} variant={chars.weapon === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Двуручное</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon(3)} variant={chars.weapon === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Древковое</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon(4)} variant={chars.weapon === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Стрелковое</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon(5)} variant={chars.weapon === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Катализатор</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setWeapon('')} variant={chars.weapon === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
-                        </Row>
+                        </Row>}
                         <StyledTitle color='yellow' fz='22px'>
-                            Регион
+                            {app.game === 'Genshin' ? 'Регион' : 'Фракция'}
                         </StyledTitle>
                         <Row className='mb-2'>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(1)} variant={chars.region === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Мондштадт</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(2)} variant={chars.region === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Ли Юэ</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(3)} variant={chars.region === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Инадзума</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(4)} variant={chars.region === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Сумеру</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(5)} variant={chars.region === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Фонтейн</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(6)} variant={chars.region === 6 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Натлан</Button></Col>
-                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(7)} variant={chars.region === 7 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Снежная</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(1)} variant={chars.region === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Мондштадт':'Хитрые Зайцы'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(2)} variant={chars.region === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Ли Юэ':'Комбинат Белобог'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(3)} variant={chars.region === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Инадзума':'Виктория'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(4)} variant={chars.region === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Сумеру':'Отряд Обол'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(5)} variant={chars.region === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Фонтейн':'Секция 6'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(6)} variant={chars.region === 6 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Натлан':'Угрозыск'}</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(7)} variant={chars.region === 7 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game==='Genshin'?'Снежная':'Сыны Калидона'}</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion('')} variant={chars.region === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>
                         <StyledTitle color='yellow' fz='22px'>
@@ -107,15 +141,15 @@ const Characters = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSex(2)} variant={chars.sex === 2 ? 'warning' : 'outline-warning'} style={{ width: '100px', fontWeight: 'bold' }}>Мужской</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSex('')} variant={chars.sex === '' ? 'warning' : 'outline-warning'} style={{ width: '50px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>
-                        <StyledTitle color='yellow' fz='22px'>
+                        {app.game === 'Genshin' && <StyledTitle color='yellow' fz='22px'>
                             Рост
-                        </StyledTitle>
-                        <Row className='mb-2'>
+                        </StyledTitle>}
+                        {app.game === 'Genshin' && <Row className='mb-2'>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSize(1)} variant={chars.size === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Низкий</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSize(2)} variant={chars.size === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Средний</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSize(3)} variant={chars.size === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Высокий</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setSize('')} variant={chars.size === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
-                        </Row>
+                        </Row>}
                         {/* <Dropdown>
                                 <Dropdown.Toggle variant='outline-success'>
                                     {'Элемент'}

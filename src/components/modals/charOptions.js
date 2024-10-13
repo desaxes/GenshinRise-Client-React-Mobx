@@ -64,7 +64,7 @@ export const CharOptions = observer((props) => {
             removeMaxValues(props.charId).then(res => setDisableRise(false))
         })
     }
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
         getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
@@ -84,7 +84,7 @@ export const CharOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <img alt='character' src={process.env.REACT_APP_API_URL + "/chars/" + char.img}></img>
+                <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button

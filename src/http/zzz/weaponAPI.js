@@ -1,26 +1,26 @@
-import { $authHost, $host } from ".";
+import { $authHost, $host } from "../";
 
-export const createWeapon = async (formdata) => {
+export const createZzzWeapon = async (formdata) => {
     try {
-        const res = await $authHost.post('genshin/weapons', formdata)
+        const res = await $authHost.post('zzz/weapons', formdata)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getWeapons = async (query) => {
+export const getZzzWeapons = async (query) => {
     try {
-        const res = await $host.get('genshin/weapons?limit=500&' + query)
+        const res = await $host.get('zzz/weapons?limit=500&' + query)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getWeaponById = async (id) => {
+export const getZzzWeaponById = async (id) => {
     try {
-        const res = await $host.get('genshin/weapons/' + id)
+        const res = await $host.get('zzz/weapons/' + id)
         return res
     }
     catch (e) {

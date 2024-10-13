@@ -7,6 +7,8 @@ export default class CharStore {
         this._stars = ''
         this._sex = ''
         this._size = ''
+        this._talent = ''
+        this._material = ''
         this._chars = {
             chars: [],
             total: 0
@@ -35,6 +37,12 @@ export default class CharStore {
     setSize(size) {
         this._size = size
     }
+    setTalent(talent) {
+        this._talent = talent
+    }
+    setMaterial(material) {
+        this._material = material
+    }
     setChars(chars) {
         this._chars = chars
     }
@@ -58,6 +66,12 @@ export default class CharStore {
     }
     get size() {
         return this._size
+    }
+    get talent() {
+        return this._talent
+    }
+    get material() {
+        return this._material
     }
     get chars() {
         return this._chars

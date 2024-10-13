@@ -52,7 +52,7 @@ export const WeaponOptions = observer((props) => {
             removeMaxValuesForWeapon(props.weaponId).then(res => setDisableRise(false))
         })
     }
-    const { weapons } = useContext(AppContext)
+    const { weapons, app } = useContext(AppContext)
     const weapon = weapons.weapons.weapons.find(e => e.id === props.weaponId)
     useEffect(() => {
         getWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
@@ -72,7 +72,7 @@ export const WeaponOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <img alt='character' src={process.env.REACT_APP_API_URL + "/weapons/" + weapon.img}></img>
+                <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + weapon.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button

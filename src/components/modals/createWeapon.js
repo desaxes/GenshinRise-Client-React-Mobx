@@ -7,8 +7,10 @@ import { getEnemyMaterials } from '../../http/materialAPI';
 import { StyledBox } from '../../styledComponents/styled-components';
 import { getEnemyWeaponMaterials, getWeaponMaterials } from '../../http/weaponMatAPI';
 import { createWeapon } from '../../http/weaponAPI';
+import { createZzzWeapon } from '../../http/zzz/weaponAPI';
+import { getZzzWeaponMaterials } from '../../http/zzz/weaponMatAPI';
 export const CreateWeapon = observer((props) => {
-    let { materials } = useContext(AppContext)
+    let { materials, app } = useContext(AppContext)
     let [name, setName] = useState('')
     let [file, setFile] = useState(null)
     let [wmat, setWMat] = useState('')
@@ -22,10 +24,15 @@ export const CreateWeapon = observer((props) => {
     let [stars, setStars] = useState('')
     let [starsNumber, setStarsNumber] = useState('')
     useEffect(() => {
-        getEnemyWeaponMaterials().then(res => res && (materials.setEnemyWeaponMaterials(res.data)))
-        getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
-        getWeaponMaterials().then(res => res && (materials.setWeaponMaterials(res.data)))
-    }, [materials])
+        if (app.game === 'Genshin') {
+            getEnemyWeaponMaterials().then(res => res && (materials.setEnemyWeaponMaterials(res.data)))
+            getEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+            getWeaponMaterials().then(res => res && (materials.setWeaponMaterials(res.data)))
+        }
+        else if (app.game === 'Zzz') {
+            getZzzWeaponMaterials().then(res => res && (materials.setWeaponMaterials(res.data)))
+        }
+    }, [materials, app.game])
     const select = e => {
         setFile(e.target.files[0])
     }
@@ -38,7 +45,12 @@ export const CreateWeapon = observer((props) => {
         formData.append('weaponId', weaponId)
         formData.append('stars', starsNumber)
         formData.append('img', file)
-        createWeapon(formData).then(res => props.onHide())
+        if (app.game === 'Genshin') {
+            createWeapon(formData).then(res => props.onHide())
+        }
+        else if (app.game === 'Zzz') {
+            createZzzWeapon(formData).then(res => props.onHide())
+        }
     }
     return (
         <Modal
@@ -66,19 +78,19 @@ export const CreateWeapon = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img1}></img>
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img2}></img>
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img3}></img>
-                                        <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img4}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img3}></img>
+                                        {app.game === 'Genshin' && <img alt='stone' style={{ maxWidth: '40px' }}
+                                            src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img4}></img>}
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {enemymat === '' ? 'Выберите Материал Врага' : enemymat}
                         </Dropdown.Toggle>
@@ -98,8 +110,8 @@ export const CreateWeapon = observer((props) => {
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    </Dropdown>}
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {ewmat === '' ? 'Выберите Оружейный Материал Врагов' : ewmat}
                         </Dropdown.Toggle>
@@ -119,8 +131,8 @@ export const CreateWeapon = observer((props) => {
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown className='mt-2 mb-2'>
+                    </Dropdown>}
+                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {weapon === '' ? 'Выберите Тип Оружия' : weapon}
                         </Dropdown.Toggle>
@@ -131,7 +143,7 @@ export const CreateWeapon = observer((props) => {
                             <Dropdown.Item onClick={() => { setWeapon('Лук'); setWeaponId(4) }}>Лук</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setWeapon('Катализатор'); setWeaponId(5) }}>Катализатор</Dropdown.Item>
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning   '>
                             {stars === '' ? 'Выберите Редкость' : stars}
@@ -148,7 +160,7 @@ export const CreateWeapon = observer((props) => {
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button disabled={
-                    !name || !wmat || !ewmat || !enemymat || !weapon || !stars || !file
+                    !name || !wmat || !stars || !file
                 } variant='outline-success' onClick={addWeapon}>Добавить Оружие</Button>
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
             </Modal.Footer>

@@ -138,7 +138,7 @@ const Main = observer(() => {
     return (
         <Container>
             <Row className='mb-5'>
-                <Col md={9}>
+                {app.game === 'Genshin' && <Col md={9}>
                     <Row className='mt-3'>
                         <StyledTitle color='yellow'>Повышение уровня талантов</StyledTitle>
                         <StyledTitle color='yellow' fz='22px'>{days[n]}</StyledTitle>
@@ -182,10 +182,10 @@ const Main = observer(() => {
                         onHide={() => setModalOptions(false)}
                         weaponId={id}
                     />}
-                </Col>
+                </Col>}
                 <Col md={1}>
                 </Col>
-                <Col md={2} className='mt-4'>
+                <Col md={app.game === 'Genshin' ? 2 : 12} className='mt-4'>
                     <StyledTitle align='center' color='yellow' fz='26px'>Статистика Накоплений</StyledTitle>
                     {statistic}
                     {weaponStatistic}

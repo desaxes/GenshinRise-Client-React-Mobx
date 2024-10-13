@@ -21,7 +21,7 @@ export const Progress = (props) => {
     return (
         <StyledBox className="mt-3" display='flex' align='center' gap='10px'>
             <StyledImg width={'80px'} src={process.env.REACT_APP_API_URL + "/chars/" + props.img}></StyledImg>
-            <ProgressBar style={{ height: '25px', width: '300px', backgroundColor: 'red' }} now={100 / maximum * props.current}
+            <ProgressBar style={{ height: '25px', width: '100%', backgroundColor: 'red' }} now={100 / maximum * props.current}
                 variant="warning" animated></ProgressBar>
         </StyledBox>)
 }

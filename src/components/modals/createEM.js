@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { Button, Form } from 'react-bootstrap/esm/';
 import { createEnemyMaterials } from '../../http/materialAPI';
+import { AppContext } from '../..';
+import { createZzzEnemyMaterials } from '../../http/zzz/materialAPI';
 export const CreateEnemyMaterial = (props) => {
     const [name, setName] = useState('')
+    const { app } = useContext(AppContext)
     let [file1, setFile1] = useState(null)
     let [file2, setFile2] = useState(null)
     let [file3, setFile3] = useState(null)
@@ -23,10 +26,18 @@ export const CreateEnemyMaterial = (props) => {
         formData.append('img1', file1)
         formData.append('img2', file2)
         formData.append('img3', file3)
-        createEnemyMaterials(formData).then(res => {
-            setName('')
-            props.onHide()
-        })
+        if (app.game === 'Genshin') {
+            createEnemyMaterials(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
+        else if (app.game === 'Zzz') {
+            createZzzEnemyMaterials(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
     }
     return (
         <Modal

@@ -1,7 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { StyledBox } from '../styledComponents/styled-components'
 import Col from 'react-bootstrap/esm/Col'
+import { useContext } from 'react'
+import { AppContext } from '..'
 export const Weapon = observer((props) => {
+    const { app } = useContext(AppContext)
     return (
         <Col md={props.gridpart} className='mt-4'>
             <StyledBox style={{ background: props.weapon.stars === 5 ? 'orange' : (props.weapon.stars === 4 ? '#4600f6' : '#4682B4') }}
@@ -17,7 +20,7 @@ export const Weapon = observer((props) => {
             >
                 <img alt='character'
                     style={{ maxWidth: '150px', borderRadius: '15px' }}
-                    src={process.env.REACT_APP_API_URL + "/weapons/" + props.weapon.img}></img>
+                    src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + props.weapon.img}></img>
                 <StyledBox display='flex' dir='column' style={{ marginLeft: '10px' }} >
                     <div style={{ fontWeight: 'bold', fontSize: '18px', color: 'white' }}>{props.weapon.name}</div>
                 </StyledBox>
