@@ -6,31 +6,59 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { getAllEventRolls, getAllStandartRolls, getAllWeaponRolls } from '../../http/rollAPI';
 import { StyledBox, StyledImg, StyledTitle } from '../../styledComponents/styled-components';
+import { getZzzAllEventRolls, getZzzAllStandartRolls, getZzzAllWeaponRolls } from '../../http/zzz/rollAPI';
 export const Archive = observer((props) => {
-    const { rolls } = useContext(AppContext)
+    const { rolls, app } = useContext(AppContext)
     const [rollsArchive, setRollsArchive] = useState()
     useEffect(() => {
         switch (props.bannerType) {
             case 'standart':
-                getAllStandartRolls().then(res => {
-                    if (res) {
-                        setRollsArchive(res.data.rolls)
-                    }
-                })
+                if (app.game === 'Genshin') {
+                    getAllStandartRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzAllStandartRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
                 break;
             case 'event':
-                getAllEventRolls().then(res => {
-                    if (res) {
-                        setRollsArchive(res.data.rolls)
-                    }
-                })
+                if (app.game === 'Genshin') {
+                    getAllEventRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzAllEventRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
                 break;
             case 'weapon':
-                getAllWeaponRolls().then(res => {
-                    if (res) {
-                        setRollsArchive(res.data.rolls)
-                    }
-                })
+                if (app.game === 'Genshin') {
+                    getAllWeaponRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzAllWeaponRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
                 break;
             default:
                 break;
@@ -42,9 +70,9 @@ export const Archive = observer((props) => {
             <StyledBox display='flex' align='center' gap='20px'>
                 <StyledTitle color={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} fz='26px'>{e.rewardName}</StyledTitle>
                 <StyledTitle color={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} fz='26px'>{e.stars === 5 ? '★★★★★' : (e.stars === 4 ? '★★★★' : '★★★')}</StyledTitle>
-                {e.isChar ? <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+                {e.isChar ? <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : '/zzz/chars/') + e.img} />
                     :
-                    <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />}
+                    <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : '/zzz/weapons/') + e.img} />}
 
             </StyledBox>
         </StyledBox>

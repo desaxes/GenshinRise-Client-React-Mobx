@@ -6,8 +6,10 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { StyledBox } from '../../styledComponents/styled-components';
 import { addBanner } from '../../http/bannerAPI';
+import { addZzzBanner } from '../../http/zzz/bannerAPI';
+import { getZzzChars } from '../../http/zzz/charAPI';
 export const CreateBanner = observer((props) => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const [legChar1, setLegChar1] = useState('')
     const [legChar2, setLegChar2] = useState('')
     const [epicChar1, setEpicChar1] = useState('')
@@ -20,8 +22,9 @@ export const CreateBanner = observer((props) => {
     let [file2, setFile2] = useState(null)
     const [success, setSuccess] = useState(false)
     useEffect(() => {
-        getChars().then(res => chars.setChars(res.data))
-    }, [])
+        if (app.game === 'Genshin') { getChars().then(res => chars.setChars(res.data)) }
+        else if (app.game === 'Zzz') { getZzzChars().then(res => chars.setChars(res.data)) }
+    }, [app.game])
     const select1 = e => {
         setFile1(e.target.files[0])
     }
@@ -29,23 +32,44 @@ export const CreateBanner = observer((props) => {
         setFile2(e.target.files[0])
     }
     const createBanner = () => {
-        let formData = new FormData()
-        formData.append('year', +date1.split('-')[0])
-        formData.append('lmonth', +date1.split('-')[1])
-        formData.append('lday', +date1.split('-')[2])
-        formData.append('hmonth', +date2.split('-')[1])
-        formData.append('hday', +date2.split('-')[2])
-        formData.append('charId1', legChar1.id)
-        formData.append('charName1', legChar1.name)
-        formData.append('charId2', legChar2.id)
-        formData.append('charName2', legChar2.name)
-        formData.append('epicCharId1', epicChar1.id)
-        formData.append('epicCharId2', epicChar2.id)
-        formData.append('epicCharId3', epicChar3.id)
-        formData.append('img1', file1)
-        formData.append('img2', file2)
-        formData.append('patchNumber', patchNumber.toString())
-        addBanner(formData)
+        if (app.game === 'Genshin') {
+            let formData = new FormData()
+            formData.append('year', +date1.split('-')[0])
+            formData.append('lmonth', +date1.split('-')[1])
+            formData.append('lday', +date1.split('-')[2])
+            formData.append('hmonth', +date2.split('-')[1])
+            formData.append('hday', +date2.split('-')[2])
+            formData.append('charId1', legChar1.id)
+            formData.append('charName1', legChar1.name)
+            formData.append('charId2', legChar2.id)
+            formData.append('charName2', legChar2.name)
+            formData.append('epicCharId1', epicChar1.id)
+            formData.append('epicCharId2', epicChar2.id)
+            formData.append('epicCharId3', epicChar3.id)
+            formData.append('img1', file1)
+            formData.append('img2', file2)
+            formData.append('patchNumber', patchNumber.toString())
+            addBanner(formData)
+        }
+        else if (app.game === 'Zzz') {
+            let formData = new FormData()
+            formData.append('year', +date1.split('-')[0])
+            formData.append('lmonth', +date1.split('-')[1])
+            formData.append('lday', +date1.split('-')[2])
+            formData.append('hmonth', +date2.split('-')[1])
+            formData.append('hday', +date2.split('-')[2])
+            formData.append('charId1', legChar1.id)
+            formData.append('charName1', legChar1.name)
+            formData.append('charId2', legChar2.id)
+            formData.append('charName2', legChar2.name)
+            formData.append('epicCharId1', epicChar1.id)
+            formData.append('epicCharId2', epicChar2.id)
+            formData.append('epicCharId3', epicChar3.id)
+            formData.append('img1', file1)
+            formData.append('img2', file2)
+            formData.append('patchNumber', patchNumber.toString())
+            addZzzBanner(formData)
+        }
     }
     useEffect(() => {
         setTimeout(() => setSuccess(false), 2000)
@@ -57,7 +81,7 @@ export const CreateBanner = observer((props) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-
+            style={{ paddingTop: '70px', paddingBottom: '70px' }}
         >
             <Modal.Header style={{ backgroundColor: '#212529', border: '2px solid yellow' }} closeButton>
                 <Modal.Title style={{ color: 'yellow' }} id="contained-modal-title-vcenter" >
@@ -83,7 +107,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -100,7 +124,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -117,7 +141,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -134,7 +158,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -151,7 +175,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -161,14 +185,14 @@ export const CreateBanner = observer((props) => {
                         <Form.Control id='1' onChange={select1} className='mt-2 mb-2' type='file' />
                         <Form.Control id='2' onChange={select2} className='mt-2 mb-2' type='file' />
                     </Form>
-                    <p style={{ fontWeight: 'bold',color:'yellow' }}>Номер Патча</p>
+                    <p style={{ fontWeight: 'bold', color: 'yellow' }}>Номер Патча</p>
                     <Form>
                         <Form.Control id='1' onChange={e => setPatchNumber(e.target.value)} className='mt-2 mb-2' type='number' />
                     </Form>
                 </StyledBox>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
-                <Button disabled={!date1 || !date2 || !legChar1 || !legChar2 || !epicChar3 || !epicChar2 || !epicChar1 || !file1 || !file2 || success} variant='outline-warning' onClick={createBanner}>Добавить</Button>
+                <Button disabled={!date1 || !date2 || !legChar1 || !epicChar2 || !epicChar1 || !file1 || success} variant='outline-warning' onClick={createBanner}>Добавить</Button>
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 {success && <p style={{ color: 'yellow', position: 'absolute', right: '20px' }}>Добавлено!</p>}
             </Modal.Footer>

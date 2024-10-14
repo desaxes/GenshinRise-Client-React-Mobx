@@ -18,6 +18,8 @@ import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsFo
 import { WeaponProgress } from '../components/weaponProgress';
 import { CharOptionsForMain } from '../components/modals/charOptionForMain';
 import { WeaponOptionsForMain } from '../components/modals/weaponOptionsForMain';
+import { getZzzCharsFromRise } from '../http/zzz/charAPI';
+import { getZzzWeaponsFromRise } from '../http/zzz/weaponAPI';
 
 const Main = observer(() => {
     const { materials } = useContext(AppContext)
@@ -109,34 +111,42 @@ const Main = observer(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
     useEffect(() => {
-        getCharsFromRise().then(res => { res && setRise(res.data.chars); app.setUpdated(false) })
-        getWeaponsFromRise().then(res => { res && setWeaponRise(res.data.weapons); app.setUpdated(false) })
-    }, [app.updated, app])
+        if (app.game === 'Genshin') {
+            getCharsFromRise().then(res => { res && setRise(res.data.chars); app.setUpdated(false) })
+            getWeaponsFromRise().then(res => { res && setWeaponRise(res.data.weapons); app.setUpdated(false) })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzCharsFromRise().then(res => { res && setRise(res.data.chars); app.setUpdated(false) })
+            getZzzWeaponsFromRise().then(res => { res && setWeaponRise(res.data.weapons); app.setUpdated(false) })
+        }
+    }, [app.updated, app, app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={4} key={e.id} char={e} onShow={createModal} />)
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     let progressArray = rise.map(e => ({
         id: e.id,
         img: e.img,
-        progress: (e.stone1count + e.stone2count + e.stone3count + e.stone4count +
+        progress: app.game === 'Genshin' ? (e.stone1count + e.stone2count + e.stone3count + e.stone4count +
             e.localSpecialtyCount + e.enemyMaterial1Count + e.enemyMaterial2Count +
             e.enemyMaterial3Count + e.enemyMaterial1CountForTalent + e.enemyMaterial2CountForTalent +
             e.enemyMaterial3CountForTalent + e.bossMaterialCount + e.talentMaterial1Count +
-            e.talentMaterial2Count + e.talentMaterial3Count + e.weekBossMaterialCount),
+            e.talentMaterial2Count + e.talentMaterial3Count + e.weekBossMaterialCount) : (e.enemyMaterial1Count + e.enemyMaterial2Count +
+                e.enemyMaterial3Count + e.bossMaterialCount + e.talentMaterial1Count +
+                e.talentMaterial2Count + e.talentMaterial3Count + e.weekBossMaterialCount),
         max: 714
     }))
     let progressWeaponArray = weaponRise.map(e => ({
         id: e.id,
         img: e.img,
         stars: e.stars,
-        progress: (e.weaponMat1Count + e.weaponMat2Count + e.weaponMat3Count + e.weaponMat4Count +
+        progress: app.game === 'Genshin' ? (e.weaponMat1Count + e.weaponMat2Count + e.weaponMat3Count + e.weaponMat4Count +
             e.enemyMat1Count + e.enemyMat2Count + e.enemyMat3Count +
-            e.enemyWMat1Count + e.enemyWMat2Count + e.enemyWMat3Count),
+            e.enemyWMat1Count + e.enemyWMat2Count + e.enemyWMat3Count) : (e.weaponMat1Count + e.weaponMat2Count + e.weaponMat3Count),
         max: 714
     }))
     const statistic = progressArray.map(e => <Progress key={e.id} id={e.id} img={e.img} current={e.progress} max={e.max} />)
     const weaponStatistic = progressWeaponArray.map(e => <WeaponProgress stars={e.stars} key={e.id} id={e.id} img={e.img} current={e.progress} max={e.max} />)
     return (
-        <Container>
+        <Container style={{textShadow: '2px 2px 2px black'}}>
             <Row className='mb-5'>
                 {app.game === 'Genshin' && <Col md={9}>
                     <Row className='mt-3'>

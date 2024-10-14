@@ -57,7 +57,7 @@ const Resources = observer(() => {
     let mats = materials.localSpecialtys.map(e => <Material key={e.id} regionId={e.regionId} mat={e} onShow={createModal} />)
     return (
         <>
-            <Container >
+            <Container style={{textShadow: '2px 2px 2px black'}}>
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
                         <StyledTitle color='yellow' fz='22px'>

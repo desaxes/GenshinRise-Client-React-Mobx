@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { StyledBox, StyledImg } from './../styledComponents/styled-components';
 import { getBossMaterialById, getEnemyMaterialById, getLocalSpecialtyById, getStoneById, getTalentById, getWBMaterialById } from '../http/materialAPI';
@@ -6,12 +6,16 @@ import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { observer } from 'mobx-react-lite';
 import { getEnemyWeaponMaterialById, getWeaponMaterialById } from '../http/weaponMatAPI';
+import { AppContext } from '..';
+import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../http/zzz/materialAPI';
+import { getZzzWeaponMaterialById } from '../http/zzz/weaponMatAPI';
 export const RiseBar = observer((props) => {
     const [material, setMaterial] = useState({})
     const [tooltip, setTooltip] = useState(false)
     const [url, setUrl] = useState()
     const [form, setForm] = useState(false)
     const [localValue, setLocalValue] = useState()
+    const { app } = useContext(AppContext)
     const setCount = (operation) => {
         if (operation === '+') {
             if (props.current < props.max) {
@@ -41,25 +45,60 @@ export const RiseBar = observer((props) => {
                 setUrl('/localSpecialtys/')
                 break;
             case 3:
-                getEnemyMaterialById(props.materialId).then(res => setMaterial(res.data))
-                setUrl('/enemyMaterials/')
-                break;
+                if (app.game === 'Genshin') {
+                    getEnemyMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/enemyMaterials/')
+                    break;
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzEnemyMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/zzz/enemyMaterials/')
+                    break;
+                }
             case 4:
-                getBossMaterialById(props.materialId).then(res => setMaterial(res.data))
-                setUrl('/bossMaterials/')
-                break;
+                if (app.game === 'Genshin') {
+                    getBossMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/bossMaterials/')
+                    break;
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzBossMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/zzz/bossMaterials/')
+                    break;
+                }
             case 5:
-                getTalentById(props.materialId).then(res => setMaterial(res.data))
-                setUrl('/talents/')
-                break;
+                if (app.game === 'Genshin') {
+                    getTalentById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/talents/')
+                    break;
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzTalentById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/zzz/talents/')
+                    break;
+                }
             case 6:
-                getWBMaterialById(props.materialId).then(res => setMaterial(res.data))
-                setUrl('/weekBossMaterials/')
-                break;
+                if (app.game === 'Genshin') {
+                    getWBMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/weekBossMaterials/')
+                    break;
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzWBMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/zzz/weekBossMaterials/')
+                    break;
+                }
             case 7:
-                getWeaponMaterialById(props.materialId).then(res => setMaterial(res.data))
-                setUrl('/weaponMaterials/')
-                break;
+                if (app.game === 'Genshin') {
+                    getWeaponMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/weaponMaterials/')
+                    break;
+                }
+                else if (app.game === 'Zzz') {
+                    getZzzWeaponMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/zzz/weaponMaterials/')
+                    break;
+                }
             case 8:
                 getEnemyWeaponMaterialById(props.materialId).then(res => setMaterial(res.data))
                 setUrl('/enemyWeaponMaterials/')
@@ -80,7 +119,7 @@ export const RiseBar = observer((props) => {
                     variant="warning" animated
                 />
                 <div style={{ position: 'absolute', marginLeft: '47%', fontWeight: 'bold', fontStyle: 'italic' }}>{props.current}/{props.max}</div>
-                {form && <Form className="d-flex" style={{ position: 'absolute', marginLeft: '20%', width: '300px', height: '30px' }} >
+                {form && <Form className="d-flex" style={{ position: 'absolute', marginLeft: '20%', width: '220px', height: '30px' }} >
                     <Form.Control
                         type="search"
                         placeholder="Введите значение"
@@ -103,7 +142,7 @@ export const RiseBar = observer((props) => {
                         setForm(false)
                     }}>Ок</Button>
                 </Form>}
-                {!form && <StyledBox display='flex' gap='6px'>
+                {<StyledBox style={{ opacity: form ? '0%' : '100%' }} display='flex' gap='6px'>
                     <Button style={{ fontWeight: 'bold', fontSize: '16px', height: '25px', padding: '0px 10px' }} variant='outline-danger' onClick={() => setCount('-')}>⇓</Button>
                     <Button style={{ fontWeight: 'bold', fontSize: '16px', height: '25px', padding: '0px 10px' }} variant='outline-warning' onClick={() => setCount('+')}>⇑</Button>
                 </StyledBox>}

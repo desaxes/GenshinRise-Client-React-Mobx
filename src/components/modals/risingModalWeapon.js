@@ -6,8 +6,9 @@ import { StyledImg } from '../../styledComponents/styled-components';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { getMaxValuesForWeapon, getWeaponsFromRise, removeMaxValuesForWeapon, removeWeaponFromRise, updateWeaponFromRise } from '../../http/weaponAPI';
+import { getZzzWeaponsFromRise, removeZzzWeaponFromRise, updateZzzWeaponFromRise } from '../../http/zzz/weaponAPI';
 export const RisingModalWeapon = observer((props) => {
-    const { weapons } = useContext(AppContext)
+    const { weapons, app } = useContext(AppContext)
     const weapon = weapons.weapons.weapons.find(e => e.id === props.weaponId)
     const [wmat1, setWmat1] = useState(weapon && weapon.weaponMat1Count)
     const [wmat2, setWmat2] = useState(weapon && weapon.weaponMat2Count)
@@ -21,43 +22,70 @@ export const RisingModalWeapon = observer((props) => {
     const [ewmat3, setEwmat3] = useState(weapon && weapon.enemyWMat3Count)
     const [max, setMax] = useState()
     const saveResult = () => {
-        updateWeaponFromRise({
-            id: weapon.id,
-            wmat1: wmat1,
-            wmat2: wmat2,
-            wmat3: wmat3,
-            wmat4: wmat4,
-            emat1: emat1,
-            emat2: emat2,
-            emat3: emat3,
-            ewmat1: ewmat1,
-            ewmat2: ewmat2,
-            ewmat3: ewmat3,
-        }).then(res => {
-            getWeaponsFromRise().then(res => {
-                weapons.setWeapons(res.data)
-                props.onHide()
+        if (app.game === 'Genshin') {
+            updateWeaponFromRise({
+                id: weapon.id,
+                wmat1: wmat1,
+                wmat2: wmat2,
+                wmat3: wmat3,
+                wmat4: wmat4,
+                emat1: emat1,
+                emat2: emat2,
+                emat3: emat3,
+                ewmat1: ewmat1,
+                ewmat2: ewmat2,
+                ewmat3: ewmat3,
+            }).then(res => {
+                getWeaponsFromRise().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
             })
-        })
+        }
+        else if (app.game === 'Zzz') {
+            updateZzzWeaponFromRise({
+                id: weapon.id,
+                wmat1: wmat1,
+                wmat2: wmat2,
+                wmat3: wmat3
+            }).then(res => {
+                getZzzWeaponsFromRise().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     const removeWeapon = () => {
-        removeWeaponFromRise(props.weaponId).then(res => {
-            getWeaponsFromRise().then(res => {
-                weapons.setWeapons(res.data)
-                props.onHide()
-                removeMaxValuesForWeapon(props.weaponId)
+        if (app.game === 'Genshin') {
+            removeWeaponFromRise(props.weaponId).then(res => {
+                getWeaponsFromRise().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                    removeMaxValuesForWeapon(props.weaponId)
+                })
             })
-        })
+        }
+        else if (app.game === 'Zzz') {
+            removeZzzWeaponFromRise(props.weaponId).then(res => {
+                getWeaponsFromRise().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     useEffect(() => {
-        getMaxValuesForWeapon().then(res => {
-            if (res.data.find(e => e.id === props.weaponId)) {
-                setMax(res.data.find(e => e.id === props.weaponId))
-            }
-            else {
-                setMax(weapons.maxOptions.find(e => e.stars === weapon.stars))
-            }
-        })
+        if (app.game === 'Genshin') {
+            getMaxValuesForWeapon().then(res => {
+                if (res.data.find(e => e.id === props.weaponId)) {
+                    setMax(res.data.find(e => e.id === props.weaponId))
+                }
+                else {
+                    setMax(weapons.maxOptions.find(e => e.stars === weapon.stars))
+                }
+            })
+        }
     }, [])
     if (weapon) {
         return (
@@ -82,41 +110,41 @@ export const RisingModalWeapon = observer((props) => {
                         backgroundColor: '#212529',
                         border: '2px solid yellow'
                     }}>
-                    <StyledImg width={'125px'} bg={weapon.stars === 5 ? 'orange' : ((weapon.stars === 4 ? '#4600f6' : '#4682B4'))} src={process.env.REACT_APP_API_URL + "/weapons/" + weapon.img}></StyledImg>
+                    <StyledImg width={'125px'} bg={weapon.stars === 5 ? 'orange' : ((weapon.stars === 4 ? '#4600f6' : '#4682B4'))} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + weapon.img}></StyledImg>
                     <Row md={'auto'}>
                         <Col md={'auto'}>
                             <RiseBar
                                 counter={setWmat1}
-                                materialBase={7} materialId={weapon.weaponMaterialId} quality={1} current={wmat1} max={max ? max.weaponMat1Count : 1} />
+                                materialBase={7} materialId={weapon.weaponMaterialId} quality={1} current={wmat1} max={max ? max.weaponMat1Count : 5} />
                             <RiseBar
                                 counter={setWmat2}
-                                materialBase={7} materialId={weapon.weaponMaterialId} quality={2} current={wmat2} max={max ? max.weaponMat2Count : 9} />
+                                materialBase={7} materialId={weapon.weaponMaterialId} quality={2} current={wmat2} max={max ? max.weaponMat2Count : 32} />
                             <RiseBar
                                 counter={setWmat3}
-                                materialBase={7} materialId={weapon.weaponMaterialId} quality={3} current={wmat3} max={max ? max.weaponMat3Count : 9} />
-                            <RiseBar
+                                materialBase={7} materialId={weapon.weaponMaterialId} quality={3} current={wmat3} max={max ? max.weaponMat3Count : 30} />
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setWmat4}
-                                materialBase={7} materialId={weapon.weaponMaterialId} quality={4} current={wmat4} max={max ? max.weaponMat4Count : 6} />
-                            <RiseBar
+                                materialBase={7} materialId={weapon.weaponMaterialId} quality={4} current={wmat4} max={max ? max.weaponMat4Count : 6} />}
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEwmat1}
-                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={1} current={ewmat1} max={max ? max.enemyWMat1Count : 46} />
+                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={1} current={ewmat1} max={max ? max.enemyWMat1Count : 46} />}
                         </Col>
                         <Col md={'auto'}>
-                            <RiseBar
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEwmat2}
-                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={2} current={ewmat2} max={max ? max.enemyWMat2Count : 18} />
-                            <RiseBar
+                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={2} current={ewmat2} max={max ? max.enemyWMat2Count : 18} />}
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEwmat3}
-                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={3} current={ewmat3} max={max ? max.enemyWMat3Count : 30} />
-                            <RiseBar
+                                materialBase={8} materialId={weapon.enemyWeaponMaterialId} quality={3} current={ewmat3} max={max ? max.enemyWMat3Count : 30} />}
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEmat1}
-                                materialBase={3} materialId={weapon.enemyMaterialId} quality={1} current={emat1} max={max ? max.enemyMat1Count : 18} />
-                            <RiseBar
+                                materialBase={3} materialId={weapon.enemyMaterialId} quality={1} current={emat1} max={max ? max.enemyMat1Count : 18} />}
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEmat2}
-                                materialBase={3} materialId={weapon.enemyMaterialId} quality={2} current={emat2} max={max ? max.enemyMat2Count : 30} />
-                            <RiseBar
+                                materialBase={3} materialId={weapon.enemyMaterialId} quality={2} current={emat2} max={max ? max.enemyMat2Count : 30} />}
+                            {app.game === 'Genshin' && <RiseBar
                                 counter={setEmat3}
-                                materialBase={3} materialId={weapon.enemyMaterialId} quality={3} current={emat3} max={max ? max.enemyMat3Count : 36} />
+                                materialBase={3} materialId={weapon.enemyMaterialId} quality={3} current={emat3} max={max ? max.enemyMat3Count : 36} />}
                         </Col>
                     </Row>
 

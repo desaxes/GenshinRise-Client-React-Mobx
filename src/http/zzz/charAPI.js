@@ -27,117 +27,91 @@ export const getZzzCharById = async (id) => {
         console.log(e)
     }
 }
-export const addCharToCol = async (data) => {
+export const addZzzCharToCol = async (data) => {
     try {
-        const res = await $authHost.post('genshin/collection', data)
+        const res = await $authHost.post('zzz/collection', data)
         return res
     }
     catch (e) {
         console.log('character already exists')
     }
 }
-export const getCharsFromCol = async () => {
+export const getZzzCharsFromCol = async () => {
     try {
-        const res = await $host.get('genshin/collection?limit=100')
+        const res = await $host.get('zzz/collection?limit=100')
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getCharFromColById = async (id) => {
+export const getZzzCharFromColById = async (id) => {
     try {
-        const res = await $host.get('genshin/collection/' + id)
+        const res = await $host.get('zzz/collection/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const addCharToRise = async (data) => {
+export const addZzzCharToRise = async (data) => {
     try {
-        const res = await $authHost.post('genshin/rise', data)
+        const res = await $authHost.post('zzz/rise', data)
         return res
     }
     catch (e) {
         console.log('character already exists')
     }
 }
-export const addMaxValues = async (data) => {
+
+export const getZzzCharsFromRise = async () => {
     try {
-        const res = await $authHost.post('genshin/rise/max', data)
-        return res
-    }
-    catch (e) {
-        console.log('character already exists')
-    }
-}
-export const getMaxValues = async () => {
-    try {
-        const res = await $host.get('genshin/rise/max')
+        const res = await $host.get('zzz/rise?limit=100')
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getCharsFromRise = async () => {
+export const getZzzCharFromRiseById = async (id) => {
     try {
-        const res = await $host.get('genshin/rise?limit=100')
+        const res = await $host.get('zzz/rise/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getCharFromRiseById = async (id) => {
+export const updateZzzCharFromRise = async (data) => {
     try {
-        const res = await $host.get('genshin/rise/' + id)
+        const res = await $host.put('zzz/rise', data)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const updateCharFromRise = async (data) => {
+export const removeZzzCharFromCol = async (id) => {
     try {
-        const res = await $host.put('genshin/rise', data)
+        const res = await $host.delete('zzz/collection/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const removeCharFromCol = async (id) => {
+export const removeZzzCharFromRise = async (id) => {
     try {
-        const res = await $host.delete('genshin/collection/' + id)
+        const res = await $host.delete('zzz/rise/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const removeCharFromRise = async (id) => {
+export const getZzzCharStatistic = async () => {
     try {
-        const res = await $host.delete('genshin/rise/' + id)
-        return res
-    }
-    catch (e) {
-        console.log(e)
-    }
-}
-export const removeMaxValues = async (id) => {
-    try {
-        const res = await $host.delete('genshin/rise/max/' + id)
-        return res
-    }
-    catch (e) {
-        console.log(e)
-    }
-}
-export const getCharStatistic = async () => {
-    try {
-        const res = await $host.get('genshin/stat/chars/')
+        const res = await $host.get('zzz/stat/chars/')
         return res
     }
     catch (e) {

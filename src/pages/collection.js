@@ -12,9 +12,11 @@ import { getWeaponsFromCol } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { WeaponOptions } from '../components/modals/weaponOptions';
 import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsForCollection';
+import { getZzzCharsFromCol } from '../http/zzz/charAPI';
+import { getZzzWeaponsFromCol } from '../http/zzz/weaponAPI';
 
 const Collection = observer(() => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
     const [id, setId] = useState()
     const [modalType, setModalType] = useState()
@@ -28,14 +30,20 @@ const Collection = observer(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
     useEffect(() => {
-        getCharsFromCol().then(res => { res && chars.setChars(res.data) })
-        getWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
-    }, [chars, weapons])
+        if (app.game === 'Genshin') {
+            getCharsFromCol().then(res => { res && chars.setChars(res.data) })
+            getWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzCharsFromCol().then(res => { res && chars.setChars(res.data) })
+            getZzzWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
+        }
+    }, [chars, weapons, app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
-            <Container >
+            <Container style={{textShadow: '2px 2px 2px black'}}>
                 <StyledTitle className='mt-3' color='yellow'>Коллекция</StyledTitle>
                 <StyledTitle fz='24px' className='mt-3' color='yellow'>Персонажи</StyledTitle>
                 <Row className='pb-3'>

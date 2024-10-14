@@ -7,8 +7,11 @@ import { observer } from 'mobx-react-lite';
 import { StyledBox } from '../../styledComponents/styled-components';
 import { getWeapons } from '../../http/weaponAPI';
 import { createRoll } from '../../http/rollAPI';
+import { createZzzRoll } from '../../http/zzz/rollAPI';
+import { getZzzChars } from '../../http/zzz/charAPI';
+import { getZzzWeapons } from '../../http/zzz/weaponAPI';
 export const CreateRoll = observer((props) => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
     const [char, setChar] = useState('')
     const [weapon, setWeapon] = useState('')
@@ -21,32 +24,64 @@ export const CreateRoll = observer((props) => {
     const [success, setSuccess] = useState(false)
     useEffect(() => {
         setBannerEndPoint(props.bannerType)
-        getChars().then(res => chars.setChars(res.data))
-        getWeapons().then(res => weapons.setWeapons(res.data))
+        if (app.game === 'Genshin') {
+            getChars().then(res => chars.setChars(res.data))
+            getWeapons().then(res => weapons.setWeapons(res.data))
+        }
+        else if (app.game === 'Zzz') {
+            getZzzChars().then(res => chars.setChars(res.data))
+            getZzzWeapons().then(res => weapons.setWeapons(res.data))
+        }
     }, [])
     const addRoll = () => {
-        createRoll({
-            year: +date.split('-')[0],
-            month: +date.split('-')[1],
-            day: +date.split('-')[2],
-            isChar: isChar,
-            rewardId: isChar ? char.id : weapon.id,
-            rewardName: isChar ? char.name : weapon.name,
-            stars: +stars,
-            img: isChar ? char.img : weapon.img
-        }, bannerEndPoint).then(res => {
-            setSuccess(true)
-            if (bannerEndPoint === 'standart') {
-                props.updateStandart(true)
-            }
-            else if (bannerEndPoint === 'event') {
-                props.updateEvent(true)
-            }
-            else if (bannerEndPoint === 'weapon') {
-                props.updateWeapon(true)
-            }
-        })
+        if (app.game === 'Genshin') {
+            createRoll({
+                year: +date.split('-')[0],
+                month: +date.split('-')[1],
+                day: +date.split('-')[2],
+                isChar: isChar,
+                rewardId: isChar ? char.id : weapon.id,
+                rewardName: isChar ? char.name : weapon.name,
+                stars: +stars,
+                img: isChar ? char.img : weapon.img
+            }, bannerEndPoint).then(res => {
+                setSuccess(true)
+                if (bannerEndPoint === 'standart') {
+                    props.updateStandart(true)
+                }
+                else if (bannerEndPoint === 'event') {
+                    props.updateEvent(true)
+                }
+                else if (bannerEndPoint === 'weapon') {
+                    props.updateWeapon(true)
+                }
+            })
+        }
+        else if (app.game === 'Zzz') {
+            createZzzRoll({
+                year: +date.split('-')[0],
+                month: +date.split('-')[1],
+                day: +date.split('-')[2],
+                isChar: isChar,
+                rewardId: isChar ? char.id : weapon.id,
+                rewardName: isChar ? char.name : weapon.name,
+                stars: +stars,
+                img: isChar ? char.img : weapon.img
+            }, bannerEndPoint).then(res => {
+                setSuccess(true)
+                if (bannerEndPoint === 'standart') {
+                    props.updateStandart(true)
+                }
+                else if (bannerEndPoint === 'event') {
+                    props.updateEvent(true)
+                }
+                else if (bannerEndPoint === 'weapon') {
+                    props.updateWeapon(true)
+                }
+            })
+        }
     }
+
     useEffect(() => {
         setTimeout(() => setSuccess(false), 2000)
     }, [success])
@@ -96,7 +131,7 @@ export const CreateRoll = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/chars/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : '/zzz/chars/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -113,7 +148,7 @@ export const CreateRoll = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/weapons/' + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : '/zzz/weapons/') + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}

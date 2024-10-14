@@ -4,19 +4,35 @@ import { Button } from 'react-bootstrap/esm/';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { addWeaponToCol, getWeaponFromColById, getWeaponsFromCol, removeWeaponFromCol } from '../../http/weaponAPI';
+import { addZzzWeaponToCol, getZzzWeaponsFromCol, removeZzzWeaponFromCol } from '../../http/zzz/weaponAPI';
 export const WeaponOptionsForCollection = observer((props) => {
-    const { weapons } = useContext(AppContext)
+    const { weapons, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
     const addToCol = () => {
-        addWeaponToCol(weapon).then(res => setDisableCol(true))
+        if (app.game === 'Genshin') {
+            addWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Zzz') {
+            addZzzWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
     }
     const removeFromCol = () => {
-        removeWeaponFromCol(props.weaponId).then(res => {
-            getWeaponsFromCol().then(res => {
-                weapons.setWeapons(res.data)
-                props.onHide()
+        if (app.game === 'Genshin') {
+            removeWeaponFromCol(props.weaponId).then(res => {
+                getWeaponsFromCol().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
             })
-        })
+        }
+        else if (app.game === 'Zzz') {
+            removeZzzWeaponFromCol(props.weaponId).then(res => {
+                getZzzWeaponsFromCol().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     const weapon = weapons.weapons.weapons.find(e => e.id === props.weaponId)
     useEffect(() => {
@@ -37,7 +53,7 @@ export const WeaponOptionsForCollection = observer((props) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                    <img alt='character' src={process.env.REACT_APP_API_URL + "/weapons/" + weapon.img}></img>
+                    <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + weapon.img}></img>
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button

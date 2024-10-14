@@ -4,23 +4,44 @@ import { Button } from 'react-bootstrap/esm/';
 import { addCharToCol, getCharFromColById, getCharsFromCol, removeCharFromCol } from '../../http/charAPI';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
+import { addZzzCharToCol, getZzzCharFromColById, getZzzCharsFromCol, removeZzzCharFromCol } from '../../http/zzz/charAPI';
 export const CharOptionsForCollection = observer((props) => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
     const addToCol = () => {
-        addCharToCol(char).then(res => setDisableCol(true))
+        if (app.game === "Genshin") {
+            addCharToCol(char).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Zzz') {
+            addZzzCharToCol(char).then(res => setDisableCol(true))
+        }
     }
     const removeFromCol = () => {
-        removeCharFromCol(props.charId).then(res => {
-            getCharsFromCol().then(res => {
-                chars.setChars(res.data)
-                props.onHide()
+        if (app.game === "Genshin") {
+            removeCharFromCol(props.charId).then(res => {
+                getCharsFromCol().then(res => {
+                    chars.setChars(res.data)
+                    props.onHide()
+                })
             })
-        })
+        }
+        else if (app.game === "Zzz") {
+            removeZzzCharFromCol(props.charId).then(res => {
+                getZzzCharsFromCol().then(res => {
+                    chars.setChars(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
-        getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+        if (app.game === "Genshin") {
+            getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+        }
+        else if (app.game === "Zzz") {
+            getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+        }
     }, [props.charId])
     if (char) {
         return (
@@ -37,7 +58,7 @@ export const CharOptionsForCollection = observer((props) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
-                    <img alt='character' src={process.env.REACT_APP_API_URL + "/chars/" + char.img}></img>
+                    <img style={{height:'150px',width:'150px'}} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></img>
                 </Modal.Body>
                 <Modal.Footer style={{ backgroundColor: '#212529', border: '2px solid yellow', display: "flex", justifyContent: 'center' }}>
                     <Button

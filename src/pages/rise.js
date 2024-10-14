@@ -11,9 +11,11 @@ import { StyledTitle } from '../styledComponents/styled-components';
 import { getWeaponsFromRise } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { RisingModalWeapon } from '../components/modals/risingModalWeapon';
+import { getZzzCharFromRiseById, getZzzCharsFromRise } from '../http/zzz/charAPI';
+import { getZzzWeaponsFromRise } from '../http/zzz/weaponAPI';
 
 const Rise = observer(() => {
-    const { chars } = useContext(AppContext)
+    const { chars, app } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
     const [id, setId] = useState()
     const [modalType, setModalType] = useState()
@@ -27,14 +29,20 @@ const Rise = observer(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
     useEffect(() => {
-        getCharsFromRise().then(res => { res && chars.setChars(res.data) })
-        getWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
-    }, [chars, weapons])
+        if (app.game === 'Genshin') {
+            getCharsFromRise().then(res => { res && chars.setChars(res.data) })
+            getWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzCharsFromRise().then(res => { res && chars.setChars(res.data) })
+            getZzzWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
+        }
+    }, [chars, weapons, app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     let weaponArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
-            <Container >
+            <Container style={{textShadow: '2px 2px 2px black'}}>
                 <StyledTitle color='yellow' className='mt-3' fz='26px'>Персонажи</StyledTitle>
                 <Row className='mt-1 pb-1'>
                     <Col className='mt-1 d-flex flex-column align-items-center' md={12}>

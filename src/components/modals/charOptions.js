@@ -6,6 +6,7 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { Form } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
+import { addZzzCharToCol, addZzzCharToRise, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -27,7 +28,12 @@ export const CharOptions = observer((props) => {
     const [talent3, setTalent3] = useState()
     const [wbmat, setWbmat] = useState()
     const addToCol = () => {
-        addCharToCol(char).then(res => setDisableCol(true))
+        if (app.game === "Genshin") {
+            addCharToCol(char).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Zzz') {
+            addZzzCharToCol(char).then(res => setDisableCol(true))
+        }
     }
     const addToRise = () => {
         if (changeMats) {
@@ -53,23 +59,44 @@ export const CharOptions = observer((props) => {
             addCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
         }
         else {
-            addCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
+            if (app.game === 'Genshin') {
+                addCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
+            else if (app.game === 'Zzz') {
+                addZzzCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
         }
     }
     const removeFromCol = () => {
-        removeCharFromCol(props.charId).then(res => setDisableCol(false))
+        if (app.game === "Genshin") {
+            removeCharFromCol(props.charId).then(res => setDisableCol(false))
+        }
+        else if (app.game === "Zzz") {
+            removeZzzCharFromCol(props.charId).then(res => setDisableCol(false))
+        }
     }
     const removeFromRise = () => {
-        removeCharFromRise(props.charId).then(res => {
-            removeMaxValues(props.charId).then(res => setDisableRise(false))
-        })
+        if (app.game === 'Genshin') {
+            removeCharFromRise(props.charId).then(res => {
+                removeMaxValues(props.charId).then(res => setDisableRise(false))
+            })
+        }
+        else if (app.game === 'Zzz') {
+            removeZzzCharFromRise(props.charId).then(res => setDisableRise(false))
+        }
     }
     const { chars, app } = useContext(AppContext)
     const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
-        getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
-        getCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
-    }, [props.charId])
+        if (app.game === "Genshin") {
+            getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+            getCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+        }
+        else if (app.game === "Zzz") {
+            getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+            getZzzCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+        }
+    }, [props.charId, app.game])
     return (
         <Modal
             {...props}
@@ -84,7 +111,7 @@ export const CharOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></img>
+                <img style={{ height: '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button

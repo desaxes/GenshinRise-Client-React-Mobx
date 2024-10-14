@@ -7,9 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #212529;
-}
-
+  background: -webkit-linear-gradient(90deg,#000000,#75151d,#000000); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(90deg,#000000,#3e0303,#000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */}
 @font-face {
   font-family: 'Pacifico-Regular';
   font-weight: 400;

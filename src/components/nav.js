@@ -19,15 +19,15 @@ export const NavBar = observer(() => {
     }, [app, app.game])
     // const [state, setState] = useState('GenshinRise')
     return (
-        <Navbar style={{ position: 'fixed', zIndex: '1000000', top: '0', width: '100%', marginBottom: '200px' }} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
-            <Container fluid>
+        <Navbar style={{border:'solid 2px yellow',position: 'fixed', zIndex: '1000000', top: '0', width: '100%', marginBottom: '200px' }} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
+            <Container  fluid>  
                 <Dropdown style={{ margin: '0px 30px 0 10px' }}>
                     <Dropdown.Toggle style={{ color: 'yellow', border: 'yellow 2px solid', background: 'transparent', fontSize: '24px', fontWeight: 'bold' }} variant="success" id="dropdown-basic">
                         {app.game}Rise
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => app.setGame('Genshin')} href="#/action-1">Genshin</Dropdown.Item>
+                        <Dropdown.Item onClick={() => {app.setGame('Genshin')}} href="#/action-1">Genshin</Dropdown.Item>
                         <Dropdown.Item onClick={() => app.setGame('Honkai')} href="#/action-2">Honkai</Dropdown.Item>
                         <Dropdown.Item onClick={() => app.setGame('Zzz')} href="#/action-3">ZZZ</Dropdown.Item>
                     </Dropdown.Menu>

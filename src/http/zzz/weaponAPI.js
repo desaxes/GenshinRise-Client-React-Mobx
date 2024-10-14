@@ -27,108 +27,81 @@ export const getZzzWeaponById = async (id) => {
         console.log(e)
     }
 }
-export const addWeaponToCol = async (data) => {
+export const addZzzWeaponToCol = async (data) => {
     try {
-        const res = await $authHost.post('genshin/weaponcollection', data)
+        const res = await $authHost.post('zzz/weaponcollection', data)
         return res
     }
     catch (e) {
         console.log('character already exists')
     }
 }
-export const getWeaponsFromCol = async () => {
+export const getZzzWeaponsFromCol = async () => {
     try {
-        const res = await $host.get('genshin/weaponcollection?limit=500')
+        const res = await $host.get('zzz/weaponcollection?limit=500')
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getWeaponFromColById = async (id) => {
+export const getZzzWeaponFromColById = async (id) => {
     try {
-        const res = await $host.get('genshin/weaponcollection/' + id)
+        const res = await $host.get('zzz/weaponcollection/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const addWeaponToRise = async (data) => {
+export const addZzzWeaponToRise = async (data) => {
     try {
-        const res = await $authHost.post('genshin/weaponrise', data)
+        const res = await $authHost.post('zzz/weaponrise', data)
         return res
     }
     catch (e) {
         console.log('weapon already exists')
     }
 }
-export const addMaxValuesForWeapon = async (data) => {
+export const getZzzWeaponsFromRise = async () => {
     try {
-        const res = await $authHost.post('genshin/weaponrise/max', data)
-        return res
-    }
-    catch (e) {
-        console.log('weapon already exists')
-    }
-}
-export const getMaxValuesForWeapon = async () => {
-    try {
-        const res = await $host.get('genshin/weaponrise/max')
+        const res = await $host.get('zzz/weaponrise?limit=500')
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getWeaponsFromRise = async () => {
+export const getZzzWeaponFromRiseById = async (id) => {
     try {
-        const res = await $host.get('genshin/weaponrise?limit=500')
+        const res = await $host.get('zzz/weaponrise/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const getWeaponFromRiseById = async (id) => {
+export const updateZzzWeaponFromRise = async (data) => {
     try {
-        const res = await $host.get('genshin/weaponrise/' + id)
+        const res = await $host.put('zzz/weaponrise', data)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const updateWeaponFromRise = async (data) => {
+export const removeZzzWeaponFromCol = async (id) => {
     try {
-        const res = await $host.put('genshin/weaponrise', data)
+        const res = await $host.delete('zzz/weaponcollection/' + id)
         return res
     }
     catch (e) {
         console.log(e)
     }
 }
-export const removeWeaponFromCol = async (id) => {
+export const removeZzzWeaponFromRise = async (id) => {
     try {
-        const res = await $host.delete('genshin/weaponcollection/' + id)
-        return res
-    }
-    catch (e) {
-        console.log(e)
-    }
-}
-export const removeWeaponFromRise = async (id) => {
-    try {
-        const res = await $host.delete('genshin/weaponrise/' + id)
-        return res
-    }
-    catch (e) {
-        console.log(e)
-    }
-}
-export const removeMaxValuesForWeapon = async (id) => {
-    try {
-        const res = await $host.delete('genshin/weaponrise/max/' + id)
+        const res = await $host.delete('zzz/weaponrise/' + id)
         return res
     }
     catch (e) {

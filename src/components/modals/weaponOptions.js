@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Form } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
 import { addMaxValuesForWeapon, addWeaponToCol, addWeaponToRise, getWeaponFromColById, getWeaponFromRiseById, removeMaxValuesForWeapon, removeWeaponFromCol, removeWeaponFromRise } from '../../http/weaponAPI';
+import { addZzzWeaponToCol, addZzzWeaponToRise, getZzzWeaponFromColById, getZzzWeaponFromRiseById, removeZzzWeaponFromCol } from '../../http/zzz/weaponAPI';
 export const WeaponOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -21,7 +22,12 @@ export const WeaponOptions = observer((props) => {
     const [ewmat2, setEwmat2] = useState()
     const [ewmat3, setEwmat3] = useState()
     const addToCol = () => {
-        addWeaponToCol(weapon).then(res => setDisableCol(true))
+        if (app.game === 'Genshin') {
+            addWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Zzz') {
+            addZzzWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
     }
     const addToRise = () => {
         if (changeMats) {
@@ -41,23 +47,44 @@ export const WeaponOptions = observer((props) => {
             addWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
         }
         else {
-            addWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
+            if (app.game === 'Genshin') {
+                addWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
+            else if (app.game === 'Zzz') {
+                addZzzWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
         }
     }
     const removeFromCol = () => {
-        removeWeaponFromCol(props.weaponId).then(res => setDisableCol(false))
+        if (app.game === 'Genshin') {
+            removeWeaponFromCol(props.weaponId).then(res => setDisableCol(false))
+        }
+        else if (app.game === 'Zzz') {
+            removeZzzWeaponFromCol(props.weaponId).then(res => setDisableCol(false))
+        }
     }
     const removeFromRise = () => {
-        removeWeaponFromRise(props.weaponId).then(res => {
-            removeMaxValuesForWeapon(props.weaponId).then(res => setDisableRise(false))
-        })
+        if (app.game === 'Genshin') {
+            removeWeaponFromRise(props.weaponId).then(res => {
+                removeMaxValuesForWeapon(props.weaponId).then(res => setDisableRise(false))
+            })
+        }
+        else if (app.game === 'Zzz') {
+            removeWeaponFromRise(props.weaponId).then(res => { setDisableRise(false) })
+        }
     }
     const { weapons, app } = useContext(AppContext)
     const weapon = weapons.weapons.weapons.find(e => e.id === props.weaponId)
     useEffect(() => {
-        getWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
-        getWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
-    }, [props.weaponId])
+        if (app.game === 'Genshin') {
+            getWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
+            getWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
+            getZzzWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
+        }
+    }, [props.weaponId, app.game])
     return (
         <Modal
             {...props}

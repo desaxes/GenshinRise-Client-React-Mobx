@@ -9,10 +9,11 @@ import gem from '../img/gem.webp'
 import emolitva from '../img/emolitva.webp'
 import smolitva from '../img/smolitva.webp'
 import { Archive } from "../components/modals/archive"
+import { getZzzAllEventRolls, getZzzAllStandartRolls, getZzzAllWeaponRolls, getZzzEventRolls, getZzzStandartRolls, getZzzWeaponRolls } from "../http/zzz/rollAPI"
 
 const Rolls = observer(() => {
     const [sCounter, setSCounter] = useState([])
-    const { rolls } = useContext(AppContext)
+    const { rolls, app } = useContext(AppContext)
     const [modalOptions, setModalOptions] = useState(false)
     const [modalArchive, setModalArchive] = useState(false)
     const [standartLegCount, setStandartLegCount] = useState(0)
@@ -46,119 +47,197 @@ const Rolls = observer(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
     useEffect(() => {
-        getStandartRolls().then(res => {
-            if (res) {
-                rolls.setStandartRolls(res.data)
-                getAllStandartRolls().then(res => {
-                    let counter = 0
-                    for (let i = 0; i < res.data.rolls.length; i++) {
-                        if (res.data.rolls[i].stars === 5) {
-                            break
+        if (app.game === 'Genshin') {
+            getStandartRolls().then(res => {
+                if (res) {
+                    rolls.setStandartRolls(res.data)
+                    getAllStandartRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                        else {
-                            counter++
+                        setStandartLegCount(counter)
+                        setStandartRollCount(res.data.total)
+                        setMsv(res.data.middle)
+                        setMsev(res.data.epicMiddle)
+                        setSLegs(res.data.legs)
+                        setStandartUpdated(false)
+                    })
+                }
+            })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzStandartRolls().then(res => {
+                if (res) {
+                    rolls.setStandartRolls(res.data)
+                    getZzzAllStandartRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                    }
-                    setStandartLegCount(counter)
-                    setStandartRollCount(res.data.total)
-                    setMsv(res.data.middle)
-                    setMsev(res.data.epicMiddle)
-                    setSLegs(res.data.legs)
-                    setStandartUpdated(false)
-                })
-            }
-        })
-    }, [standartUpdated])
+                        setStandartLegCount(counter)
+                        setStandartRollCount(res.data.total)
+                        setMsv(res.data.middle)
+                        setMsev(res.data.epicMiddle)
+                        setSLegs(res.data.legs)
+                        setStandartUpdated(false)
+                    })
+                }
+            })
+        }
+    }, [standartUpdated, app.game])
     useEffect(() => {
-        getEventRolls().then(res => {
-            if (res) {
-                rolls.setEventRolls(res.data)
-                getAllEventRolls().then(res => {
-                    let counter = 0
-                    for (let i = 0; i < res.data.rolls.length; i++) {
-                        if (res.data.rolls[i].stars === 5) {
-                            break
+        if (app.game === 'Genshin') {
+            getEventRolls().then(res => {
+                if (res) {
+                    rolls.setEventRolls(res.data)
+                    getAllEventRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                        else {
-                            counter++
+                        setEventLegCount(counter)
+                        setEventRollCount(res.data.total)
+                        setMev(res.data.middle)
+                        setMeev(res.data.epicMiddle)
+                        setELegs(res.data.legs)
+                        setEventUpdated(false)
+                    })
+                }
+            })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzEventRolls().then(res => {
+                if (res) {
+                    rolls.setEventRolls(res.data)
+                    getZzzAllEventRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                    }
-                    setEventLegCount(counter)
-                    setEventRollCount(res.data.total)
-                    setMev(res.data.middle)
-                    setMeev(res.data.epicMiddle)
-                    setELegs(res.data.legs)
-                    setEventUpdated(false)
-                })
-            }
-        })
-    }, [eventUpdated])
+                        setEventLegCount(counter)
+                        setEventRollCount(res.data.total)
+                        setMev(res.data.middle)
+                        setMeev(res.data.epicMiddle)
+                        setELegs(res.data.legs)
+                        setEventUpdated(false)
+                    })
+                }
+            })
+        }
+    }, [eventUpdated, app.game])
     useEffect(() => {
-        getWeaponRolls().then(res => {
-            if (res) {
-                rolls.setWeaponRolls(res.data)
-                getAllWeaponRolls().then(res => {
-                    let counter = 0
-                    for (let i = 0; i < res.data.rolls.length; i++) {
-                        if (res.data.rolls[i].stars === 5) {
-                            break
+        if (app.game === 'Genshin') {
+            getWeaponRolls().then(res => {
+                if (res) {
+                    rolls.setWeaponRolls(res.data)
+                    getAllWeaponRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                        else {
-                            counter++
+                        setWeaponLegCount(counter)
+                        setWeaponRollCount(res.data.total)
+                        setWLegs(res.data.legs)
+                        setMwv(res.data.middle)
+                        setMwev(res.data.epicMiddle)
+                        setWeaponUpdated(false)
+                    })
+                }
+            })
+        }
+        else if (app.game === 'Zzz') {
+            getZzzWeaponRolls().then(res => {
+                if (res) {
+                    rolls.setWeaponRolls(res.data)
+                    getZzzAllWeaponRolls().then(res => {
+                        let counter = 0
+                        for (let i = 0; i < res.data.rolls.length; i++) {
+                            if (res.data.rolls[i].stars === 5) {
+                                break
+                            }
+                            else {
+                                counter++
+                            }
                         }
-                    }
-                    setWeaponLegCount(counter)
-                    setWeaponRollCount(res.data.total)
-                    setWLegs(res.data.legs)
-                    setMwv(res.data.middle)
-                    setMwev(res.data.epicMiddle)
-                    setWeaponUpdated(false)
-                })
-            }
-        })
-    }, [weaponUpdated])
+                        setWeaponLegCount(counter)
+                        setWeaponRollCount(res.data.total)
+                        setWLegs(res.data.legs)
+                        setMwv(res.data.middle)
+                        setMwev(res.data.epicMiddle)
+                        setWeaponUpdated(false)
+                    })
+                }
+            })
+        }
+    }, [weaponUpdated, app.game])
     const sRolls = rolls.standartRolls.rolls.map(e => e.isChar ?
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
         :
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />)
-    const sLegRolls = sLegs?.map(e => <div style={{display:'flex',flexDirection:'column', alignItems:'center'}}>
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />)
+    const sLegRolls = sLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
             :
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />}
+            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )
     const eRolls = rolls.eventRolls.rolls.map(e => e.isChar ?
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
         :
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />)
-    const eLegRolls = eLegs?.map(e => <div style={{display:'flex',flexDirection:'column', alignItems:'center'}}>
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />)
+    const eLegRolls = eLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+            <StyledImg  width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
             :
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />}
+            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/'(app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )
     const wRolls = rolls.weaponRolls.rolls.map(e => e.isChar ?
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
         :
-        <StyledImg width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />)
-    const wLegRolls = wLegs?.map(e => <div style={{display:'flex',flexDirection:'column', alignItems:'center'}}>
+        <StyledImg style={{boxShadow:e.stars===5? '0px 0px 10px 10px yellow':(e.stars===4?'0px 0px 15px 5px violet':'')}} width='65px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />)
+    const wLegRolls = wLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/chars/' + e.img} />
+            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/chars/':'/zzz/chars/') + e.img} />
             :
-            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/' + e.img} />}
+            <StyledImg width='65px' br='50%' bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weapons/':'/zzz/weapons/') + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )
     return (
         <>
-            <Container className="mt-5 mb-5">
+            <Container style={{textShadow: '2px 2px 2px black'}} className="mt-5 mb-5">
                 <StyledBox display='flex' dir='column' gap='30px'>
                     <StyledBox br='16px' gap='12px' padding='10px' display='flex' dir='column' jstf='center' align='center' border='3px solid yellow' width='100%'>
-                        <StyledTitle color='yellow' fz='26px'>Стандартный Баннер</StyledTitle>
+                        <StyledTitle  color='yellow' fz='26px'>Стандартный Баннер</StyledTitle>
                         <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Последняя десятка</StyledTitle>
                         <StyledBox gap='12px' display='flex' dir='row'>{sRolls}</StyledBox>
                         {rolls.standartRolls.rolls.length ? <StyledBox margin='25px 0'>

@@ -21,10 +21,11 @@ export const Char = observer((props) => {
                 shadow='4px 5px 14px violet' br='15px'
                 jstf='space-around' hover='0 5px 15px red'
                 align='center'
+                c
                 onClick={() => { props.onShow(props.char.id, 'char') }}
             >
                 <img alt='character'
-                    style={{ maxWidth: '150px', borderRadius: '15px' }}
+                    style={{ maxWidth: '150px',height:'150px', borderRadius: '15px' }}
                     src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?"/chars/":'/zzz/chars/') + props.char.img}></img>
                 <StyledBox display='flex' dir='column' style={{ marginLeft: '10px' }} >
                     {props.char.stoneTypeId === 1 && <img alt='element' style={{ width: '60px', margin: '0 15px' }} src={anemo}></img>}
@@ -34,7 +35,7 @@ export const Char = observer((props) => {
                     {props.char.stoneTypeId === 7 && <img alt='element' style={{ width: '60px', margin: '0 15px' }} src={kryo}></img>}
                     {props.char.stoneTypeId === 3 && <img alt='element' style={{ width: '60px', margin: '0 15px' }} src={electro}></img>}
                     {props.char.stoneTypeId === 2 && <img alt='element' style={{ width: '60px', margin: '0 15px' }} src={geo}></img>}
-                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'red' }}>{props.char.name}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'white' }}>{props.char.name}</div>
                 </StyledBox>
             </StyledBox>
         </Col>

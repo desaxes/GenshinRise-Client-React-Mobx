@@ -50,7 +50,7 @@ const Weapons = observer(() => {
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
-            <Container >
+            <Container style={{textShadow: '2px 2px 2px black'}}>
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
                         {app.game === 'Genshin' &&  <StyledTitle color='yellow' fz='22px'>
