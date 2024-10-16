@@ -9,6 +9,7 @@ import { getEnemyWeaponMaterialById, getWeaponMaterialById } from '../http/weapo
 import { AppContext } from '..';
 import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../http/zzz/materialAPI';
 import { getZzzWeaponMaterialById } from '../http/zzz/weaponMatAPI';
+import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiWBMaterialById } from '../http/honkai/materialAPI';
 export const RiseBar = observer((props) => {
     const [material, setMaterial] = useState({})
     const [tooltip, setTooltip] = useState(false)
@@ -55,6 +56,11 @@ export const RiseBar = observer((props) => {
                     setUrl('/zzz/enemyMaterials/')
                     break;
                 }
+                else if (app.game === 'Honkai') {
+                    getHonkaiEnemyMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/honkai/enemyMaterials/')
+                    break;
+                }
             case 4:
                 if (app.game === 'Genshin') {
                     getBossMaterialById(props.materialId).then(res => setMaterial(res.data))
@@ -64,6 +70,11 @@ export const RiseBar = observer((props) => {
                 else if (app.game === 'Zzz') {
                     getZzzBossMaterialById(props.materialId).then(res => setMaterial(res.data))
                     setUrl('/zzz/bossMaterials/')
+                    break;
+                }
+                else if (app.game === 'Honkai') {
+                    getHonkaiBossMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/honkai/bossMaterials/')
                     break;
                 }
             case 5:
@@ -77,6 +88,11 @@ export const RiseBar = observer((props) => {
                     setUrl('/zzz/talents/')
                     break;
                 }
+                else if (app.game === 'Honkai') {
+                    getHonkaiTalentById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/honkai/talents/')
+                    break;
+                }
             case 6:
                 if (app.game === 'Genshin') {
                     getWBMaterialById(props.materialId).then(res => setMaterial(res.data))
@@ -86,6 +102,11 @@ export const RiseBar = observer((props) => {
                 else if (app.game === 'Zzz') {
                     getZzzWBMaterialById(props.materialId).then(res => setMaterial(res.data))
                     setUrl('/zzz/weekBossMaterials/')
+                    break;
+                }
+                else if (app.game === 'Honkai') {
+                    getHonkaiWBMaterialById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/honkai/weekBossMaterials/')
                     break;
                 }
             case 7:

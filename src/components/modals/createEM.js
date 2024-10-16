@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap/esm/';
 import { createEnemyMaterials } from '../../http/materialAPI';
 import { AppContext } from '../..';
 import { createZzzEnemyMaterials } from '../../http/zzz/materialAPI';
+import { createHonkaiEnemyMaterials } from '../../http/honkai/materialAPI';
 export const CreateEnemyMaterial = (props) => {
     const [name, setName] = useState('')
     const { app } = useContext(AppContext)
@@ -34,6 +35,12 @@ export const CreateEnemyMaterial = (props) => {
         }
         else if (app.game === 'Zzz') {
             createZzzEnemyMaterials(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiEnemyMaterials(formData).then(res => {
                 setName('')
                 props.onHide()
             })

@@ -4,11 +4,14 @@ import { Button, Form, Dropdown } from 'react-bootstrap/esm/';
 import { createTalents } from '../../http/materialAPI';
 import { AppContext } from '../..';
 import { createZzzTalents } from '../../http/zzz/materialAPI';
+import { createHonkaiTalents } from '../../http/honkai/materialAPI';
 export const CreateTalentBook = (props) => {
     const [name, setName] = useState('')
     const { app } = useContext(AppContext)
     const [dd, setDd] = useState('Выберите дни недели')
     const [days, setDays] = useState(0)
+    const [path, setPath] = useState('Выберите Путь')
+    const [pathId, setPathId] = useState(0)
     let [file1, setFile1] = useState(null)
     let [file2, setFile2] = useState(null)
     let [file3, setFile3] = useState(null)
@@ -25,6 +28,7 @@ export const CreateTalentBook = (props) => {
         let formData = new FormData()
         formData.append('name', name)
         formData.append('days', days)
+        formData.append('pathId', pathId)
         formData.append('img1', file1)
         formData.append('img2', file2)
         formData.append('img3', file3)
@@ -36,6 +40,12 @@ export const CreateTalentBook = (props) => {
         }
         else if (app.game === 'Zzz') {
             createZzzTalents(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiTalents(formData).then(res => {
                 setName('')
                 props.onHide()
             })
@@ -79,6 +89,20 @@ export const CreateTalentBook = (props) => {
                             <Dropdown.Item onClick={() => setDd("Понедельник, Четверг")}>Понедельник, Четверг</Dropdown.Item>
                             <Dropdown.Item onClick={() => setDd("Вторник, Пятница")}>Вторник, Пятница</Dropdown.Item>
                             <Dropdown.Item onClick={() => setDd("Среда, Суббота")}>Среда, Суббота</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>}
+                    {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>
+                        <Dropdown.Toggle variant='outline-warning'>
+                            {path}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => { setPath("Разрушение"); setPathId(1) }}>Разрушение</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Охота"); setPathId(2) }}>Охота</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Эрудиция"); setPathId(3) }}>Эрудиция</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Гармония"); setPathId(4) }}>Гармония</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Небытие"); setPathId(5) }}>Небытие</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Сохранение"); setPathId(6) }}>Сохранение</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Изобилие"); setPathId(7) }}>Изобилие</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>}
                     <Form.Control id='1' onChange={select1} className='mt-2 mb-2' type='file' />

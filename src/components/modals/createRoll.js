@@ -10,6 +10,9 @@ import { createRoll } from '../../http/rollAPI';
 import { createZzzRoll } from '../../http/zzz/rollAPI';
 import { getZzzChars } from '../../http/zzz/charAPI';
 import { getZzzWeapons } from '../../http/zzz/weaponAPI';
+import { createHonkaiRoll } from '../../http/honkai/rollAPI';
+import { getHonkaiChars } from '../../http/honkai/charAPI';
+import { getHonkaiWeapons } from '../../http/honkai/weaponAPI';
 export const CreateRoll = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const { weapons } = useContext(AppContext)
@@ -31,6 +34,10 @@ export const CreateRoll = observer((props) => {
         else if (app.game === 'Zzz') {
             getZzzChars().then(res => chars.setChars(res.data))
             getZzzWeapons().then(res => weapons.setWeapons(res.data))
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiChars().then(res => chars.setChars(res.data))
+            getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
         }
     }, [])
     const addRoll = () => {
@@ -59,6 +66,29 @@ export const CreateRoll = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             createZzzRoll({
+                year: +date.split('-')[0],
+                month: +date.split('-')[1],
+                day: +date.split('-')[2],
+                isChar: isChar,
+                rewardId: isChar ? char.id : weapon.id,
+                rewardName: isChar ? char.name : weapon.name,
+                stars: +stars,
+                img: isChar ? char.img : weapon.img
+            }, bannerEndPoint).then(res => {
+                setSuccess(true)
+                if (bannerEndPoint === 'standart') {
+                    props.updateStandart(true)
+                }
+                else if (bannerEndPoint === 'event') {
+                    props.updateEvent(true)
+                }
+                else if (bannerEndPoint === 'weapon') {
+                    props.updateWeapon(true)
+                }
+            })
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiRoll({
                 year: +date.split('-')[0],
                 month: +date.split('-')[1],
                 day: +date.split('-')[2],
@@ -131,7 +161,7 @@ export const CreateRoll = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -148,7 +178,7 @@ export const CreateRoll = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : '/zzz/weapons/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}

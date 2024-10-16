@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap/esm/';
 import { createWBMaterials } from '../../http/materialAPI';
 import { AppContext } from '../..';
 import { createZzzWBMaterials } from '../../http/zzz/materialAPI';
+import { createHonkaiWBMaterials } from '../../http/honkai/materialAPI';
 export const CreateWBMaterial = (props) => {
     const [name, setName] = useState('')
     let [file1, setFile1] = useState(null)
@@ -23,6 +24,12 @@ export const CreateWBMaterial = (props) => {
         }
         else if (app.game === 'Zzz') {
             createZzzWBMaterials(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiWBMaterials(formData).then(res => {
                 setName('')
                 props.onHide()
             })

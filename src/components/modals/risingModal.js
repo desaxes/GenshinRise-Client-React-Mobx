@@ -122,7 +122,7 @@ export const RisingModal = observer((props) => {
                         backgroundColor: '#212529',
                         border: '2px solid yellow'
                     }}>
-                    <StyledImg width={'125px'} bg={char.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></StyledImg>
+                    <StyledImg width={'125px'} bg={char.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img)}></StyledImg>
                     <StyledTitle color='yell' fz='24px'>Персонаж</StyledTitle>
                     <Row md={'auto'}>
                         <Col md={'auto'}>
@@ -140,18 +140,18 @@ export const RisingModal = observer((props) => {
                                 materialBase={1} materialId={char.stoneTypeId} quality={4} current={stone4} max={max ? max.stone4count : 6} />}
                             <RiseBar
                                 counter={setBmat}
-                                materialBase={4} materialId={char.bossMaterialId} quality={0} current={bmat} max={max ? max.bossMaterialCount : (app.game === 'Genshin' ? 46 : 60)} />
+                                materialBase={4} materialId={char.bossMaterialId} quality={0} current={bmat} max={max ? max.bossMaterialCount : (app.game === 'Genshin' ? 46 : (app.game === 'Zzz' ? 60 : 65))} />
                         </Col>
                         <Col md={'auto'}>
                             <RiseBar
                                 counter={setEmat1}
-                                materialBase={3} materialId={char.enemyMaterialId} quality={1} current={emat1} max={max ? max.enemyMaterial1Count : (app.game === 'Genshin' ? 18 : 4)} />
+                                materialBase={3} materialId={char.enemyMaterialId} quality={1} current={emat1} max={max ? max.enemyMaterial1Count : (app.game === 'Genshin' ? 18 : (app.game === 'Zzz' ? 4 : 56))} />
                             <RiseBar
                                 counter={setEmat2}
-                                materialBase={3} materialId={char.enemyMaterialId} quality={2} current={emat2} max={max ? max.enemyMaterial2Count : (app.game === 'Genshin' ? 30 : 32)} />
+                                materialBase={3} materialId={char.enemyMaterialId} quality={2} current={emat2} max={max ? max.enemyMaterial2Count : (app.game === 'Genshin' ? 30 : (app.game === 'Zzz' ? 32 : 71))} />
                             <RiseBar
                                 counter={setEmat3}
-                                materialBase={3} materialId={char.enemyMaterialId} quality={3} current={emat3} max={max ? max.enemyMaterial3Count : (app.game === 'Genshin' ? 36 : 30)} />
+                                materialBase={3} materialId={char.enemyMaterialId} quality={3} current={emat3} max={max ? max.enemyMaterial3Count : (app.game === 'Genshin' ? 36 : (app.game === 'Zzz' ? 30 : 73))} />
                             {app.game === 'Genshin' && <RiseBar
                                 counter={setSpec}
                                 materialBase={2} materialId={char.localSpecialtyId} quality={0} current={spec} max={max ? max.localSpecialtyCount : 168} />}
@@ -172,18 +172,18 @@ export const RisingModal = observer((props) => {
                                 materialBase={3} materialId={char.enemyMaterialId} quality={3} current={ematTalent3} max={max ? max.enemyMaterial3CountForTalent : 93} />}
                             <RiseBar
                                 counter={setWbmat}
-                                materialBase={6} materialId={char.weekBossMaterialId} quality={0} current={wbmat} max={max ? max.weekBossMaterialCount : (app.game === 'Genshin' ? 18 : 9)} />
+                                materialBase={6} materialId={char.weekBossMaterialId} quality={0} current={wbmat} max={max ? max.weekBossMaterialCount : (app.game === 'Genshin' ? 18 : (app.game === 'Zzz' ? 9 : 12))} />
                         </Col>
                         <Col md={'auto'}>
                             <RiseBar
                                 counter={setTalent1}
-                                materialBase={5} materialId={char.talentMaterialId} quality={1} current={talent1} max={max ? max.talentMaterial1Count : (app.game === 'Genshin' ? 9 : 25)} />
+                                materialBase={5} materialId={char.talentMaterialId} quality={1} current={talent1} max={max ? max.talentMaterial1Count : (app.game === 'Genshin' ? 9 : (app.game === 'Zzz' ? 25 : 18))} />
                             <RiseBar
                                 counter={setTalent2}
-                                materialBase={5} materialId={char.talentMaterialId} quality={2} current={talent2} max={max ? max.talentMaterial2Count : (app.game === 'Genshin' ? 63 : 75)} />
+                                materialBase={5} materialId={char.talentMaterialId} quality={2} current={talent2} max={max ? max.talentMaterial2Count : (app.game === 'Genshin' ? 63 : (app.game === 'Zzz' ? 75 : 69))} />
                             <RiseBar
                                 counter={setTalent3}
-                                materialBase={5} materialId={char.talentMaterialId} quality={3} current={talent3} max={max ? max.talentMaterial3Count : (app.game === 'Genshin' ? 114 : 250)} />
+                                materialBase={5} materialId={char.talentMaterialId} quality={3} current={talent3} max={max ? max.talentMaterial3Count : (app.game === 'Genshin' ? 114 : (app.game === 'Zzz' ? 250 : 139))} />
                         </Col>
                     </Row>
                 </Modal.Body>

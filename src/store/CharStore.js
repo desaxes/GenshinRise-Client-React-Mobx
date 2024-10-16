@@ -9,6 +9,7 @@ export default class CharStore {
         this._size = ''
         this._talent = ''
         this._material = ''
+        this._path = ''
         this._chars = {
             chars: [],
             total: 0
@@ -43,6 +44,9 @@ export default class CharStore {
     setMaterial(material) {
         this._material = material
     }
+    setPath(path) {
+        this._path = path
+    }
     setChars(chars) {
         this._chars = chars
     }
@@ -72,6 +76,9 @@ export default class CharStore {
     }
     get material() {
         return this._material
+    }
+    get path() {
+        return this._path
     }
     get chars() {
         return this._chars

@@ -5,6 +5,7 @@ import { createBossMaterial } from '../../http/materialAPI';
 import { observer } from 'mobx-react-lite';
 import { AppContext } from '../..';
 import { createZzzBossMaterial } from '../../http/zzz/materialAPI';
+import { createHonkaiBossMaterial } from '../../http/honkai/materialAPI';
 export const CreateBossMaterial = observer((props) => {
     const [name, setName] = useState('')
     const { app } = useContext(AppContext)
@@ -25,6 +26,12 @@ export const CreateBossMaterial = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             createZzzBossMaterial(formData).then(res => {
+                setName('')
+                props.onHide()
+            })
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiBossMaterial(formData).then(res => {
                 setName('')
                 props.onHide()
             })

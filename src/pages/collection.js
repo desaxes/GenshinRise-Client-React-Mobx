@@ -14,6 +14,8 @@ import { WeaponOptions } from '../components/modals/weaponOptions';
 import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsForCollection';
 import { getZzzCharsFromCol } from '../http/zzz/charAPI';
 import { getZzzWeaponsFromCol } from '../http/zzz/weaponAPI';
+import { getHonkaiCharsFromCol } from '../http/honkai/charAPI';
+import { getHonkaiWeaponsFromCol } from '../http/honkai/weaponAPI';
 
 const Collection = observer(() => {
     const { chars, app } = useContext(AppContext)
@@ -37,6 +39,10 @@ const Collection = observer(() => {
         else if (app.game === 'Zzz') {
             getZzzCharsFromCol().then(res => { res && chars.setChars(res.data) })
             getZzzWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiCharsFromCol().then(res => { res && chars.setChars(res.data) })
+            getHonkaiWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
         }
     }, [chars, weapons, app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)

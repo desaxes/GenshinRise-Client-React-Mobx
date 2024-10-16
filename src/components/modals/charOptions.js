@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { Form } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
 import { addZzzCharToCol, addZzzCharToRise, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
+import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise } from '../../http/honkai/charAPI';
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -33,6 +34,9 @@ export const CharOptions = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             addZzzCharToCol(char).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Honkai') {
+            addHonkaiCharToCol(char).then(res => setDisableCol(true))
         }
     }
     const addToRise = () => {
@@ -65,6 +69,9 @@ export const CharOptions = observer((props) => {
             else if (app.game === 'Zzz') {
                 addZzzCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
             }
+            else if (app.game === 'Honkai') {
+                addHonkaiCharToRise(char).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
         }
     }
     const removeFromCol = () => {
@@ -73,6 +80,9 @@ export const CharOptions = observer((props) => {
         }
         else if (app.game === "Zzz") {
             removeZzzCharFromCol(props.charId).then(res => setDisableCol(false))
+        }
+        else if (app.game === "Honkai") {
+            removeHonkaiCharFromCol(props.charId).then(res => setDisableCol(false))
         }
     }
     const removeFromRise = () => {
@@ -83,6 +93,9 @@ export const CharOptions = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             removeZzzCharFromRise(props.charId).then(res => setDisableRise(false))
+        }
+        else if (app.game === 'Honkai') {
+            removeHonkaiCharFromRise(props.charId).then(res => setDisableRise(false))
         }
     }
     const { chars, app } = useContext(AppContext)
@@ -95,6 +108,10 @@ export const CharOptions = observer((props) => {
         else if (app.game === "Zzz") {
             getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getZzzCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+        }
+        else if (app.game === "Honkai") {
+            getHonkaiCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+            getHonkaiCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
         }
     }, [props.charId, app.game])
     return (
@@ -111,7 +128,7 @@ export const CharOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <img style={{ height: '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + char.img}></img>
+                <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button
@@ -124,7 +141,7 @@ export const CharOptions = observer((props) => {
                     onClick={() => { disableRise ? removeFromRise() : addToRise() }}>
                     {disableRise ? 'Удалить из Прокачки' : 'Добавить в Прокачку'}
                 </Button>
-                {!disableRise && <Button
+                {!disableRise && app.game === 'Genshin' && <Button
                     variant={changeMats ? 'warning' : 'outline-warning'}
                     onClick={() => setChangeMats(!changeMats)}>
                     {changeMats ? 'Выбор Материалов' : 'Авто Выбор Материалов'}

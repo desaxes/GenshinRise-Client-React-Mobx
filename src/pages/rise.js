@@ -13,6 +13,8 @@ import { Weapon } from '../components/weapon';
 import { RisingModalWeapon } from '../components/modals/risingModalWeapon';
 import { getZzzCharFromRiseById, getZzzCharsFromRise } from '../http/zzz/charAPI';
 import { getZzzWeaponsFromRise } from '../http/zzz/weaponAPI';
+import { getHonkaiCharsFromRise } from '../http/honkai/charAPI';
+import { getHonkaiWeaponsFromRise } from '../http/honkai/weaponAPI';
 
 const Rise = observer(() => {
     const { chars, app } = useContext(AppContext)
@@ -36,6 +38,10 @@ const Rise = observer(() => {
         else if (app.game === 'Zzz') {
             getZzzCharsFromRise().then(res => { res && chars.setChars(res.data) })
             getZzzWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiCharsFromRise().then(res => { res && chars.setChars(res.data) })
+            getHonkaiWeaponsFromRise().then(res => { res && weapons.setWeapons(res.data) })
         }
     }, [chars, weapons, app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)

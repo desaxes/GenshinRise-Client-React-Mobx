@@ -8,6 +8,8 @@ import { createChar } from '../../http/charAPI';
 import { StyledBox } from '../../styledComponents/styled-components';
 import { getZzzBossMaterials, getZzzEnemyMaterials, getZzzTalents, getZzzWBMaterials } from '../../http/zzz/materialAPI';
 import { createZzzChar } from '../../http/zzz/charAPI';
+import { getHonkaiBossMaterials, getHonkaiEnemyMaterials, getHonkaiTalents, getHonkaiWBMaterials } from '../../http/honkai/materialAPI';
+import { createHonkaiChar } from '../../http/honkai/charAPI';
 export const CreateCharacter = observer((props) => {
     let { materials, app } = useContext(AppContext)
     let [name, setName] = useState('')
@@ -34,6 +36,29 @@ export const CreateCharacter = observer((props) => {
     let [starsNumber, setStarsNumber] = useState('')
     let [size, setSize] = useState('')
     let [sizeNumber, setSizeNumber] = useState('')
+    let [pathId, setPathId] = useState('')
+    let elements = [{
+        name: 'Ветер',
+        id: 1
+    }, {
+        name: 'Мнимый',
+        id: 2
+    }, {
+        name: 'Электро',
+        id: 3
+    }, {
+        name: 'Квант',
+        id: 4
+    }, {
+        name: 'Физа',
+        id: 5
+    }, {
+        name: 'Огонь',
+        id: 6
+    }, {
+        name: 'Лед',
+        id: 7
+    }]
     useEffect(() => {
         if (app.game === 'Genshin') {
             getStones().then(res => res && (materials.setStones(res.data)))
@@ -48,6 +73,12 @@ export const CreateCharacter = observer((props) => {
             getZzzBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
             getZzzTalents().then(res => res && (materials.setTalents(res.data)))
             getZzzWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+            getHonkaiBossMaterials().then(res => res && (materials.setBossMaterials(res.data)))
+            getHonkaiTalents().then(res => res && (materials.setTalents(res.data)))
+            getHonkaiWBMaterials().then(res => res && (materials.setWeekBossMaterials(res.data)))
         }
     }, [materials, app.game])
     const select = e => {
@@ -67,12 +98,16 @@ export const CreateCharacter = observer((props) => {
         formData.append('sex', sexId)
         formData.append('stars', starsNumber)
         formData.append('size', sizeNumber)
+        formData.append('pathId', pathId)
         formData.append('img', file)
-        if (app.game==='Genshin') {
+        if (app.game === 'Genshin') {
             createChar(formData).then(res => props.onHide())
         }
-        else if (app.game==='Zzz') {
+        else if (app.game === 'Zzz') {
             createZzzChar(formData).then(res => props.onHide())
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiChar(formData).then(res => props.onHide())
         }
     }
     return (
@@ -91,18 +126,18 @@ export const CreateCharacter = observer((props) => {
             <Modal.Body style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Form>
                     <Form.Control value={name} onChange={e => { setName(e.target.value) }} className='mt-2 mb-2' placeholder='Enter name' />
-                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
+                    {app.game != 'Zzz' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
-                            {stone === '' ? 'Выберите Камень' : stone}
+                            {stone === '' ? (app.game === 'Genshin' ? 'Выберите Камень' : 'Выберите Элемент') : stone}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                            {materials.stones.map(e =>
+                            {(app.game === 'Genshin' ? materials.stones : elements).map(e =>
                                 <Dropdown.Item
                                     onClick={() => { setStone(e.name); setStoneId(e.id) }}
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
-                                        <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/stones/' + e.img4}></img>
+                                        {app.game === 'Genshin' && <img alt='stone' style={{ maxWidth: '40px' }}
+                                            src={process.env.REACT_APP_API_URL + '/stones/' + e.img4}></img>}
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -119,7 +154,7 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='boss material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/bossMaterials/':'/zzz/bossMaterials/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/bossMaterials/' : (app.game === 'Zzz' ? '/zzz/bossMaterials/' : '/honkai/bossMaterials/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -144,7 +179,7 @@ export const CreateCharacter = observer((props) => {
                     </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
-                            {enemymat === '' ? (app.game === 'Genshin' ? 'Выберите Материал Врага' : 'Выберите Жетоны Специализации Персонажа') : enemymat}
+                            {enemymat === '' ? (app.game != 'Zzz' ? 'Выберите Материал Врага' : 'Выберите Жетоны Специализации Персонажа') : enemymat}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {materials.enemyMaterials.map(e =>
@@ -153,11 +188,11 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : (app.game === 'Zzz' ? '/zzz/enemyMaterials/' : '/honkai/enemyMaterials/')) + e.img1}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : (app.game === 'Zzz' ? '/zzz/enemyMaterials/' : '/honkai/enemyMaterials/')) + e.img2}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/enemyMaterials/':'/zzz/enemyMaterials/') + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : (app.game === 'Zzz' ? '/zzz/enemyMaterials/' : '/honkai/enemyMaterials/')) + e.img3}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -165,20 +200,20 @@ export const CreateCharacter = observer((props) => {
                     </Dropdown>
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
-                            {talent === '' ? (app.game === 'Genshin' ? 'Выберите Книгу Талантов' : 'Выберите Тип Чипов') : talent}
+                            {talent === '' ? (app.game === 'Genshin' ? 'Выберите Книгу Талантов' : (app.game === 'Zzz' ? 'Выберите Тип Чипов' : 'Выберите Материал Следов')) : talent}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {materials.talents.map(e =>
                                 <Dropdown.Item
-                                    onClick={() => { setTalent(e.name); setTalentId(e.id) }}
+                                    onClick={() => { setTalent(e.name); setTalentId(e.id); setPathId(e.pathId) }}
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/talents/' : (app.game === 'Zzz' ? '/zzz/talents/' : '/honkai/talents/')) + e.img1}></img>
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/talents/' : (app.game === 'Zzz' ? '/zzz/talents/' : '/honkai/talents/')) + e.img2}></img>
                                         <img alt='talent' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/talents/':'/zzz/talents/') + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/talents/' : (app.game === 'Zzz' ? '/zzz/talents/' : '/honkai/talents/')) + e.img3}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -195,7 +230,7 @@ export const CreateCharacter = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='week boss material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game==='Genshin'?'/weekBossMaterials/':'/zzz/weekBossMaterials/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weekBossMaterials/' : (app.game === 'Zzz' ? '/zzz/weekBossMaterials/' : '/honkai/weekBossMaterials/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -239,6 +274,26 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setRegion('Секция 6'); setRegionId(5) }}>Секция 6</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setRegion('Особая группа отдела угрозыска'); setRegionId(6) }}>Особая группа отдела угрозыска</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setRegion('Сыны Калидона'); setRegionId(7) }}>Сыны Калидона</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>}
+                    {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>
+                        <Dropdown.Toggle variant='outline-warning'>
+                            {region === '' ? 'Выберите Фракцию' : region}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => { setRegion('Звездный Экспресс'); setRegionId(1) }}>Звездный Экспресс</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Космическая станция Герта'); setRegionId(2) }}>Космическая станция Герта</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Белобог'); setRegionId(3) }}>Белобог</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Альянс Сяньчжоу'); setRegionId(4) }}>Альянс Сяньчжоу</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Пенакония'); setRegionId(5) }}>Пенакония</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Охотники за Стеларонами'); setRegionId(6) }}>Охотники за Стеларонами</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('КММ'); setRegionId(7) }}>КММ</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Общество Гениев'); setRegionId(8) }}>Общество Гениев</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Галактические Рейнджеры'); setRegionId(9) }}>Галактические Рейнджеры</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Гильдия Эрудитов'); setRegionId(10) }}>Гильдия Эрудитов</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Самоуничтожители'); setRegionId(11) }}>Самоуничтожители</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Сад Воспоминаний'); setRegionId(12) }}>Сад Воспоминаний</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Рыцари Красоты'); setRegionId(13) }}>Рыцари Красоты</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
