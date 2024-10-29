@@ -14,6 +14,8 @@ import { getWeapons } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { WeaponOptions } from '../components/modals/weaponOptions';
 import { getZzzWeapons } from '../http/zzz/weaponAPI';
+import { getHonkaiWeaponStatistic } from '../http/honkai/rollAPI';
+import { getHonkaiWeapons } from '../http/honkai/weaponAPI';
 
 const Weapons = observer(() => {
     const { weapons, app } = useContext(AppContext)
@@ -37,6 +39,9 @@ const Weapons = observer(() => {
         if (weapons.stars !== '') {
             query = query + 'stars=' + weapons.stars + '&'
         }
+        if (weapons.pathId !== '') {
+            query = query + 'pathId=' + weapons.pathId + '&'
+        }
         if (weapons.searchBy !== '') {
             query = query + 'name=' + weapons.searchBy + '&'
         }
@@ -46,14 +51,17 @@ const Weapons = observer(() => {
         else if (app.game === 'Zzz') {
             getZzzWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
         }
-    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons])
+        else if (app.game === 'Honkai') {
+            getHonkaiWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
+        }
+    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons,weapons.pathId])
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
-            <Container style={{textShadow: '2px 2px 2px black'}}>
+            <Container style={{ textShadow: '2px 2px 2px black' }}>
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
-                        {app.game === 'Genshin' &&  <StyledTitle color='yellow' fz='22px'>
+                        {app.game === 'Genshin' && <StyledTitle color='yellow' fz='22px'>
                             Тип Оружия
                         </StyledTitle>}
                         {app.game === 'Genshin' && < Row className='mb-2'>
@@ -64,7 +72,7 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setWeapon(5)} variant={weapons.weapon === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Катализатор</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setWeapon('')} variant={weapons.weapon === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>}
-                        {app.game === 'Zzz' &&  <StyledTitle color='yellow' fz='22px'>
+                        {app.game === 'Zzz' && <StyledTitle color='yellow' fz='22px'>
                             Тип Амплификатора
                         </StyledTitle>}
                         {app.game === 'Zzz' && < Row className='mb-2'>
@@ -75,6 +83,19 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setMaterial(5)} variant={weapons.material === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Оборона</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setMaterial('')} variant={weapons.material === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>}
+                        {app.game === 'Honkai' && <StyledTitle color='yellow' fz='22px'>
+                            Путь
+                        </StyledTitle>}
+                        {app.game === 'Honkai' && < Row className='mb-2'>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(1)} variant={weapons.pathId === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Разрушение</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(2)} variant={weapons.pathId === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Охота</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(3)} variant={weapons.pathId === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Эрудиция</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(4)} variant={weapons.pathId === 4 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Гармония</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(5)} variant={weapons.pathId === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Небытие</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(6)} variant={weapons.pathId === 6 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Сохранение</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(7)} variant={weapons.pathId === 7 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Изобилие</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId('')} variant={weapons.pathId === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
+                        </Row>}pathId
                         <StyledTitle color='yellow' fz='22px'>
                             Редкость
                         </StyledTitle>

@@ -9,6 +9,8 @@ import { getEnemyWeaponMaterials, getWeaponMaterials } from '../../http/weaponMa
 import { createWeapon } from '../../http/weaponAPI';
 import { createZzzWeapon } from '../../http/zzz/weaponAPI';
 import { getZzzWeaponMaterials } from '../../http/zzz/weaponMatAPI';
+import { createHonkaiWeapon } from '../../http/honkai/weaponAPI';
+import { getHonkaiEnemyMaterials, getHonkaiTalents } from '../../http/honkai/materialAPI';
 export const CreateWeapon = observer((props) => {
     let { materials, app } = useContext(AppContext)
     let [name, setName] = useState('')
@@ -22,6 +24,7 @@ export const CreateWeapon = observer((props) => {
     let [weapon, setWeapon] = useState('')
     let [weaponId, setWeaponId] = useState('')
     let [stars, setStars] = useState('')
+    let [pathId, setPathId] = useState('')
     let [starsNumber, setStarsNumber] = useState('')
     useEffect(() => {
         if (app.game === 'Genshin') {
@@ -31,6 +34,10 @@ export const CreateWeapon = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             getZzzWeaponMaterials().then(res => res && (materials.setWeaponMaterials(res.data)))
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiEnemyMaterials().then(res => res && (materials.setEnemyMaterials(res.data)))
+            getHonkaiTalents().then(res => res && (materials.setWeaponMaterials(res.data)))
         }
     }, [materials, app.game])
     const select = e => {
@@ -44,12 +51,16 @@ export const CreateWeapon = observer((props) => {
         formData.append('weaponMaterialId', wmatId)
         formData.append('weaponId', weaponId)
         formData.append('stars', starsNumber)
+        formData.append('pathId', pathId)
         formData.append('img', file)
         if (app.game === 'Genshin') {
             createWeapon(formData).then(res => props.onHide())
         }
         else if (app.game === 'Zzz') {
             createZzzWeapon(formData).then(res => props.onHide())
+        }
+        else if (app.game === 'Honkai') {
+            createHonkaiWeapon(formData).then(res => props.onHide())
         }
     }
     return (
@@ -74,15 +85,15 @@ export const CreateWeapon = observer((props) => {
                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {materials.weaponMaterials.map(e =>
                                 <Dropdown.Item
-                                    onClick={() => { setWMat(e.name); setWmatId(e.id) }}
+                                    onClick={() => { setWMat(e.name); setWmatId(e.id); setPathId(e.pathId) }}
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : (app.game === 'Zzz' ? '/zzz/weaponMaterials/' : '/honkai/talents/')) + e.img1}></img>
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : (app.game === 'Zzz' ? '/zzz/weaponMaterials/' : '/honkai/talents/')) + e.img2}></img>
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : '/zzz/weaponMaterials/') + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weaponMaterials/' : (app.game === 'Zzz' ? '/zzz/weaponMaterials/' : '/honkai/talents/')) + e.img3}></img>
                                         {app.game === 'Genshin' && <img alt='stone' style={{ maxWidth: '40px' }}
                                             src={process.env.REACT_APP_API_URL + '/weaponMaterials/' + e.img4}></img>}
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
@@ -90,7 +101,7 @@ export const CreateWeapon = observer((props) => {
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
-                    {app.game === 'Genshin' && <Dropdown className='mt-2 mb-2'>
+                    {app.game != 'Zzz' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {enemymat === '' ? 'Выберите Материал Врага' : enemymat}
                         </Dropdown.Toggle>
@@ -101,11 +112,11 @@ export const CreateWeapon = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img1}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : '/honkai/enemyMaterials/') + e.img1}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img2}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : '/honkai/enemyMaterials/') + e.img2}></img>
                                         <img alt='enemy material' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + '/enemyMaterials/' + e.img3}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/enemyMaterials/' : '/honkai/enemyMaterials/') + e.img3}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}

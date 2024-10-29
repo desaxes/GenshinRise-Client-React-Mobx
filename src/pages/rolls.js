@@ -270,38 +270,38 @@ const Rolls = observer(() => {
         }
     }, [weaponUpdated, app.game])
     const sRolls = rolls.standartRolls.rolls.map(e => e.isChar ?
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
         :
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
     const sLegRolls = sLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
             :
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )
     const eRolls = rolls.eventRolls.rolls.map(e => e.isChar ?
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
         :
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
     const eLegRolls = eLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
             :
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/'(app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + '/weapons/'(app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )
     const wRolls = rolls.weaponRolls.rolls.map(e => e.isChar ?
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
         :
-        <StyledImg style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
+        <StyledImg height={app.game === 'Honkai' && '90px'} style={{ boxShadow: e.stars === 5 ? '0px 0px 10px 10px yellow' : (e.stars === 4 ? '0px 0px 15px 5px violet' : '') }} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />)
     const wLegRolls = wLegs?.map(e => <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {e.isChar ?
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
             :
-            <StyledImg width='65px' br={app.game!='Honkai'?'50%':'16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
+            <StyledImg width='65px' height={app.game === 'Honkai' && '90px'} br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
         <StyledTitle color={e.roll < 40 ? 'green' : (e.roll < 60 ? 'yellow' : 'red')} fz='22px' dec='underline' fs='italic'> {e.roll}</StyledTitle>
     </div>
     )

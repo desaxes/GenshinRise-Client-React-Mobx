@@ -41,6 +41,7 @@ position:relative;
 `
 export const StyledImg = styled.img`
 width:${props => props.width ? props.width : '250px'};
+height:${props => props.height ? props.height : ''};
 opacity:${props => props.opacity ? props.opacity : '100%'};
 border-radius:${props => props.br ? props.br : '15px'};
 background-color:${props => props.bg ? props.bg : 'transparent'};

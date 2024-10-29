@@ -9,7 +9,7 @@ import { getEnemyWeaponMaterialById, getWeaponMaterialById } from '../http/weapo
 import { AppContext } from '..';
 import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../http/zzz/materialAPI';
 import { getZzzWeaponMaterialById } from '../http/zzz/weaponMatAPI';
-import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiWBMaterialById } from '../http/honkai/materialAPI';
+import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiTalents, getHonkaiWBMaterialById } from '../http/honkai/materialAPI';
 export const RiseBar = observer((props) => {
     const [material, setMaterial] = useState({})
     const [tooltip, setTooltip] = useState(false)
@@ -118,6 +118,11 @@ export const RiseBar = observer((props) => {
                 else if (app.game === 'Zzz') {
                     getZzzWeaponMaterialById(props.materialId).then(res => setMaterial(res.data))
                     setUrl('/zzz/weaponMaterials/')
+                    break;
+                }
+                else if (app.game === 'Honkai') {
+                    getHonkaiTalentById(props.materialId).then(res => setMaterial(res.data))
+                    setUrl('/honkai/talents/')
                     break;
                 }
             case 8:

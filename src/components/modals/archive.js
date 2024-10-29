@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { getAllEventRolls, getAllStandartRolls, getAllWeaponRolls } from '../../http/rollAPI';
 import { StyledBox, StyledImg, StyledTitle } from '../../styledComponents/styled-components';
 import { getZzzAllEventRolls, getZzzAllStandartRolls, getZzzAllWeaponRolls } from '../../http/zzz/rollAPI';
+import { getHonkaiAllEventRolls, getHonkaiAllStandartRolls, getHonkaiAllWeaponRolls } from '../../http/honkai/rollAPI';
 export const Archive = observer((props) => {
     const { rolls, app } = useContext(AppContext)
     const [rollsArchive, setRollsArchive] = useState()
@@ -22,6 +23,13 @@ export const Archive = observer((props) => {
                 }
                 else if (app.game === 'Zzz') {
                     getZzzAllStandartRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
+                else if (app.game === 'Honkai') {
+                    getHonkaiAllStandartRolls().then(res => {
                         if (res) {
                             setRollsArchive(res.data.rolls)
                         }
@@ -43,6 +51,13 @@ export const Archive = observer((props) => {
                         }
                     })
                 }
+                else if (app.game === 'Honkai') {
+                    getHonkaiAllEventRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
                 break;
             case 'weapon':
                 if (app.game === 'Genshin') {
@@ -59,6 +74,13 @@ export const Archive = observer((props) => {
                         }
                     })
                 }
+                else if (app.game === 'Honkai') {
+                    getHonkaiAllWeaponRolls().then(res => {
+                        if (res) {
+                            setRollsArchive(res.data.rolls)
+                        }
+                    })
+                }
                 break;
             default:
                 break;
@@ -70,9 +92,9 @@ export const Archive = observer((props) => {
             <StyledBox display='flex' align='center' gap='20px'>
                 <StyledTitle color={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} fz='26px'>{e.rewardName}</StyledTitle>
                 <StyledTitle color={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} fz='26px'>{e.stars === 5 ? '★★★★★' : (e.stars === 4 ? '★★★★' : '★★★')}</StyledTitle>
-                {e.isChar ? <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : '/zzz/chars/') + e.img} />
+                {e.isChar ? <StyledImg height={app.game === 'Honkai' && '95px'} width='75px' br='20px' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/chars/' : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
                     :
-                    <StyledImg width='75px' br='50%' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : '/zzz/weapons/') + e.img} />}
+                    <StyledImg height={app.game === 'Honkai' && '95px'} width='75px' br='20px' bg={e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} />}
 
             </StyledBox>
         </StyledBox>

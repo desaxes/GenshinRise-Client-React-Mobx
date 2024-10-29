@@ -7,6 +7,7 @@ import { StyledImg, StyledTitle } from '../../styledComponents/styled-components
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { getZzzCharsFromRise, removeZzzCharFromRise, updateZzzCharFromRise } from '../../http/zzz/charAPI';
+import { getHonkaiCharsFromRise, removeHonkaiCharFromRise, updateHonkaiCharFromRise } from '../../http/honkai/charAPI';
 export const RisingModal = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const char = chars.chars.chars.find(e => e.id === props.charId)
@@ -72,6 +73,24 @@ export const RisingModal = observer((props) => {
                 })
             })
         }
+        else if (app.game === 'Honkai') {
+            updateHonkaiCharFromRise({
+                id: char.id,
+                emat1: emat1,
+                emat2: emat2,
+                emat3: emat3,
+                bmat: bmat,
+                tal1: talent1,
+                tal2: talent2,
+                tal3: talent3,
+                wbmat: wbmat
+            }).then(res => {
+                getHonkaiCharsFromRise().then(res => {
+                    chars.setChars(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     const removeChar = () => {
         if (app.game === 'Genshin') {
@@ -86,6 +105,14 @@ export const RisingModal = observer((props) => {
         else if (app.game === 'Zzz') {
             removeZzzCharFromRise(props.charId).then(res => {
                 getZzzCharsFromRise().then(res => {
+                    chars.setChars(res.data)
+                    props.onHide()
+                })
+            })
+        }
+        else if (app.game === 'Honkai') {
+            removeHonkaiCharFromRise(props.charId).then(res => {
+                getHonkaiCharsFromRise().then(res => {
                     chars.setChars(res.data)
                     props.onHide()
                 })
@@ -122,7 +149,7 @@ export const RisingModal = observer((props) => {
                         backgroundColor: '#212529',
                         border: '2px solid yellow'
                     }}>
-                    <StyledImg width={'125px'} bg={char.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img)}></StyledImg>
+                    <StyledImg width={'125px'} bg={char.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + ((app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img)}></StyledImg>
                     <StyledTitle color='yell' fz='24px'>Персонаж</StyledTitle>
                     <Row md={'auto'}>
                         <Col md={'auto'}>

@@ -4,6 +4,7 @@ export default class WeaponStore {
         this._weapon = ''
         this._stars = ''
         this._material = ''
+        this._pathId = ''
         this._weapons = {
             weapons: [],
             total: 0
@@ -59,6 +60,9 @@ export default class WeaponStore {
     setMaterial(material) {
         this._material = material
     }
+    setPathId(pathId) {
+        this._pathId = pathId
+    }
     setStars(stars) {
         this._stars = stars
     }
@@ -82,6 +86,9 @@ export default class WeaponStore {
     }
     get weapons() {
         return this._weapons
+    }
+    get pathId() {
+        return this._pathId
     }
     get searchBy() {
         return this._searchBy

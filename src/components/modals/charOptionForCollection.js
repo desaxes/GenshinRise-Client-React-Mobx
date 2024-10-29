@@ -5,6 +5,7 @@ import { addCharToCol, getCharFromColById, getCharsFromCol, removeCharFromCol } 
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { addZzzCharToCol, getZzzCharFromColById, getZzzCharsFromCol, removeZzzCharFromCol } from '../../http/zzz/charAPI';
+import { getHonkaiCharFromColById, getHonkaiCharsFromCol, removeHonkaiCharFromCol } from '../../http/honkai/charAPI';
 export const CharOptionsForCollection = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
@@ -33,6 +34,14 @@ export const CharOptionsForCollection = observer((props) => {
                 })
             })
         }
+        else if (app.game === "Honkai") {
+            removeHonkaiCharFromCol(props.charId).then(res => {
+                getHonkaiCharsFromCol().then(res => {
+                    chars.setChars(res.data)
+                    props.onHide()
+                })
+            })
+        }
     }
     const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
@@ -41,6 +50,9 @@ export const CharOptionsForCollection = observer((props) => {
         }
         else if (app.game === "Zzz") {
             getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
+        }
+        else if (app.game === "Honkai") {
+            getHonkaiCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
         }
     }, [props.charId])
     if (char) {

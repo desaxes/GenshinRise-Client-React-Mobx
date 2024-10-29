@@ -20,7 +20,7 @@ export const Weapon = observer((props) => {
             >
                 <img alt='character'
                     style={{ maxWidth: '150px', borderRadius: '15px' }}
-                    src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + props.weapon.img}></img>
+                    src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game==='Zzz'?"/zzz/weapons/":'/honkai/weapons/')) + props.weapon.img}></img>
                 <StyledBox display='flex' dir='column' style={{ marginLeft: '10px' }} >
                     <div style={{ fontWeight: 'bold', fontSize: '18px', color: 'white' }}>{props.weapon.name}</div>
                 </StyledBox>

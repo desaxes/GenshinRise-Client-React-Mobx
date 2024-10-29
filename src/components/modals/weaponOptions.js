@@ -7,6 +7,7 @@ import { Form } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
 import { addMaxValuesForWeapon, addWeaponToCol, addWeaponToRise, getWeaponFromColById, getWeaponFromRiseById, removeMaxValuesForWeapon, removeWeaponFromCol, removeWeaponFromRise } from '../../http/weaponAPI';
 import { addZzzWeaponToCol, addZzzWeaponToRise, getZzzWeaponFromColById, getZzzWeaponFromRiseById, removeZzzWeaponFromCol } from '../../http/zzz/weaponAPI';
+import { addHonkaiWeaponToCol, addHonkaiWeaponToRise, getHonkaiWeaponFromColById, getHonkaiWeaponFromRiseById, removeHonkaiWeaponFromCol, removeHonkaiWeaponFromRise } from '../../http/honkai/weaponAPI';
 export const WeaponOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -27,6 +28,9 @@ export const WeaponOptions = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             addZzzWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Honkai') {
+            addHonkaiWeaponToCol(weapon).then(res => setDisableCol(true))
         }
     }
     const addToRise = () => {
@@ -53,6 +57,9 @@ export const WeaponOptions = observer((props) => {
             else if (app.game === 'Zzz') {
                 addZzzWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
             }
+            else if (app.game === 'Honkai') {
+                addHonkaiWeaponToRise(weapon).then(res => { setDisableRise(true); setChangeMats(false) })
+            }
         }
     }
     const removeFromCol = () => {
@@ -61,6 +68,9 @@ export const WeaponOptions = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             removeZzzWeaponFromCol(props.weaponId).then(res => setDisableCol(false))
+        }
+        else if (app.game === 'Honkai') {
+            removeHonkaiWeaponFromCol(props.weaponId).then(res => setDisableCol(false))
         }
     }
     const removeFromRise = () => {
@@ -71,6 +81,9 @@ export const WeaponOptions = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             removeWeaponFromRise(props.weaponId).then(res => { setDisableRise(false) })
+        }
+        else if (app.game === 'Honkai') {
+            removeHonkaiWeaponFromRise(props.weaponId).then(res => { setDisableRise(false) })
         }
     }
     const { weapons, app } = useContext(AppContext)
@@ -83,6 +96,10 @@ export const WeaponOptions = observer((props) => {
         else if (app.game === 'Zzz') {
             getZzzWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
             getZzzWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiWeaponFromColById(props.weaponId).then(res => { res.data && setDisableCol(true) })
+            getHonkaiWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
         }
     }, [props.weaponId, app.game])
     return (
@@ -99,7 +116,7 @@ export const WeaponOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + weapon.img}></img>
+                <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? "/zzz/weapons/" : '/honkai/weapons/')) + weapon.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button
@@ -112,7 +129,7 @@ export const WeaponOptions = observer((props) => {
                     onClick={() => { disableRise ? removeFromRise() : addToRise() }}>
                     {disableRise ? 'Удалить из Прокачки' : 'Добавить в Прокачку'}
                 </Button>
-                {!disableRise && <Button
+                {!disableRise && app.game === 'Genshin' && <Button
                     variant={changeMats ? 'warning' : 'outline-warning'}
                     onClick={() => setChangeMats(!changeMats)}>
                     {changeMats ? 'Выбор Материалов' : 'Авто Выбор Материалов'}

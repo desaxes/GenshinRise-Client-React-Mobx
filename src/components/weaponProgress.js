@@ -27,8 +27,8 @@ export const WeaponProgress = (props) => {
     }, [])
     return (
         <StyledBox className="mt-3" display='flex' align='center' gap='10px'>
-            <StyledImg width={'80px'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : '/zzz/weapons/') + props.img}></StyledImg>
-            <ProgressBar style={{ height: '25px', width: '100%', backgroundColor: 'red' }} now={100 / (app.game === 'Genshin' ? maximum : 67) * props.current}
+            <StyledImg width={'80px'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + props.img}></StyledImg>
+            <ProgressBar style={{ height: '25px', width: '100%', backgroundColor: 'red' }} now={100 / (app.game === 'Genshin' ? maximum : (app.game === 'Zzz' ? 67 : (props.stars === 3 ? 47 : (props.stars === 4 ? 66 : 85)))) * props.current}
                 variant="warning" animated></ProgressBar>
         </StyledBox>)
 }

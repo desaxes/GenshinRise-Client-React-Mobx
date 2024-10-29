@@ -5,6 +5,7 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { addWeaponToCol, getWeaponFromColById, getWeaponsFromCol, removeWeaponFromCol } from '../../http/weaponAPI';
 import { addZzzWeaponToCol, getZzzWeaponsFromCol, removeZzzWeaponFromCol } from '../../http/zzz/weaponAPI';
+import { addHonkaiWeaponToCol, getHonkaiWeaponsFromCol, removeHonkaiWeaponFromCol } from '../../http/honkai/weaponAPI';
 export const WeaponOptionsForCollection = observer((props) => {
     const { weapons, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
@@ -14,6 +15,9 @@ export const WeaponOptionsForCollection = observer((props) => {
         }
         else if (app.game === 'Zzz') {
             addZzzWeaponToCol(weapon).then(res => setDisableCol(true))
+        }
+        else if (app.game === 'Honkai') {
+            addHonkaiWeaponToCol(weapon).then(res => setDisableCol(true))
         }
     }
     const removeFromCol = () => {
@@ -28,6 +32,14 @@ export const WeaponOptionsForCollection = observer((props) => {
         else if (app.game === 'Zzz') {
             removeZzzWeaponFromCol(props.weaponId).then(res => {
                 getZzzWeaponsFromCol().then(res => {
+                    weapons.setWeapons(res.data)
+                    props.onHide()
+                })
+            })
+        }
+        else if (app.game === 'Honkai') {
+            removeHonkaiWeaponFromCol(props.weaponId).then(res => {
+                getHonkaiWeaponsFromCol().then(res => {
                     weapons.setWeapons(res.data)
                     props.onHide()
                 })
@@ -53,7 +65,7 @@ export const WeaponOptionsForCollection = observer((props) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                    <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : "/zzz/weapons/") + weapon.img}></img>
+                    <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? "/zzz/weapons/" : '/honkai/weapons/')) + weapon.img}></img>
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button
