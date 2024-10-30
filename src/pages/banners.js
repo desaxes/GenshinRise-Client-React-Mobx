@@ -8,6 +8,7 @@ import { StyledBox } from "../styledComponents/styled-components"
 import { BannerModal } from "../components/modals/bannerModal"
 import { AppContext } from ".."
 import { getZzzBanners } from "../http/zzz/bannerAPI"
+import { getHonkaiBanners } from "../http/honkai/bannerAPI"
 
 const Banners = observer(() => {
     const [modalOptions, setModalOptions] = useState(false)
@@ -31,6 +32,9 @@ const Banners = observer(() => {
         }
         else if (app.game === 'Zzz') {
             getZzzBanners().then(res => setBanners(res.data))
+        }
+        else if (app.game === 'Honkai') {
+            getHonkaiBanners().then(res => setBanners(res.data))
         }
     }, [app.game])
     const bannersArray = banners?.banners.map(e => <Banner id={e.id} patchNumber={e.patchNumber} img1={e.img1} img2={e.img2} onShow={createBannerModal} />).reverse()

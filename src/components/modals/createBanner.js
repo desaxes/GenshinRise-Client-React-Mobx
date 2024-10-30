@@ -8,10 +8,14 @@ import { StyledBox } from '../../styledComponents/styled-components';
 import { addBanner } from '../../http/bannerAPI';
 import { addZzzBanner } from '../../http/zzz/bannerAPI';
 import { getZzzChars } from '../../http/zzz/charAPI';
+import { addHonkaiBanner } from '../../http/honkai/bannerAPI';
+import { getHonkaiChars } from '../../http/honkai/charAPI';
 export const CreateBanner = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const [legChar1, setLegChar1] = useState('')
     const [legChar2, setLegChar2] = useState('')
+    const [legChar3, setLegChar3] = useState('')
+    const [legChar4, setLegChar4] = useState('')
     const [epicChar1, setEpicChar1] = useState('')
     const [epicChar2, setEpicChar2] = useState('')
     const [epicChar3, setEpicChar3] = useState('')
@@ -24,6 +28,7 @@ export const CreateBanner = observer((props) => {
     useEffect(() => {
         if (app.game === 'Genshin') { getChars().then(res => chars.setChars(res.data)) }
         else if (app.game === 'Zzz') { getZzzChars().then(res => chars.setChars(res.data)) }
+        else if (app.game === 'Honkai') { getHonkaiChars().then(res => chars.setChars(res.data)) }
     }, [app.game])
     const select1 = e => {
         setFile1(e.target.files[0])
@@ -70,6 +75,29 @@ export const CreateBanner = observer((props) => {
             formData.append('patchNumber', patchNumber.toString())
             addZzzBanner(formData)
         }
+        else if (app.game === 'Honkai') {
+            let formData = new FormData()
+            formData.append('year', +date1.split('-')[0])
+            formData.append('lmonth', +date1.split('-')[1])
+            formData.append('lday', +date1.split('-')[2])
+            formData.append('hmonth', +date2.split('-')[1])
+            formData.append('hday', +date2.split('-')[2])
+            formData.append('charId1', legChar1.id)
+            formData.append('charName1', legChar1.name)
+            formData.append('charId2', legChar2.id)
+            formData.append('charName2', legChar2.name)
+            formData.append('charId3', legChar3.id)
+            formData.append('charName3', legChar3.name)
+            formData.append('charId4', legChar4.id)
+            formData.append('charName4', legChar4.name)
+            formData.append('epicCharId1', epicChar1.id)
+            formData.append('epicCharId2', epicChar2.id)
+            formData.append('epicCharId3', epicChar3.id)
+            formData.append('img1', file1)
+            formData.append('img2', file2)
+            formData.append('patchNumber', patchNumber.toString())
+            addHonkaiBanner(formData)
+        }
     }
     useEffect(() => {
         setTimeout(() => setSuccess(false), 2000)
@@ -107,7 +135,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -124,12 +152,46 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
+                    {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>
+                        <Dropdown.Toggle variant='outline-warning'>
+                            {legChar3 === '' ? 'Выберите Персонажа 5*' : legChar3.name}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                            {chars.chars.chars.filter(e => e.stars === 5).map(e =>
+                                <Dropdown.Item
+                                    onClick={() => { setLegChar3(e) }}
+                                    key={e.id}>
+                                    <StyledBox display='flex' align='center' jstf='center' >
+                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                            src={process.env.REACT_APP_API_URL + '/honkai/chars/' + e.img}></img>
+                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                    </StyledBox>
+                                </Dropdown.Item>)}
+                        </Dropdown.Menu>
+                    </Dropdown>}
+                    {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>
+                        <Dropdown.Toggle variant='outline-warning'>
+                            {legChar4 === '' ? 'Выберите Персонажа 5*' : legChar4.name}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                            {chars.chars.chars.filter(e => e.stars === 5).map(e =>
+                                <Dropdown.Item
+                                    onClick={() => { setLegChar4(e) }}
+                                    key={e.id}>
+                                    <StyledBox display='flex' align='center' jstf='center' >
+                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                            src={process.env.REACT_APP_API_URL + '/honkai/chars/' + e.img}></img>
+                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                    </StyledBox>
+                                </Dropdown.Item>)}
+                        </Dropdown.Menu>
+                    </Dropdown>}
                     <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {epicChar1 === '' ? 'Выберите Персонажа 4*' : epicChar1.name}
@@ -141,7 +203,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -158,7 +220,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}
@@ -175,7 +237,7 @@ export const CreateBanner = observer((props) => {
                                     key={e.id}>
                                     <StyledBox display='flex' align='center' jstf='center' >
                                         <img alt='stone' style={{ maxWidth: '40px' }}
-                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : '/zzz/chars/') + e.img}></img>
+                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                         <p style={{ fontWeight: 'bold' }}>{e.name}</p>
                                     </StyledBox>
                                 </Dropdown.Item>)}

@@ -22,11 +22,11 @@ export const Banner = observer((props) => {
                 >
                     <StyledBox display='flex' gap='8px'>
                         <img alt='banner'
-                            style={{ width: '270px',height:'150px', borderRadius: '15px' }}
-                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/bannerImgs/" : "/zzz/bannerImgs/") + props.img1}></img>
+                            style={{ width: '270px', height: '150px', borderRadius: '15px' }}
+                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/bannerImgs/" : (app.game === 'Zzz' ? "/zzz/bannerImgs/" : '/honkai/bannerImgs/')) + props.img1}></img>
                         {props.img2 && <img alt='banner'
-                            style={{ width: '270px',height:'150px', borderRadius: '15px' }}
-                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/bannerImgs/" : "/zzz/bannerImgs/") + props.img2}></img>}
+                            style={{ width: '270px', height: '150px', borderRadius: '15px' }}
+                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/bannerImgs/" : (app.game === 'Zzz' ? "/zzz/bannerImgs/" : '/honkai/bannerImgs/')) + props.img2}></img>}
                     </StyledBox>
                 </StyledBox>
 

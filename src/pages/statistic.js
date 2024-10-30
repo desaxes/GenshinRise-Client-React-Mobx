@@ -241,51 +241,51 @@ const Statistic = observer(() => {
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Эрудиция</Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[14]}
                         {charTableCell[15]}
                         {charTableCell[16]}
                         {charTableCell[17]}
                         {charTableCell[18]}
+                        {charTableCell[19]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Гармония</Col>
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[20]}
                         {charTableCell[21]}
                         {charTableCell[22]}
                         {charTableCell[23]}
                         {charTableCell[24]}
                         {charTableCell[25]}
+                        {charTableCell[26]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Небытие</Col>
-                        {charTableCell[26]}
                         {charTableCell[27]}
                         {charTableCell[28]}
                         {charTableCell[29]}
                         {charTableCell[30]}
                         {charTableCell[31]}
                         {charTableCell[32]}
+                        {charTableCell[33]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Сохранение</Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
-                        {charTableCell[33]}
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[34]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[35]}
+                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
+                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
+                        {charTableCell[36]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Изобилие</Col>
-                        {charTableCell[36]}
                         {charTableCell[37]}
                         {charTableCell[38]}
                         {charTableCell[39]}
                         {charTableCell[40]}
                         {charTableCell[41]}
+                        {charTableCell[42]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                 </StyledBox>}
