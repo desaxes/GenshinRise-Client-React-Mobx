@@ -5,17 +5,18 @@ import { getBanner } from '../../http/bannerAPI';
 import { StyledImg, StyledTitle } from '../../styledComponents/styled-components';
 import { getCharById } from '../../http/charAPI';
 import { Col, Row } from 'react-bootstrap';
-import { getEventRollsForBanner } from '../../http/rollAPI';
+import { getEventRollsForBanner, getWeaponRollsForBanner } from '../../http/rollAPI';
 import { AppContext } from '../..';
 import { getZzzBanner } from '../../http/zzz/bannerAPI';
 import { getZzzCharById } from '../../http/zzz/charAPI';
-import { getZzzEventRollsForBanner } from '../../http/zzz/rollAPI';
+import { getZzzEventRollsForBanner, getZzzWeaponRollsForBanner } from '../../http/zzz/rollAPI';
 import { getHonkaiBanner } from '../../http/honkai/bannerAPI';
 import { getHonkaiCharById } from '../../http/honkai/charAPI';
-import { getHonkaiEventRollsForBanner } from '../../http/honkai/rollAPI';
+import { getHonkaiEventRollsForBanner, getHonkaiWeaponRollsForBanner } from '../../http/honkai/rollAPI';
 export const BannerModal = observer((props) => {
     const [banner, setBanner] = useState()
-    const [rolls, setRolls] = useState()
+    const [rolls, setRolls] = useState({ rolls: [], total: 0 })
+    const [wRolls, setWRolls] = useState({ rolls: [], total: 0 })
     const [char1, setChar1] = useState()
     const [char2, setChar2] = useState()
     const [char3, setChar3] = useState()
@@ -34,6 +35,7 @@ export const BannerModal = observer((props) => {
                 getCharById(res.data.epicCharId2).then(res => setEpicChar2(res.data))
                 getCharById(res.data.epicCharId3).then(res => setEpicChar3(res.data))
                 getEventRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setRolls(res.data))
+                getWeaponRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setWRolls(res.data))
             })
         }
         if (app.game === 'Zzz') {
@@ -45,6 +47,7 @@ export const BannerModal = observer((props) => {
                 getZzzCharById(res.data.epicCharId2).then(res => setEpicChar2(res.data))
                 getZzzCharById(res.data.epicCharId3).then(res => setEpicChar3(res.data))
                 getZzzEventRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setRolls(res.data))
+                getZzzWeaponRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setWRolls(res.data))
             })
         }
         if (app.game === 'Honkai') {
@@ -58,11 +61,15 @@ export const BannerModal = observer((props) => {
                 getHonkaiCharById(res.data.epicCharId2).then(res => setEpicChar2(res.data))
                 getHonkaiCharById(res.data.epicCharId3).then(res => setEpicChar3(res.data))
                 getHonkaiEventRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setRolls(res.data))
+                getHonkaiWeaponRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setWRolls(res.data))
             })
         }
     }, [])
     const rewards = rolls?.rolls.map(e => <Col className='mt-3'>
-        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game==='Zzz'?'/zzz/weapons/':'/honkai/weapons/'))) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
+    </Col>)
+    const wRewards = wRolls?.rolls.map(e => <Col className='mt-3'>
+        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
     </Col>)
     return (
         <Modal
@@ -113,12 +120,15 @@ export const BannerModal = observer((props) => {
                 <StyledTitle align='center' fz='24px' color='yellow'>Полученные Награды</StyledTitle>
                 <Row md={'auto'} className='mt-3 mb-3 d-flex justify-content-center'
                 >
+                    {rolls.rolls.length && <StyledTitle style={{ width: '100%', marginTop: '15px' }} align='center' fz='18px' color='yellow'>Ивентовый Баннер</StyledTitle>}
                     {rewards}
+                    {wRolls.rolls.length && <StyledTitle style={{ width: '100%', marginTop: '15px' }} align='center' fz='18px' color='yellow'>Оружейный Баннер</StyledTitle>}
+                    {wRewards}
                 </Row>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <StyledTitle align='center' fz='24px' color='yellow'> Получено Наград: {rewards?.length}</StyledTitle>
-                <StyledTitle align='center' fz='24px' color='yellow'> Потрачено Молитв: {rolls?.total}</StyledTitle>
+                <StyledTitle align='center' fz='24px' color='yellow'> Получено Наград: {rewards?.length + wRewards?.length}</StyledTitle>
+                <StyledTitle align='center' fz='24px' color='yellow'> Потрачено Молитв: {rolls?.total + wRolls?.total}</StyledTitle>
             </Modal.Footer>
         </Modal>)
 })

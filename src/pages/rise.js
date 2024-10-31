@@ -11,7 +11,7 @@ import { StyledTitle } from '../styledComponents/styled-components';
 import { getWeaponsFromRise } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { RisingModalWeapon } from '../components/modals/risingModalWeapon';
-import { getZzzCharFromRiseById, getZzzCharsFromRise } from '../http/zzz/charAPI';
+import { getZzzCharsFromRise } from '../http/zzz/charAPI';
 import { getZzzWeaponsFromRise } from '../http/zzz/weaponAPI';
 import { getHonkaiCharsFromRise } from '../http/honkai/charAPI';
 import { getHonkaiWeaponsFromRise } from '../http/honkai/weaponAPI';

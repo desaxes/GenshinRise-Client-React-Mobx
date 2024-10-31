@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "react-bootstrap"
+import { Button, Container, Row } from "react-bootstrap"
 import { StyledBox, StyledImg, StyledTitle } from "../styledComponents/styled-components"
 import { useContext, useEffect, useState } from "react"
 import { CreateRoll } from "../components/modals/createRoll"
@@ -13,7 +13,6 @@ import { getZzzAllEventRolls, getZzzAllStandartRolls, getZzzAllWeaponRolls, getZ
 import { getHonkaiAllEventRolls, getHonkaiAllStandartRolls, getHonkaiAllWeaponRolls, getHonkaiEventRolls, getHonkaiStandartRolls, getHonkaiWeaponRolls } from "../http/honkai/rollAPI"
 
 const Rolls = observer(() => {
-    const [sCounter, setSCounter] = useState([])
     const { rolls, app } = useContext(AppContext)
     const [modalOptions, setModalOptions] = useState(false)
     const [modalArchive, setModalArchive] = useState(false)

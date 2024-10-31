@@ -45,6 +45,15 @@ export const getHonkaiEventRollsForBanner = async (year, lmonth, lday, hmonth, h
         console.log(e)
     }
 }
+export const getHonkaiWeaponRollsForBanner = async (year, lmonth, lday, hmonth, hday) => {
+    try {
+        const res = await $host.get('honkai/rolls/weapon/banner?limit=1000&year=' + year + '&lmonth=' + lmonth + '&lday=' + lday + '&hmonth=' + hmonth + '&hday=' + hday)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getHonkaiAllEventRolls = async (query) => {
     try {
         const res = await $host.get('honkai/rolls/event?limit=1000&' + query)

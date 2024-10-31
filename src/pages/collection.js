@@ -10,7 +10,6 @@ import { CharOptionsForCollection } from '../components/modals/charOptionForColl
 import { StyledTitle } from '../styledComponents/styled-components';
 import { getWeaponsFromCol } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
-import { WeaponOptions } from '../components/modals/weaponOptions';
 import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsForCollection';
 import { getZzzCharsFromCol } from '../http/zzz/charAPI';
 import { getZzzWeaponsFromCol } from '../http/zzz/weaponAPI';

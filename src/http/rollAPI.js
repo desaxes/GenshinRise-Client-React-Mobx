@@ -45,6 +45,15 @@ export const getEventRollsForBanner = async (year, lmonth, lday, hmonth, hday) =
         console.log(e)
     }
 }
+export const getWeaponRollsForBanner = async (year, lmonth, lday, hmonth, hday) => {
+    try {
+        const res = await $host.get('genshin/rolls/weapon/banner?limit=1000&year=' + year + '&lmonth=' + lmonth + '&lday=' + lday + '&hmonth=' + hmonth + '&hday=' + hday)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getAllEventRolls = async (query) => {
     try {
         const res = await $host.get('genshin/rolls/event?limit=1000&' + query)

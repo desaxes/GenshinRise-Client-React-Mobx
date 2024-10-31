@@ -3,13 +3,9 @@ import Container from 'react-bootstrap/esm/Container'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import { AppContext } from '..';
-import { getChars } from '../http/charAPI';
-import { Char } from '../components/char';
-import { CharOptions } from '../components/modals/charOptions';
 import { Button } from 'react-bootstrap/esm/';
 import { StyledTitle } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite';
-import Form from 'react-bootstrap/Form';
 import { deleteTimer, getLocalSpecialtys, getTimers } from '../http/materialAPI';
 import { Material } from '../components/material';
 import { MatOtions } from '../components/modals/matOptions';
