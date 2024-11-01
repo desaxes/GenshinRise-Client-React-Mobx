@@ -34,7 +34,7 @@ const Resources = observer(() => {
                 })
             }
         })
-    }, [materials.region, materials, app.updated])
+    }, [materials.region, materials, app.updated, app])
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
@@ -53,7 +53,7 @@ const Resources = observer(() => {
     let mats = materials.localSpecialtys.map(e => <Material key={e.id} regionId={e.regionId} mat={e} onShow={createModal} />)
     return (
         <>
-            <Container style={{textShadow: '2px 2px 2px black'}}>
+            <Container style={{ textShadow: '2px 2px 2px black' }}>
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
                         <StyledTitle color='yellow' fz='22px'>
@@ -75,7 +75,7 @@ const Resources = observer(() => {
                             display='grid' dir='column' width='100%'
                             jstf='space-between' gap='30px'
                         >
-                            {mats.length?mats:<StyledTitle color="red" fz='22px'>Нет Данных с Сервера</StyledTitle>}
+                            {mats.length ? mats : <StyledTitle color="red" fz='22px'>Нет Данных с Сервера</StyledTitle>}
                         </Row>
                     </Col>
                 </Row>

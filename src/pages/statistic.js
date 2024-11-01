@@ -82,10 +82,10 @@ const Statistic = observer(() => {
         e => <Col
             style={{ borderLeft: 'yellow solid 2px' }}>
             {e.chars.filter(
-                i => sort ? col.some(c => c === i.id) : i
+                i => sort ? col?.some(c => c === i.id) : i
             ).map(
                 i =>
-                    <StyledImg opacity={col.some(e => e === i.id) ? '100%' : '30%'}
+                    <StyledImg opacity={col?.some(e => e === i.id) ? '100%' : '30%'}
                         style={{ margin: '5px' }} width={app.game === 'Genshin' ? '70px' : '55px'}
                         src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + i.img} />)}
         </Col>)
@@ -93,10 +93,10 @@ const Statistic = observer(() => {
         e => <Col
             style={{ border: 'yellow solid 2px' }}>
             {e.chars.filter(
-                i => sort ? col.some(c => c === i.id) : i
+                i => sort ? col?.some(c => c === i.id) : i
             ).map(
                 i =>
-                    <StyledImg br='15px' opacity={col.some(e => e === i.id) ? '100%' : '30%'}
+                    <StyledImg br='15px' opacity={col?.some(e => e === i.id) ? '100%' : '30%'}
                         style={{ margin: '5px' }} width={'70px'}
                         src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + i.img} />)}
         </Col>)

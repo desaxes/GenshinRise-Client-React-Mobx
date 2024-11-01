@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap/esm/';
-import { addCharToCol, addCharToRise, addMaxValues, getCharFromColById, getCharFromRiseById, removeCharFromCol, removeCharFromRise, removeMaxValues } from '../../http/charAPI';
+import { addCharToCol, addCharToRise, addMaxValues, getCharFromColById, getCharFromRiseById, removeCharFromCol, removeCharFromRise, removeMaxValues, updateCharInfo } from '../../http/charAPI';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
-import { Form } from 'react-bootstrap/esm/';
+import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
 import { addZzzCharToCol, addZzzCharToRise, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
 import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise } from '../../http/honkai/charAPI';
+import { getHonkaiWeapons } from '../../http/honkai/weaponAPI';
+import { getZzzWeapons } from '../../http/zzz/weaponAPI';
+import { getWeapons } from '../../http/weaponAPI';
+
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -28,6 +32,9 @@ export const CharOptions = observer((props) => {
     const [talent2, setTalent2] = useState()
     const [talent3, setTalent3] = useState()
     const [wbmat, setWbmat] = useState()
+    const [editor, setEditor] = useState(false)
+    const [weapon, setWeapon] = useState('')
+    const [info, setInfo] = useState('')
     const addToCol = () => {
         if (app.game === "Genshin") {
             addCharToCol(char).then(res => setDisableCol(true))
@@ -98,20 +105,30 @@ export const CharOptions = observer((props) => {
             removeHonkaiCharFromRise(props.charId).then(res => setDisableRise(false))
         }
     }
-    const { chars, app } = useContext(AppContext)
+    const updateInfo = () => {
+        let formData = new FormData()
+        formData.append('id', char.id)
+        formData.append('ownWeaponId', weapon.id)
+        formData.append('info', info)
+        updateCharInfo(formData).then(res => setEditor(false))
+    }
+    const { chars, app, weapons } = useContext(AppContext)
     const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
         if (app.game === "Genshin") {
             getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+            getWeapons().then(res => weapons.setWeapons(res.data))
         }
         else if (app.game === "Zzz") {
             getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getZzzCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+            getZzzWeapons().then(res => weapons.setWeapons(res.data))
         }
         else if (app.game === "Honkai") {
             getHonkaiCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getHonkaiCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
+            getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
         }
     }, [props.charId, app.game])
     return (
@@ -127,7 +144,37 @@ export const CharOptions = observer((props) => {
                     {char.name}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
+            <Modal.Body style={{ display: "flex", alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#212529', border: '2px solid yellow' }}>
+                <StyledBox>
+                    {editor ?
+                        <StyledBox >
+                            <Form style={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
+                                <Form.Control as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
+                                <Dropdown className='mt-2 mb-2'>
+                                    <Dropdown.Toggle variant='outline-warning'>
+                                        {weapon === '' ? 'Выберите Оружие' : weapon.name}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                        {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
+                                            <Dropdown.Item
+                                                onClick={() => { setWeapon(e) }}
+                                                key={e.id}>
+                                                <StyledBox display='flex' align='center' jstf='center' >
+                                                    <img alt='stone' style={{ maxWidth: '40px' }}
+                                                        src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
+                                                    <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                </StyledBox>
+                                            </Dropdown.Item>)}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Button onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
+                            </Form>
+                        </StyledBox> :
+                        <StyledBox>
+                            <Button onClick={() => setEditor(true)} style={{ width: '130px' }} variant='outline-warning'>Редактировать Информацию</Button>
+                        </StyledBox>
+                    }
+                </StyledBox>
                 <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>

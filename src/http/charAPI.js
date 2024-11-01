@@ -108,6 +108,15 @@ export const updateCharFromRise = async (data) => {
         console.log(e)
     }
 }
+export const updateCharInfo = async (data) => {
+    try {
+        const res = await $host.put('genshin/characters/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const removeCharFromCol = async (id) => {
     try {
         const res = await $host.delete('genshin/collection/' + id)

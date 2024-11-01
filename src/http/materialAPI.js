@@ -132,21 +132,21 @@ export const getWBMaterialById = async (id) => {
 
 export const getTimers = async () => {
     try {
-        const res = await $host.get('lvlup/timers')
+        const res = await $host.get('genshin/lvlup/timers')
         return res
     }
     catch (e) { console.log(e) }
 }
 export const createTimer = async (id) => {
     try {
-        const res = await $authHost.post('lvlup/timers', { id })
+        const res = await $authHost.post('genshin/lvlup/timers', { id })
         return res
     }
     catch (e) { console.log(e) }
 }
 export const deleteTimer = async (id) => {
     try {
-        const res = await $authHost.delete('lvlup/timers/' + id)
+        const res = await $authHost.delete('genshin/lvlup/timers/' + id)
         return res
     }
     catch (e) { console.log(e) }
