@@ -22,7 +22,6 @@ export const Progress = (props) => {
             })
         }
     }, [app.game])
-    console.log(props.current)
     return (
         <StyledBox className="mt-3" display='flex' align='center' gap='10px'>
             <StyledImg width={'80px'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + props.img}></StyledImg>

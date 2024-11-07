@@ -20,6 +20,7 @@ import { getZzzCharsFromRise } from '../http/zzz/charAPI';
 import { getZzzWeaponsFromRise } from '../http/zzz/weaponAPI';
 import { getHonkaiCharsFromRise } from '../http/honkai/charAPI';
 import { getHonkaiWeaponsFromRise } from '../http/honkai/weaponAPI';
+import { Gems } from '../components/gems';
 
 const Main = observer(() => {
     const { materials } = useContext(AppContext)
@@ -41,6 +42,7 @@ const Main = observer(() => {
     const [modalOptions, setModalOptions] = useState(false)
     const [modalType, setModalType] = useState(false)
     const [rise, setRise] = useState([])
+    const [gemsMode, setGemsMode] = useState(false)
     const [weaponRise, setWeaponRise] = useState([])
     const [group, setGroup] = useState('collection')
     const createModal = (id, type) => {
@@ -165,8 +167,12 @@ const Main = observer(() => {
                             <Button onClick={() => setGroup('collection')} variant={group === 'collection' ? 'warning' : 'outline-warning'} color='yellow' fz='22px'>Персонажи и Оружие в Коллекции</Button>
                             <Button onClick={() => setGroup('rise')} variant={group === 'rise' ? 'warning' : 'outline-warning'} color='yellow' fz='22px'>Прокачиваемые Персонажи и Оружие</Button>
                             <Button onClick={() => setGroup('all')} variant={group === 'all' ? 'warning' : 'outline-warning'} color='yellow' fz='22px'>Все Персонажи и Оружие</Button>
+                            <Button onClick={() => setGemsMode(!gemsMode)} variant={gemsMode === true ? 'danger' : 'outline-danger'} color='yellow' fz='22px'>Сбережения</Button>
                         </StyledBox>
                     </Row>
+                    {gemsMode && <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Gems />
+                    </div>}
                     <Row className='mt-3 pb-5'>
                         <Col className='d-flex flex-column align-items-center' md={12}>
                             <Row className='d-flex justify-content-center'
@@ -202,9 +208,14 @@ const Main = observer(() => {
                         weaponId={id}
                     />}
                 </Col>}
+                {app.game != 'Genshin' &&
+                    <Col style={{ display: 'flex', flexDirection: 'column' }}>
+                        <StyledTitle color='yellow'>Сбережения</StyledTitle>
+                        <Gems />
+                    </Col>}
                 <Col md={1}>
                 </Col>
-                <Col md={app.game === 'Genshin' ? 2 : 12} className='mt-4'>
+                <Col md={2} className='mt-4'>
                     <StyledTitle align='center' color='yellow' fz='26px'>Статистика Накоплений</StyledTitle>
                     {statistic}
                     {weaponStatistic}

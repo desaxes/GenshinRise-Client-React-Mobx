@@ -35,6 +35,7 @@ cursor:${props => props.cursor};
 grid-template-columns:repeat(2,50%);
 transition: 0.3s;
 position:relative;
+color:${props => props.color};
 &:hover{
     box-shadow:${props => props.hover}; 
 }
@@ -55,7 +56,7 @@ text-align:${props => props.align};
 opacity:${props => props.opacity};
 line-height:${props => props.lh};
 text-decoration:${props => props.dec};
-font-style:${props=>props.fs};
+font-style:${props => props.fs};
 margin:${props => props.mar};
 cursor:${props => props.cursor};
 `
