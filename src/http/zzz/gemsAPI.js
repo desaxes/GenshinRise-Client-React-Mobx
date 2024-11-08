@@ -9,6 +9,15 @@ export const getZzzGems = async () => {
         console.log(e)
     }
 }
+export const getAllZzzGems = async () => {
+    try {
+        const res = await $host.get('zzz/gems/all')
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const setZzzGems = async (data) => {
     try {
         const res = await $authHost.post('zzz/gems/', data)
