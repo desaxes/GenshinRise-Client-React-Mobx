@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { useContext, useEffect, useState } from "react"
-import { getAllGenshinGems, getGenshinGems } from "../http/gemsAPI"
+import { getGenshinGems } from "../http/gemsAPI"
 import { GemsRow } from "./gems-row"
 import { Button } from "react-bootstrap"
 import { StyledBox } from "../styledComponents/styled-components"
@@ -10,7 +10,7 @@ import genshinGem from '../img/gems/genshin/gems.webp'
 import honkaiGem from '../img/gems/honkai/gems.webp'
 import zzzGem from '../img/gems/zzz/gems.webp'
 import { getAllEventRolls, getAllWeaponRolls } from "../http/rollAPI"
-import { GemsArchive, GemsArchiveModal } from "./modals/gemsArchive"
+import { GemsArchiveModal } from "./modals/gemsArchive"
 import { getHonkaiGems } from "../http/honkai/gemsAPI"
 import { getZzzGems } from "../http/zzz/gemsAPI"
 import { getZzzAllEventRolls, getZzzAllWeaponRolls } from "../http/zzz/rollAPI"
@@ -53,9 +53,9 @@ export const Gems = observer((props) => {
     return (
         <div style={{ marginTop: '0px', position: 'relative' }}>
             <StyledBox display='flex' margin='15px 0' color="yellow" align='center' jstf='space-between'>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div>Всего накоплено :
-                        <img style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
+                        <img alt="gem-img" style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
                         {(wRollsCount + eRollsCount) * 160 +
                             (savings.length && (savings[savings.length - 1]?.rolls) * 160 +
                                 Math.floor(savings[savings.length - 1]?.cash / (app.game === 'Genshin' ? 5 : 20)) * 160 +
@@ -63,19 +63,19 @@ export const Gems = observer((props) => {
                     </div>
                     <div>
                         Всего потрачено :
-                        <img style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
+                        <img alt="gem-img" style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
                         {(wRollsCount + eRollsCount) * 160}
                     </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div>
                         Доход за месяц :
-                        <img style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
+                        <img alt="gem-img" style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
                         {income}
                     </div>
                     <div>
                         Расход за месяц :
-                        <img style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
+                        <img alt="gem-img" style={{ width: '25px', height: '25px' }} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
                         {expense}
                     </div>
                 </div>

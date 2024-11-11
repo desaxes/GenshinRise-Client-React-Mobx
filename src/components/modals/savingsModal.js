@@ -20,7 +20,7 @@ export const SavingsModal = observer((props) => {
             setRolls(props.lastRow.rolls)
             setCash(props.lastRow.cash)
         }
-    }, [])
+    }, [props.lastRow])
     const addGems = () => {
         if (app.game === 'Genshin') {
             setGenshinGems(

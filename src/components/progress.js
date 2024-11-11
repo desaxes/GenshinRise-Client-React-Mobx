@@ -21,11 +21,11 @@ export const Progress = (props) => {
                 }
             })
         }
-    }, [app.game])
+    }, [app.game, props.id])
     return (
         <StyledBox className="mt-3" display='flex' align='center' gap='10px'>
             <StyledImg width={'80px'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + props.img}></StyledImg>
-            <ProgressBar style={{ height: '25px', width: '100%', backgroundColor: 'red' }} now={100 / (app.game === 'Genshin' ? maximum : (app.game === 'Zzz' ? 485 :503)) * props.current}
+            <ProgressBar style={{ height: '25px', width: '100%', backgroundColor: 'red' }} now={100 / (app.game === 'Genshin' ? maximum : (app.game === 'Zzz' ? 485 : 503)) * props.current}
                 variant="warning" animated></ProgressBar>
         </StyledBox>)
 }

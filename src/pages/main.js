@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { AppContext } from '..';
 import { getTalents } from '../http/materialAPI';
 import { StyledBox, StyledTitle } from '../styledComponents/styled-components';
-import { getChars, getCharsFromCol, getCharsFromRise, getMaxValues } from '../http/charAPI';
+import { getChars, getCharsFromCol, getCharsFromRise } from '../http/charAPI';
 import { Char } from '../components/char';
 import Button from 'react-bootstrap/Button';
 import { Progress } from '../components/progress';
@@ -53,7 +53,7 @@ const Main = observer(() => {
     useEffect(() => {
         getTalents().then(res => {
             if (res) {
-                if (n != 0) {
+                if (n !== 0) {
                     materials.setTodayTalents(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
                 }
                 else {
@@ -82,7 +82,7 @@ const Main = observer(() => {
         })
         getWeaponMaterials().then(res => {
             if (res) {
-                if (n != 0) {
+                if (n !== 0) {
                     weapons.setTodayMaterials(res.data.filter(e => e.days === n || e.days === n - 3).map(e => e.id))
                 }
                 else {
@@ -208,7 +208,7 @@ const Main = observer(() => {
                         weaponId={id}
                     />}
                 </Col>}
-                {app.game != 'Genshin' &&
+                {app.game !== 'Genshin' &&
                     <Col style={{ display: 'flex', flexDirection: 'column' }}>
                         <StyledTitle color='yellow'>Сбережения</StyledTitle>
                         <Gems />

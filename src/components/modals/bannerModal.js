@@ -64,12 +64,12 @@ export const BannerModal = observer((props) => {
                 getHonkaiWeaponRollsForBanner(res.data.year, res.data.lmonth, res.data.lday, res.data.hmonth, res.data.hday).then(res => setWRolls(res.data))
             })
         }
-    }, [])
+    }, [app.game, props.id])
     const rewards = rolls?.rolls.map(e => <Col className='mt-3'>
-        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
     </Col>)
     const wRewards = wRolls?.rolls.map(e => <Col className='mt-3'>
-        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
+        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e.stars === 5 ? 'orange' : '#4600f6'} src={process.env.REACT_APP_API_URL + (e.isChar ? (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) : (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/'))) + e.img} />
     </Col>)
     return (
         <Modal
@@ -89,31 +89,31 @@ export const BannerModal = observer((props) => {
                 <Row md={'auto'} className='mt-3 mb-3 d-flex justify-content-center'
                 >
                     <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char1?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char1?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{char1?.name}</StyledTitle>
                     </Col>
                     {char2 && <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char2?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char2?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{char2?.name}</StyledTitle>
                     </Col>}
                     {char3 && <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char3?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char3?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{char3?.name}</StyledTitle>
                     </Col>}
                     {char4 && <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char4?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'orange'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char4?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{char4?.name}</StyledTitle>
                     </Col>}
                     <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar1?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar1?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{epicChar1?.name}</StyledTitle>
                     </Col>
                     <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar2?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar2?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{epicChar2?.name}</StyledTitle>
                     </Col>
                     {epicChar3 && <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar3?.img} />
+                        <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={'#4600f6'} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + epicChar3?.img} />
                         <StyledTitle align='center' fz='16px' color='yellow'>{epicChar3?.name}</StyledTitle>
                     </Col>}
                 </Row>

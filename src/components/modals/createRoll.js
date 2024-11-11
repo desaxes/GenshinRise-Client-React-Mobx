@@ -39,7 +39,7 @@ export const CreateRoll = observer((props) => {
             getHonkaiChars().then(res => chars.setChars(res.data))
             getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
         }
-    }, [])
+    }, [app.game, props.bannerType, chars, weapons])
     const addRoll = () => {
         if (app.game === 'Genshin') {
             createRoll({
@@ -53,15 +53,7 @@ export const CreateRoll = observer((props) => {
                 img: isChar ? char.img : weapon.img
             }, bannerEndPoint).then(res => {
                 setSuccess(true)
-                if (bannerEndPoint === 'standart') {
-                    props.updateStandart(true)
-                }
-                else if (bannerEndPoint === 'event') {
-                    props.updateEvent(true)
-                }
-                else if (bannerEndPoint === 'weapon') {
-                    props.updateWeapon(true)
-                }
+                props.update(true)
             })
         }
         else if (app.game === 'Zzz') {
@@ -76,15 +68,7 @@ export const CreateRoll = observer((props) => {
                 img: isChar ? char.img : weapon.img
             }, bannerEndPoint).then(res => {
                 setSuccess(true)
-                if (bannerEndPoint === 'standart') {
-                    props.updateStandart(true)
-                }
-                else if (bannerEndPoint === 'event') {
-                    props.updateEvent(true)
-                }
-                else if (bannerEndPoint === 'weapon') {
-                    props.updateWeapon(true)
-                }
+                props.update(true)
             })
         }
         else if (app.game === 'Honkai') {
@@ -99,15 +83,7 @@ export const CreateRoll = observer((props) => {
                 img: isChar ? char.img : weapon.img
             }, bannerEndPoint).then(res => {
                 setSuccess(true)
-                if (bannerEndPoint === 'standart') {
-                    props.updateStandart(true)
-                }
-                else if (bannerEndPoint === 'event') {
-                    props.updateEvent(true)
-                }
-                else if (bannerEndPoint === 'weapon') {
-                    props.updateWeapon(true)
-                }
+                props.update(true)
             })
         }
     }
@@ -150,7 +126,7 @@ export const CreateRoll = observer((props) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <input value={date} onChange={e => setDate(e.target.value)} type='date'></input>
-                    {isChar && rewardType != '' && stars != '' && <Dropdown className='mt-2 mb-2'>
+                    {isChar && rewardType !== '' && stars !== '' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {char === '' ? 'Выберите Персонажа' : char.name}
                         </Dropdown.Toggle>
@@ -167,7 +143,7 @@ export const CreateRoll = observer((props) => {
                                 </Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>}
-                    {!isChar && rewardType != '' && stars != '' && <Dropdown className='mt-2 mb-2'>
+                    {!isChar && rewardType !== '' && stars !== '' && <Dropdown className='mt-2 mb-2'>
                         <Dropdown.Toggle variant='outline-warning'>
                             {weapon === '' ? 'Выберите Оружие' : weapon.name}
                         </Dropdown.Toggle>

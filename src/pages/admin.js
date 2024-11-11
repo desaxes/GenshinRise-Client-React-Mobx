@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/esm/Button'
 import Container from 'react-bootstrap/esm/Container'
 import { CreateStone } from '../components/modals/createStone'
-import { CreateCharacter, CreateDevice } from '../components/modals/createChar'
+import { CreateCharacter } from '../components/modals/createChar'
 import { CreateBossMaterial } from '../components/modals/createBM'
 import { CreateEnemyMaterial } from '../components/modals/createEM'
 import { CreateLocalSpecialty } from '../components/modals/createLS'
@@ -46,7 +46,7 @@ const Admin = observer(() => {
                     className='mt-3 p-4' variant='outline-warning'><h2>Добавить Материал Еженедельных Боссов</h2></Button>
                 <Button onClick={() => setModalCharShow(true)}
                     className='mt-3 p-4' variant='outline-warning'><h2>Добавить Персонажа</h2></Button>
-                {app.game != 'Honkai' && <Button onClick={() => setModalWMatShow(true)}
+                {app.game !== 'Honkai' && <Button onClick={() => setModalWMatShow(true)}
                     className='mt-3 p-4' variant='outline-warning'><h2>Добавить Материал Для Оружия</h2></Button>}
                 {app.game === 'Genshin' && <Button onClick={() => setModalEWMatShow(true)}
                     className='mt-3 p-4' variant='outline-warning'><h2>Добавить Материал Врагов Для Оружия</h2></Button>}

@@ -3,13 +3,49 @@ import { getEventStatistic, getStandartStatistic, getStatistic, getWeaponStatist
 import { StyledBox, StyledImg, StyledTitle } from "../styledComponents/styled-components"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { getCharFromColById, getCharStatistic, getCharsFromCol } from "../http/charAPI"
-import onehand from '../img/weapons/1h.webp'
 import { AppContext } from ".."
 import { getZzzEventStatistic, getZzzStandartStatistic, getZzzWeaponStatistic } from "../http/zzz/rollAPI"
 import { observer } from "mobx-react-lite"
 import { getZzzCharsFromCol, getZzzCharStatistic } from "../http/zzz/charAPI"
 import { getHonkaiEventStatistic, getHonkaiStandartStatistic, getHonkaiWeaponStatistic } from "../http/honkai/rollAPI"
 import { getHonkaiCharsFromCol, getHonkaiCharStatistic } from "../http/honkai/charAPI"
+
+import anemo from '../img/elements/anemo.webp'
+import pyro from '../img/elements/pyro.png'
+import hydro from '../img/elements/hydro.png'
+import dendro from '../img/elements/dendro.png'
+import kryo from '../img/elements/kryo.png'
+import electro from '../img/elements/electro.png'
+import geo from '../img/elements/geo.png'
+import phys from '../img/honkaielements/phys.png'
+import fire from '../img/honkaielements/fire.png'
+import ice from '../img/honkaielements/ice.png'
+import elec from '../img/honkaielements/electro.png'
+import wind from '../img/honkaielements/wind.png'
+import kvant from '../img/honkaielements/kvant.png'
+import mnim from '../img/honkaielements/mnim.png'
+import onehand from '../img/weapons/genshin/1h.webp'
+import twohand from '../img/weapons/genshin/2h.webp'
+import polearm from '../img/weapons/genshin/polearm.webp'
+import cata from '../img/weapons/genshin/cata.webp'
+import bow from '../img/weapons/genshin/bow.webp'
+import neb from '../img/weapons/hsr/neb.webp'
+import raz from '../img/weapons/hsr/raz.webp'
+import ohot from '../img/weapons/hsr/ohot.webp'
+import erud from '../img/weapons/hsr/erud.webp'
+import save from '../img/weapons/hsr/save.webp'
+import izo from '../img/weapons/hsr/izo.webp'
+import harm from '../img/weapons/hsr/harm.webp'
+import attack from '../img/weapons/zzz/attack.png'
+import defense from '../img/weapons/zzz/defense.png'
+import anomaly from '../img/weapons/zzz/anomaly.png'
+import support from '../img/weapons/zzz/support.png'
+import stun from '../img/weapons/zzz/stun.png'
+import zzzElectro from '../img/zzzelems/elec.png'
+import zzzEther from '../img/zzzelems/ether.png'
+import zzzFire from '../img/zzzelems/fire.png'
+import zzzIce from '../img/zzzelems/ice.png'
+import zzzPhys from '../img/zzzelems/phys.png'
 
 const Statistic = observer(() => {
     const [sRolls, setSRolls] = useState([])
@@ -86,7 +122,7 @@ const Statistic = observer(() => {
             ).map(
                 i =>
                     <StyledImg opacity={col?.some(e => e === i.id) ? '100%' : '30%'}
-                        style={{ margin: '5px' }} width={app.game === 'Genshin' ? '70px' : '55px'}
+                        style={{ margin: '5px' }} width={'55px'}
                         src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + i.img} />)}
         </Col>)
     const regionTableRow = regionStatistic?.map(
@@ -153,15 +189,17 @@ const Statistic = observer(() => {
                 <StyledTitle fz='26px' align='center' color="yellow">Таблица персонажей</StyledTitle>
                 {app.game === 'Genshin' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Анемо</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Гео</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Электро</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Дендро</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Гидро</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Пиро</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Крио</Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={anemo} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={geo} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={electro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={dendro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={hydro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={pyro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={kryo} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={onehand} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -171,6 +209,7 @@ const Statistic = observer(() => {
                         {charTableCell[6]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={twohand} /></Col>
                         {charTableCell[7]}
                         {charTableCell[8]}
                         {charTableCell[9]}
@@ -180,6 +219,7 @@ const Statistic = observer(() => {
                         {charTableCell[12]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
+                    <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={polearm} /></Col>
                         {charTableCell[13]}
                         {charTableCell[14]}
                         {charTableCell[15]}
@@ -189,6 +229,7 @@ const Statistic = observer(() => {
                         {charTableCell[19]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={bow} /></Col>
                         {charTableCell[20]}
                         {charTableCell[21]}
                         {charTableCell[22]}
@@ -198,6 +239,7 @@ const Statistic = observer(() => {
                         {charTableCell[26]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={cata} /></Col>
                         {charTableCell[27]}
                         {charTableCell[28]}
                         {charTableCell[29]}
@@ -210,16 +252,16 @@ const Statistic = observer(() => {
                 {app.game === 'Honkai' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Ветряной</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Мнимый</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Электрический</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Квантовый</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Физический</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Огненный</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Ледяной</Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={wind} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={mnim} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={elec} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={kvant} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={phys} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={fire} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={ice} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Разрушение</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={raz} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -229,7 +271,7 @@ const Statistic = observer(() => {
                         {charTableCell[6]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Охота</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={ohot} /></Col>
                         {charTableCell[7]}
                         {charTableCell[8]}
                         {charTableCell[9]}
@@ -239,7 +281,7 @@ const Statistic = observer(() => {
                         {charTableCell[13]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Эрудиция</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={erud} /></Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[14]}
                         {charTableCell[15]}
@@ -249,7 +291,7 @@ const Statistic = observer(() => {
                         {charTableCell[19]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Гармония</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={harm} /></Col>
                         {charTableCell[20]}
                         {charTableCell[21]}
                         {charTableCell[22]}
@@ -259,7 +301,7 @@ const Statistic = observer(() => {
                         {charTableCell[26]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Небытие</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={neb} /></Col>
                         {charTableCell[27]}
                         {charTableCell[28]}
                         {charTableCell[29]}
@@ -269,7 +311,7 @@ const Statistic = observer(() => {
                         {charTableCell[33]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Сохранение</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={save} /></Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[34]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -279,7 +321,7 @@ const Statistic = observer(() => {
                         {charTableCell[36]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Изобилие</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={izo} /></Col>
                         {charTableCell[37]}
                         {charTableCell[38]}
                         {charTableCell[39]}
@@ -292,14 +334,14 @@ const Statistic = observer(() => {
                 {app.game === 'Zzz' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Огонь</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Шок</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Физа</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Лед</Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}>Эфир</Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzFire} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzElectro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzPhys} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzIce} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzEther} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Аномалия</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={anomaly} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -307,7 +349,7 @@ const Statistic = observer(() => {
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Нападение</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={attack} /></Col>
                         {charTableCell[3]}
                         {charTableCell[4]}
                         {charTableCell[5]}
@@ -315,7 +357,7 @@ const Statistic = observer(() => {
                         {charTableCell[7]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Устрашение</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={stun} /></Col>
                         {charTableCell[8]}
                         {charTableCell[9]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -323,7 +365,7 @@ const Statistic = observer(() => {
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Поддержка</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={support} /></Col>
                         {charTableCell[11]}
                         {charTableCell[12]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -331,7 +373,7 @@ const Statistic = observer(() => {
                         {charTableCell[14]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Оборона</Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={defense} /></Col>
                         {charTableCell[15]}
                         {charTableCell[16]}
                         {charTableCell[17]}

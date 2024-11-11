@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { Modal } from "react-bootstrap"
-import { Gems } from "../gems"
 import { GemsArchive } from "../gems-archive"
 
 export const GemsArchiveModal = observer((props) => {

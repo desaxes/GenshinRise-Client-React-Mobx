@@ -67,7 +67,7 @@ const Characters = observer(() => {
         }
         // getStones().then(res => materials.setElements(res.data.map(e => e.id)))
     }, [app.game, chars.material, chars.talent, chars.element, chars.weapon, chars.region, chars.stars, chars.sex, chars.size, chars.searchBy, chars, chars.path])
-    let characters = chars.chars.chars.map(e => <Char gridpart={4} key={e.id} char={e} onShow={createModal} />)
+    let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
