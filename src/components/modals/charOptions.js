@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap/esm/';
-import { addCharToCol, addCharToRise, addMaxValues, getCharFromColById, getCharFromRiseById, removeCharFromCol, removeCharFromRise, removeMaxValues, updateCharInfo } from '../../http/charAPI';
+import { addCharToCol, addCharToRise, addMaxValues, getCharById, getCharFromColById, getCharFromRiseById, removeCharFromCol, removeCharFromRise, removeMaxValues, updateCharInfo } from '../../http/charAPI';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
-import { addZzzCharToCol, addZzzCharToRise, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
-import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise } from '../../http/honkai/charAPI';
+import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
+import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise } from '../../http/honkai/charAPI';
 import { getHonkaiWeapons } from '../../http/honkai/weaponAPI';
 import { getZzzWeapons } from '../../http/zzz/weaponAPI';
 import { getWeapons } from '../../http/weaponAPI';
@@ -33,8 +33,10 @@ export const CharOptions = observer((props) => {
     const [talent3, setTalent3] = useState()
     const [wbmat, setWbmat] = useState()
     const [editor, setEditor] = useState(false)
-    const [weapon, setWeapon] = useState('')
-    const [info, setInfo] = useState('')
+    const [weapon, setWeapon] = useState()
+    const [info, setInfo] = useState()
+    const [char, setChar] = useState()
+    const [update, setUpdate] = useState(false)
     const addToCol = () => {
         if (app.game === "Genshin") {
             addCharToCol(char).then(res => setDisableCol(true))
@@ -111,9 +113,10 @@ export const CharOptions = observer((props) => {
         formData.append('ownWeaponId', weapon.id)
         formData.append('info', info)
         updateCharInfo(formData).then(res => setEditor(false))
+        setUpdate(!update)
     }
     const { chars, app, weapons } = useContext(AppContext)
-    const char = chars.chars.chars.find(e => e.id === props.charId)
+    // const char = chars.chars.chars.find(e => e.id === props.charId)
     useEffect(() => {
         if (app.game === "Genshin") {
             getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
@@ -131,6 +134,27 @@ export const CharOptions = observer((props) => {
             getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
         }
     }, [props.charId, app.game])
+    useEffect(() => {
+        if (app.game === "Genshin") {
+            getCharById(props.charId).then(res => {
+                setChar(res.data)
+                setInfo(res.data.charInfo.info)
+                setWeapon(weapons.weapons.weapons.find(e => e.id === res.data.charInfo.ownWeaponId))
+            })
+        }
+        else if (app.game === "Zzz") {
+            getZzzCharById(props.charId).then(res => {
+                setChar(res.data)
+                setInfo(res.data.charInfo.info)
+            })
+        }
+        else if (app.game === "Honkai") {
+            getHonkaiCharById(props.charId).then(res => {
+                setChar(res.data)
+                setInfo(res.data.charInfo.info)
+            })
+        }
+    }, [update])
     return (
         <Modal
             {...props}
@@ -141,18 +165,18 @@ export const CharOptions = observer((props) => {
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
-                    {char.name}
+                    {char?.name}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <StyledBox>
+                <StyledBox display='flex' align='start'>
                     {editor ?
                         <StyledBox >
                             <Form style={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
                                 <Form.Control as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
-                                        {weapon === '' ? 'Выберите Оружие' : weapon.name}
+                                        {weapon === undefined ? 'Выберите Оружие' : weapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                         {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
@@ -170,12 +194,24 @@ export const CharOptions = observer((props) => {
                                 <Button onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
                             </Form>
                         </StyledBox> :
-                        <StyledBox>
+                        <StyledBox color='yellow' display='flex' dir='column' align='center'>
+                            {char?.charInfo && <StyledBox
+                                display='flex' dir='column' align='start'
+                                margin='10px 50px'
+                            >
+                                <StyledTitle fz='20px' color='yellow'>Информация</StyledTitle>
+                                {char?.charInfo.info}
+                            </StyledBox>}
+                            {weapon != undefined && <StyledBox margin='20px 0'>
+                                <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
+                            </StyledBox>}
                             <Button onClick={() => setEditor(true)} style={{ width: '130px' }} variant='outline-warning'>Редактировать Информацию</Button>
                         </StyledBox>
                     }
+                    <StyledBox>
+                        <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
+                    </StyledBox>
                 </StyledBox>
-                <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char.img}></img>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Button
