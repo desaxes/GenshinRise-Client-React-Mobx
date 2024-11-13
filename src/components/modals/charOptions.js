@@ -6,11 +6,8 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
-import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise } from '../../http/zzz/charAPI';
-import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise } from '../../http/honkai/charAPI';
-import { getHonkaiWeapons } from '../../http/honkai/weaponAPI';
-import { getZzzWeapons } from '../../http/zzz/weaponAPI';
-import { getWeapons } from '../../http/weaponAPI';
+import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise, updateZzzCharInfo } from '../../http/zzz/charAPI';
+import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise, updateHonkaiCharInfo } from '../../http/honkai/charAPI';
 
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
@@ -32,8 +29,20 @@ export const CharOptions = observer((props) => {
     const [talent2, setTalent2] = useState()
     const [talent3, setTalent3] = useState()
     const [wbmat, setWbmat] = useState()
+
     const [editor, setEditor] = useState(false)
     const [weapon, setWeapon] = useState()
+    const [recFourStarWeapon, setRecFourStarWeapon] = useState()
+    const [recFiveStarWeapon, setRecFiveStarWeapon] = useState()
+    const [firstArtSetfirstHalf, setFirstArtSetfirstHalf] = useState()
+    const [firstArtSetSecondHalf, setFirstArtSetSecondHalf] = useState()
+    const [secondArtSetfirstHalf, setSecondArtSetfirstHalf] = useState()
+    const [secondArtSetSecondHalf, setSecondArtSetSecondHalf] = useState()
+    const [thirdArtSetfirstHalf, setThirdArtSetfirstHalf] = useState()
+    const [thirdArtSetSecondHalf, setThirdArtSetSecondHalf] = useState()
+    const [firstPlanarSet, setFirstPlanarSet] = useState()
+    const [secondPlanarSet, setSecondPlanarSet] = useState()
+    const [thirdPlanarSet, setThirdPlanarSet] = useState()
     const [info, setInfo] = useState()
     const [char, setChar] = useState()
     const [update, setUpdate] = useState(false)
@@ -110,58 +119,87 @@ export const CharOptions = observer((props) => {
     const updateInfo = () => {
         let formData = new FormData()
         formData.append('id', char.id)
-        formData.append('ownWeaponId', weapon.id)
+        formData.append('ownWeaponId', weapon?.id)
+        formData.append('recFourStarWeaponId', recFourStarWeapon?.id)
+        formData.append('recFiveStarWeaponId', recFiveStarWeapon?.id)
+        formData.append('firstArtSetfirstHalfId', firstArtSetfirstHalf?.id)
+        formData.append('firstArtSetSecondHalfId', firstArtSetSecondHalf?.id)
+        formData.append('secondArtSetfirstHalfId', secondArtSetfirstHalf?.id)
+        formData.append('secondArtSetSecondHalfId', secondArtSetSecondHalf?.id)
+        formData.append('thirdArtSetfirstHalfId', thirdArtSetfirstHalf?.id)
+        formData.append('thirdArtSetSecondHalfId', thirdArtSetSecondHalf?.id)
+        formData.append('firstPlanarSetId', firstPlanarSet?.id)
+        formData.append('secondPlanarSetId', secondPlanarSet?.id)
+        formData.append('thirdPlanarSetId', thirdPlanarSet?.id)
         formData.append('info', info)
-        updateCharInfo(formData).then(res => setEditor(false))
+        if (app.game === 'Genshin') {
+            updateCharInfo(formData).then(res => setEditor(false))
+        }
+        else if (app.game === 'Honkai') {
+            updateHonkaiCharInfo(formData).then(res => setEditor(false))
+        }
+        else if (app.game === 'Zzz') {
+            updateZzzCharInfo(formData).then(res => setEditor(false))
+        }
         setUpdate(!update)
     }
-    const { chars, app, weapons } = useContext(AppContext)
-    // const char = chars.chars.chars.find(e => e.id === props.charId)
+    const { app, weapons, arts } = useContext(AppContext)
     useEffect(() => {
         if (app.game === "Genshin") {
             getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
-            getWeapons().then(res => weapons.setWeapons(res.data))
         }
         else if (app.game === "Zzz") {
             getZzzCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getZzzCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
-            getZzzWeapons().then(res => weapons.setWeapons(res.data))
         }
         else if (app.game === "Honkai") {
             getHonkaiCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
             getHonkaiCharFromRiseById(props.charId).then(res => { res.data && setDisableRise(true) })
-            getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
         }
     }, [props.charId, app.game])
     useEffect(() => {
-        if (app.game === "Genshin") {
-            getCharById(props.charId).then(res => {
-                setChar(res.data)
+        let getChar
+        switch (app.game) {
+            case 'Genshin':
+                getChar = getCharById
+                break;
+            case 'Honkai':
+                getChar = getHonkaiCharById
+                break;
+            case 'Zzz':
+                getChar = getZzzCharById
+                break;
+            default:
+                break;
+        }
+        getChar(props.charId).then(res => {
+            setChar(res.data)
+            if (res.data.charInfo) {
                 setInfo(res.data.charInfo.info)
                 setWeapon(weapons.weapons.weapons.find(e => e.id === res.data.charInfo.ownWeaponId))
-            })
-        }
-        else if (app.game === "Zzz") {
-            getZzzCharById(props.charId).then(res => {
-                setChar(res.data)
-                setInfo(res.data.charInfo.info)
-            })
-        }
-        else if (app.game === "Honkai") {
-            getHonkaiCharById(props.charId).then(res => {
-                setChar(res.data)
-                setInfo(res.data.charInfo.info)
-            })
-        }
+                setRecFourStarWeapon(weapons.weapons.weapons.find(e => e.id === res.data.charInfo.recFourStarWeaponId))
+                setRecFiveStarWeapon(weapons.weapons.weapons.find(e => e.id === res.data.charInfo.recFiveStarWeaponId))
+                setFirstArtSetfirstHalf(arts.arts.find(e => e.id === res.data.charInfo.firstArtSetfirstHalfId))
+                setFirstArtSetSecondHalf(arts.arts.find(e => e.id === res.data.charInfo.firstArtSetSecondHalfId))
+                setSecondArtSetfirstHalf(arts.arts.find(e => e.id === res.data.charInfo.secondArtSetfirstHalfId))
+                setSecondArtSetSecondHalf(arts.arts.find(e => e.id === res.data.charInfo.secondArtSetSecondHalfId))
+                setThirdArtSetfirstHalf(arts.arts.find(e => e.id === res.data.charInfo.thirdArtSetfirstHalfId))
+                setThirdArtSetSecondHalf(arts.arts.find(e => e.id === res.data.charInfo.thirdArtSetSecondHalfId))
+                setFirstPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.firstPlanarSetId))
+                setSecondPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.secondPlanarSetId))
+                setThirdPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.thirdPlanarSetId))
+            }
+        })
     }, [update])
+
     return (
         <Modal
             {...props}
-            size="lg"
+            size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-
+            style={{padding:'70px'}}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -169,14 +207,14 @@ export const CharOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <StyledBox display='flex' align='start'>
+                <StyledBox display='flex' align='center' jstf='space-between'>
                     {editor ?
-                        <StyledBox >
+                        <StyledBox>
                             <Form style={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
-                                <Form.Control as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
+                                <Form.Control style={{ width: '400px' }} as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
-                                        {weapon === undefined ? 'Выберите Оружие' : weapon?.name}
+                                        {weapon === undefined ? 'Сигнатурное Оружие' : weapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                         {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
@@ -191,26 +229,277 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                <Dropdown className='mt-2 mb-2'>
+                                    <Dropdown.Toggle variant='outline-warning'>
+                                        {recFiveStarWeapon === undefined ? 'Рекомендованное Легендарное Оружие' : recFiveStarWeapon?.name}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                        {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
+                                            <Dropdown.Item
+                                                onClick={() => { setRecFiveStarWeapon(e) }}
+                                                key={e.id}>
+                                                <StyledBox display='flex' align='center' jstf='center' >
+                                                    <img alt='stone' style={{ maxWidth: '40px' }}
+                                                        src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
+                                                    <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                </StyledBox>
+                                            </Dropdown.Item>)}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Dropdown className='mt-2 mb-2'>
+                                    <Dropdown.Toggle variant='outline-warning'>
+                                        {recFourStarWeapon === undefined ? 'Рекомендованное Эпическое Оружие' : recFourStarWeapon?.name}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                        {weapons.weapons.weapons.filter(e => e.stars === 4).map(e =>
+                                            <Dropdown.Item
+                                                onClick={() => { setRecFourStarWeapon(e) }}
+                                                key={e.id}>
+                                                <StyledBox display='flex' align='center' jstf='center' >
+                                                    <img alt='stone' style={{ maxWidth: '40px' }}
+                                                        src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
+                                                    <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                </StyledBox>
+                                            </Dropdown.Item>)}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <StyledBox display='flex' gap='5px'>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {firstArtSetfirstHalf === undefined ? 'Первый сет артефактов (2 части)' : firstArtSetfirstHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setFirstArtSetfirstHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {firstArtSetSecondHalf === undefined ? 'Первый сет артефактов (2 части)' : firstArtSetSecondHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setFirstArtSetSecondHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </StyledBox>
+                                <StyledBox display='flex' gap='5px'>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {secondArtSetfirstHalf === undefined ? 'Второй сет артефактов (2 части)' : secondArtSetfirstHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setSecondArtSetfirstHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {secondArtSetSecondHalf === undefined ? 'Второй сет артефактов (2 части)' : secondArtSetSecondHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setSecondArtSetSecondHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </StyledBox>
+                                <StyledBox display='flex' gap='5px'>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {thirdArtSetfirstHalf === undefined ? 'Третий сет артефактов (2 части)' : thirdArtSetfirstHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setThirdArtSetfirstHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {thirdArtSetSecondHalf === undefined ? 'Третий сет артефактов (2 части)' : thirdArtSetSecondHalf?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => !e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setThirdArtSetSecondHalf(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </StyledBox>
+                                {app.game === 'Honkai' && <StyledBox display='flex' gap='5px'>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {firstPlanarSet === undefined ? 'Первый Планарный Сет' : firstPlanarSet?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setFirstPlanarSet(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {secondPlanarSet === undefined ? 'Второй Планарный Сет' : secondPlanarSet?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setSecondPlanarSet(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {thirdPlanarSet === undefined ? 'Третий Планарный Сет' : thirdPlanarSet?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {arts.arts?.filter(e => e.planar).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setThirdPlanarSet(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img alt='stone' style={{ maxWidth: '40px' }}
+                                                            src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/arts/' : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + e.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </StyledBox>}
                                 <Button onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
                             </Form>
                         </StyledBox> :
                         <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                            {char?.charInfo && <StyledBox
+                            {char?.charInfo.info && char?.charInfo.info != "undefined" && <StyledBox
                                 display='flex' dir='column' align='start'
                                 margin='10px 50px'
                             >
                                 <StyledTitle fz='20px' color='yellow'>Информация</StyledTitle>
                                 {char?.charInfo.info}
                             </StyledBox>}
-                            {weapon != undefined && <StyledBox margin='20px 0'>
-                                <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
-                            </StyledBox>}
+                            <StyledBox display='flex' jstf='space-between' width='80%' align='center'>
+                                <StyledBox display='flex' gap='15px'>
+                                    {weapon != undefined && <StyledBox margin='20px 0'>
+                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
+                                    </StyledBox>}
+                                    {recFiveStarWeapon != undefined && <StyledBox margin='20px 0'>
+                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFiveStarWeapon?.img}></img>
+                                    </StyledBox>}
+                                    {recFourStarWeapon != undefined && <StyledBox margin='20px 0'>
+                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFourStarWeapon?.img}></img>
+                                    </StyledBox>}
+                                </StyledBox>
+                                <StyledBox display='flex' gap='15px' dir='column' align='center'>
+                                    <StyledBox display='flex'>
+                                        {firstArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
+                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetfirstHalf?.img}></img>
+                                        </StyledBox>}
+                                        {firstArtSetSecondHalf != undefined
+                                            && firstArtSetfirstHalf?.id !== firstArtSetSecondHalf?.id &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetSecondHalf?.img}></img>
+                                            </StyledBox>}
+                                    </StyledBox>
+                                    <StyledBox display='flex'>
+                                        {secondArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
+                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetfirstHalf?.img}></img>
+                                        </StyledBox>}
+                                        {secondArtSetSecondHalf != undefined
+                                            && secondArtSetfirstHalf?.id !== secondArtSetSecondHalf?.id &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetSecondHalf?.img}></img>
+                                            </StyledBox>}
+                                    </StyledBox>
+                                    <StyledBox display='flex'>
+                                        {thirdArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
+                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetfirstHalf?.img}></img>
+                                        </StyledBox>}
+                                        {thirdArtSetSecondHalf != undefined
+                                            && thirdArtSetfirstHalf?.id !== thirdArtSetSecondHalf?.id &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetSecondHalf?.img}></img>
+                                            </StyledBox>}
+                                    </StyledBox>
+                                    <StyledBox display='flex'>
+                                        {firstPlanarSet != undefined &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstPlanarSet?.img}></img>
+                                            </StyledBox>}
+                                        {secondPlanarSet != undefined &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondPlanarSet?.img}></img>
+                                            </StyledBox>}
+                                        {thirdPlanarSet != undefined &&
+                                            <StyledBox margin='20px 0'>
+                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdPlanarSet?.img}></img>
+                                            </StyledBox>}
+                                    </StyledBox>
+                                </StyledBox>
+                            </StyledBox>
                             <Button onClick={() => setEditor(true)} style={{ width: '130px' }} variant='outline-warning'>Редактировать Информацию</Button>
                         </StyledBox>
                     }
-                    <StyledBox>
+                    {!editor && <StyledBox>
                         <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
-                    </StyledBox>
+                    </StyledBox>}
                 </StyledBox>
             </Modal.Body>
             <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>

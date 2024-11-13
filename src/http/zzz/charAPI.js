@@ -118,3 +118,12 @@ export const getZzzCharStatistic = async () => {
         console.log(e)
     }
 }
+export const updateZzzCharInfo = async (data) => {
+    try {
+        const res = await $host.put('zzz/characters/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

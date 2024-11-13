@@ -9,6 +9,7 @@ import MaterialStore from './store/MaterialStore';
 import CharStore from './store/CharStore';
 import WeaponStore from './store/WeaponStore';
 import RollStore from './store/RollStore';
+import ArtsStore from './store/ArtsStore';
 
 export const AppContext = createContext(null)
 
@@ -19,9 +20,10 @@ root.render(
       <AppContext.Provider value={{
         chars: new CharStore(),
         app: new AppStore(),
-        materials:new MaterialStore(),
-        weapons:new WeaponStore(),
-        rolls:new RollStore()
+        materials: new MaterialStore(),
+        weapons: new WeaponStore(),
+        rolls: new RollStore(),
+        arts: new ArtsStore()
       }}>
         <App />
       </AppContext.Provider>

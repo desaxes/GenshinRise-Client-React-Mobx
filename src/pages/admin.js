@@ -13,6 +13,7 @@ import { CreateEWMaterial } from '../components/modals/createEWM'
 import { CreateWeapon } from '../components/modals/createWeapon'
 import { AppContext } from '..'
 import { observer } from 'mobx-react-lite'
+import { CreateArt } from '../components/modals/createArt'
 
 const Admin = observer(() => {
     const { app } = useContext(AppContext)
@@ -26,6 +27,7 @@ const Admin = observer(() => {
     const [modalWMatShow, setModalWMatShow] = useState(false)
     const [modalEWMatShow, setModalEWMatShow] = useState(false)
     const [modalWeaponSHow, setModalWeaponSHow] = useState(false)
+    const [modalArtsShow, setModalArtsShow] = useState(false)
     useEffect(() => {
         console.log(app.game)
     }, [app.game])
@@ -51,7 +53,9 @@ const Admin = observer(() => {
                 {app.game === 'Genshin' && <Button onClick={() => setModalEWMatShow(true)}
                     className='mt-3 p-4' variant='outline-warning'><h2>Добавить Материал Врагов Для Оружия</h2></Button>}
                 <Button onClick={() => setModalWeaponSHow(true)}
-                    className='mt-3 p-4 mb-5' variant='outline-warning'><h2>Добавить Оружие</h2></Button>
+                    className='mt-3 p-4' variant='outline-warning'><h2>Добавить Оружие</h2></Button>
+                <Button onClick={() => setModalArtsShow(true)}
+                    className='mt-3 p-4 mb-5' variant='outline-warning'><h2>Добавить Артефакты</h2></Button>
                 {modalStoneShow && <CreateStone show={true} onHide={() => setModalStoneShow(false)} />}
                 {modalBMShow && <CreateBossMaterial show={true} onHide={() => setModalBMShow(false)} />}
                 {modalEMShow && <CreateEnemyMaterial show={true} onHide={() => setModalEMShow(false)} />}
@@ -62,6 +66,7 @@ const Admin = observer(() => {
                 {modalWMatShow && <CreateWeaponMaterial show={true} onHide={() => setModalWMatShow(false)} />}
                 {modalEWMatShow && <CreateEWMaterial show={true} onHide={() => setModalEWMatShow(false)} />}
                 {modalWeaponSHow && <CreateWeapon show={true} onHide={() => setModalWeaponSHow(false)} />}
+                {modalArtsShow && <CreateArt show={true} onHide={() => setModalArtsShow(false)} />}
             </Container>
         </div>
     )

@@ -118,3 +118,12 @@ export const getHonkaiCharStatistic = async () => {
         console.log(e)
     }
 }
+export const updateHonkaiCharInfo = async (data) => {
+    try {
+        const res = await $host.put('honkai/characters/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

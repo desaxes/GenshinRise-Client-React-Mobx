@@ -12,9 +12,15 @@ import { observer } from 'mobx-react-lite';
 import Form from 'react-bootstrap/Form';
 import { getZzzChars } from '../http/zzz/charAPI';
 import { getHonkaiChars } from '../http/honkai/charAPI';
+import { getWeapons } from '../http/weaponAPI';
+import { getZzzWeapons } from '../http/zzz/weaponAPI';
+import { getHonkaiWeapons } from '../http/honkai/weaponAPI';
+import { getGenshinArts } from '../http/artsAPI';
+import { getZzzArts } from '../http/zzz/artsAPI';
+import { getHonkaiArts } from '../http/honkai/artsAPI';
 
 const Characters = observer(() => {
-    const { chars, app } = useContext(AppContext)
+    const { chars, app, weapons, arts } = useContext(AppContext)
     const [charId, setCharId] = useState()
     const [modalOptions, setModalOptions] = useState(false)
     const createModal = (id) => {
@@ -67,6 +73,20 @@ const Characters = observer(() => {
         }
         // getStones().then(res => materials.setElements(res.data.map(e => e.id)))
     }, [app.game, chars.material, chars.talent, chars.element, chars.weapon, chars.region, chars.stars, chars.sex, chars.size, chars.searchBy, chars, chars.path])
+    useEffect(() => {
+        if (app.game === "Genshin") {
+            getWeapons().then(res => weapons.setWeapons(res.data))
+            getGenshinArts().then(res => arts.setArts(res.data))
+        }
+        else if (app.game === "Zzz") {
+            getZzzWeapons().then(res => weapons.setWeapons(res.data))
+            getZzzArts().then(res => arts.setArts(res.data))
+        }
+        else if (app.game === "Honkai") {
+            getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
+            getHonkaiArts().then(res => arts.setArts(res.data))
+        }
+    }, [app.game])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     return (
         <>
