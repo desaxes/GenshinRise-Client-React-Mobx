@@ -428,7 +428,7 @@ export const CharOptions = observer((props) => {
                             </Form>
                         </StyledBox> :
                         <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                            {char?.charInfo.info && char?.charInfo.info != "undefined" && <StyledBox
+                            {char?.charInfo?.info && char?.charInfo?.info != "undefined" && <StyledBox
                                 display='flex' dir='column' align='start'
                                 margin='10px 50px'
                             >
