@@ -8,6 +8,7 @@ import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
 import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise, updateZzzCharInfo } from '../../http/zzz/charAPI';
 import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise, updateHonkaiCharInfo } from '../../http/honkai/charAPI';
+import { genshinProps, honkaiProps, zzzProps } from '../../utils/props';
 
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
@@ -43,7 +44,15 @@ export const CharOptions = observer((props) => {
     const [firstPlanarSet, setFirstPlanarSet] = useState()
     const [secondPlanarSet, setSecondPlanarSet] = useState()
     const [thirdPlanarSet, setThirdPlanarSet] = useState()
-    const [info, setInfo] = useState()
+    const [charProps, setCharProps] = useState([])
+    const [firstArtProp, setFirstArtProp] = useState({ id: 0, name: '' })
+    const [secondArtProp, setSecondArtProp] = useState({ id: 0, name: '' })
+    const [thirdArtProp, setThirdArtProp] = useState({ id: 0, name: '' })
+    const [fourthArtProp, setFourthArtProp] = useState({ id: 0, name: '' })
+    const [firstTeam, setFirstTeam] = useState([])
+    const [secondTeam, setSecondTeam] = useState([])
+    const [thirdTeam, setThirdTeam] = useState([])
+    const [info, setInfo] = useState('')
     const [char, setChar] = useState()
     const [update, setUpdate] = useState(false)
     const addToCol = () => {
@@ -131,6 +140,14 @@ export const CharOptions = observer((props) => {
         formData.append('firstPlanarSetId', firstPlanarSet?.id)
         formData.append('secondPlanarSetId', secondPlanarSet?.id)
         formData.append('thirdPlanarSetId', thirdPlanarSet?.id)
+        formData.append('charProps', JSON.stringify(charProps))
+        formData.append('firstArtProp', JSON.stringify(firstArtProp))
+        formData.append('secondArtProp', JSON.stringify(secondArtProp))
+        formData.append('thirdArtProp', JSON.stringify(thirdArtProp))
+        formData.append('fourthArtProp', JSON.stringify(fourthArtProp))
+        formData.append('firstTeam', JSON.stringify(firstTeam))
+        formData.append('secondTeam', JSON.stringify(secondTeam))
+        formData.append('thirdTeam', JSON.stringify(thirdTeam))
         formData.append('info', info)
         if (app.game === 'Genshin') {
             updateCharInfo(formData).then(res => setEditor(false))
@@ -143,7 +160,7 @@ export const CharOptions = observer((props) => {
         }
         setUpdate(!update)
     }
-    const { app, weapons, arts } = useContext(AppContext)
+    const { app, weapons, arts, chars } = useContext(AppContext)
     useEffect(() => {
         if (app.game === "Genshin") {
             getCharFromColById(props.charId).then(res => { res.data && setDisableCol(true) })
@@ -189,17 +206,24 @@ export const CharOptions = observer((props) => {
                 setFirstPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.firstPlanarSetId))
                 setSecondPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.secondPlanarSetId))
                 setThirdPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.thirdPlanarSetId))
+                if (res.data.charInfo.firstArtProp) { setFirstArtProp(res.data.charInfo.firstArtProp) }
+                if (res.data.charInfo.secondArtProp) { setSecondArtProp(res.data.charInfo.secondArtProp) }
+                if (res.data.charInfo.thirdArtProp) { setThirdArtProp(res.data.charInfo.thirdArtProp) }
+                if (res.data.charInfo.fourthArtProp) { setFourthArtProp(res.data.charInfo.fourthArtProp) }
+                if (res.data.charInfo.firstTeam) { setFirstTeam(res.data.charInfo.firstTeam) }
+                if (res.data.charInfo.secondTeam) { setSecondTeam(res.data.charInfo.secondTeam) }
+                if (res.data.charInfo.thirdTeam) { setThirdTeam(res.data.charInfo.thirdTeam) }
+                if (res.data.charInfo.charProps) { setCharProps(res.data.charInfo.charProps) }
             }
         })
     }, [update])
-
     return (
         <Modal
             {...props}
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            style={{padding:'70px'}}
+            style={{ padding: '70px' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -209,9 +233,11 @@ export const CharOptions = observer((props) => {
             <Modal.Body style={{ display: "flex", alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <StyledBox display='flex' align='center' jstf='space-between'>
                     {editor ?
+                        // Редактор
                         <StyledBox>
                             <Form style={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
                                 <Form.Control style={{ width: '400px' }} as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
+                                {/* Сигнатурка */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {weapon === undefined ? 'Сигнатурное Оружие' : weapon?.name}
@@ -229,6 +255,7 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                {/* 5звездочное оружие */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {recFiveStarWeapon === undefined ? 'Рекомендованное Легендарное Оружие' : recFiveStarWeapon?.name}
@@ -246,6 +273,7 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                {/* 4звездочное оружие */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {recFourStarWeapon === undefined ? 'Рекомендованное Эпическое Оружие' : recFourStarWeapon?.name}
@@ -263,6 +291,7 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
+                                {/* 1 сет артов */}
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
@@ -299,6 +328,7 @@ export const CharOptions = observer((props) => {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </StyledBox>
+                                {/* 2 сет артов */}
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
@@ -335,6 +365,7 @@ export const CharOptions = observer((props) => {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </StyledBox>
+                                {/* 3 сет артов */}
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
@@ -371,6 +402,7 @@ export const CharOptions = observer((props) => {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </StyledBox>
+                                {/* Планарки для хонкая */}
                                 {app.game === 'Honkai' && <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
@@ -424,11 +456,205 @@ export const CharOptions = observer((props) => {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </StyledBox>}
-                                <Button onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
+                                {/* Статы Артефактов */}
+                                <StyledBox display='flex' gap='5px'>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {firstArtProp?.id === 0 ? app.game === 'Genshin' ? 'Шапка' : (app.game === 'Honkai' ? 'Куртка' : '4 диск') : firstArtProp?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {(app.game === 'Genshin' ?
+                                                genshinProps :
+                                                (app.game === 'Honkai' ? honkaiProps : zzzProps)).filter(
+                                                    e => (app.game === 'Genshin' ? [2, 4, 6, 7, 9, 10, 11] :
+                                                        (app.game === 'Honkai' ? [2, 4, 6, 7, 9, 10, 11] :
+                                                            [2, 4, 6, 7, 9, 10])).includes(e.id)
+                                                ).map(e =>
+                                                    <Dropdown.Item
+                                                        onClick={() => { setFirstArtProp(e) }}
+                                                        key={e.id}>
+                                                        <StyledBox display='flex' align='center' jstf='center' >
+                                                            <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                        </StyledBox>
+                                                    </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {secondArtProp?.id === 0 ? app.game === 'Genshin' ? 'Кубок' : (app.game === 'Honkai' ? 'Сфера' : '5 диск') : secondArtProp?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {(app.game === 'Genshin' ?
+                                                genshinProps :
+                                                (app.game === 'Honkai' ? honkaiProps : zzzProps)).filter(
+                                                    e => (app.game === 'Genshin' ? [2, 4, 6, 7, 12, 13, 14, 15, 16, 17, 18, 19] :
+                                                        (app.game === 'Honkai' ? [2, 4, 6, 12, 13, 14, 15, 16, 17, 18] :
+                                                            [2, 4, 6, 17, 12, 13, 14, 15, 16])).includes(e.id)
+                                                ).map(e =>
+                                                    <Dropdown.Item
+                                                        onClick={() => { setSecondArtProp(e) }}
+                                                        key={e.id}>
+                                                        <StyledBox display='flex' align='center' jstf='center' >
+                                                            <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                        </StyledBox>
+                                                    </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {fourthArtProp?.id === 0 ? 'Веревка' : fourthArtProp?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {honkaiProps.filter(e => [2, 4, 6, 8, 20].includes(e.id)).map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => { setFourthArtProp(e) }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>}
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            {thirdArtProp?.id === 0 ? app.game === 'Genshin' ? 'Часы' : (app.game === 'Honkai' ? 'Сапоги' : '6 диск') : thirdArtProp?.name}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {(app.game === 'Genshin' ?
+                                                genshinProps :
+                                                (app.game === 'Honkai' ? honkaiProps : zzzProps)).filter(
+                                                    e => (app.game === 'Genshin' ? [2, 4, 6, 7, 8] :
+                                                        (app.game === 'Honkai' ? [2, 4, 6, 19] :
+                                                            [2, 4, 6, 18, 8, 11])).includes(e.id)
+                                                ).map(e =>
+                                                    <Dropdown.Item
+                                                        onClick={() => { setThirdArtProp(e); console.log(thirdArtProp) }}
+                                                        key={e.id}>
+                                                        <StyledBox display='flex' align='center' jstf='center' >
+                                                            <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                        </StyledBox>
+                                                    </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </StyledBox>
+                                {/* Сабстаты */}
+                                <StyledBox>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            Сабстаты
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {(app.game === 'Genshin' ? genshinProps :
+                                                (app.game === 'Honkai' ? honkaiProps : zzzProps)).map(e =>
+                                                    <Dropdown.Item
+                                                        onClick={() => {
+                                                            if (charProps.some(p => p.id === e.id)) {
+                                                            }
+                                                            else {
+                                                                setCharProps([...charProps, e])
+                                                            }
+                                                        }}
+                                                        key={e.id}>
+                                                        <StyledBox display='flex' align='center' jstf='center' >
+                                                            <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                        </StyledBox>
+                                                    </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <StyledBox display='flex' gap='5px'>
+                                        {charProps?.map(e => <Button variant='danger' onClick={() => setCharProps(charProps.filter(p => p.id != e.id))}>{e.name}</Button>)}
+                                    </StyledBox>
+                                </StyledBox>
+                                {/* Первая Команда */}
+                                <StyledBox>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            Первая Команда
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {chars.chars.chars.map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        if (firstTeam.some(p => p.id === e.id) || (firstTeam.length > (app.game === 'Zzz' ? 2 : 3))) {
+                                                        }
+                                                        else {
+                                                            setFirstTeam([...firstTeam, { id: e.id, img: e.img, name: e.name }])
+                                                        }
+                                                    }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img style={{ height: '50px', width: '50px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e?.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <StyledBox display='flex' gap='5px'>
+                                        {firstTeam?.map(e => <Button variant='danger' onClick={() => setFirstTeam(firstTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
+                                    </StyledBox>
+                                </StyledBox>
+                                {/* Вторая Команда */}
+                                <StyledBox>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            Вторая Команда
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {chars.chars.chars.map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        if (secondTeam.some(p => p.id === e.id) || (secondTeam.length > (app.game === 'Zzz' ? 2 : 3))) {
+                                                        }
+                                                        else {
+                                                            setSecondTeam([...secondTeam, { id: e.id, img: e.img, name: e.name }])
+                                                        }
+                                                    }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img style={{ height: '50px', width: '50px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e?.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <StyledBox display='flex' gap='5px'>
+                                        {secondTeam?.map(e => <Button variant='danger' onClick={() => setSecondTeam(secondTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
+                                    </StyledBox>
+                                </StyledBox>
+                                {/* Третья Команда */}
+                                <StyledBox>
+                                    <Dropdown className='mt-2 mb-2'>
+                                        <Dropdown.Toggle variant='outline-warning'>
+                                            Первая Команда
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {chars.chars.chars.map(e =>
+                                                <Dropdown.Item
+                                                    onClick={() => {
+                                                        if (thirdTeam.some(p => p.id === e.id) || (thirdTeam.length > (app.game === 'Zzz' ? 2 : 3))) {
+                                                        }
+                                                        else {
+                                                            setThirdTeam([...thirdTeam, { id: e.id, img: e.img, name: e.name }])
+                                                        }
+                                                    }}
+                                                    key={e.id}>
+                                                    <StyledBox display='flex' align='center' jstf='center' >
+                                                        <img style={{ height: '50px', width: '50px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e?.img}></img>
+                                                        <p style={{ fontWeight: 'bold' }}>{e.name}</p>
+                                                    </StyledBox>
+                                                </Dropdown.Item>)}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <StyledBox display='flex' gap='5px'>
+                                        {thirdTeam?.map(e => <Button variant='danger' onClick={() => setThirdTeam(thirdTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
+                                    </StyledBox>
+                                </StyledBox>
+                                <Button className='mt-3' onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
                             </Form>
                         </StyledBox> :
+                        // Карточка персонажа
                         <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                            {char?.charInfo?.info && char?.charInfo?.info != "undefined" && <StyledBox
+                            {char?.charInfo && char?.charInfo?.info && <StyledBox
                                 display='flex' dir='column' align='start'
                                 margin='10px 50px'
                             >

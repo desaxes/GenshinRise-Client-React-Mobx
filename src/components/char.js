@@ -53,8 +53,8 @@ export const Char = observer((props) => {
                 align='center'
                 onClick={() => { props.onShow(props.char.id, 'char') }}
             >
-                <StyledBox width='100%' display='flex' dir='row' jstf='space-between' padding='5px 10px' align='center' style={{ position: 'absolute',top:'5%' }} >
-                    {app.game === 'Genshin' && < img style={{ width: '50px' }} src={
+                <StyledBox width='100%' display='flex' dir='row' jstf='space-between' padding='5px 10px' align='center' style={{ position: 'absolute', top: '5%' }} >
+                    {app.game === 'Genshin' && < img style={{ width: '50px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={
                         props.char.weaponId === 1 ? onehand :
                             (props.char.weaponId === 2 ? twohand : (
                                 props.char.weaponId === 3 ? polearm : (
@@ -62,7 +62,7 @@ export const Char = observer((props) => {
                                 )
                             ))
                     } />}
-                    {app.game === 'Zzz' && < img style={{ width: '50px' }} src={
+                    {app.game === 'Zzz' && < img style={{ width: '50px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={
                         props.char.enemyMaterialId === 1 ? anomaly :
                             (props.char.enemyMaterialId === 2 ? attack : (
                                 props.char.enemyMaterialId === 3 ? stun : (
@@ -70,7 +70,7 @@ export const Char = observer((props) => {
                                 )
                             ))
                     } />}
-                    {app.game === 'Honkai' && < img style={{ width: '50px' }} src={
+                    {app.game === 'Honkai' && < img style={{ width: '50px', border: 'red 3px solid', borderRadius: '25px' }} src={
                         props.char.pathId === 1 ? raz :
                             (props.char.pathId === 2 ? ohot : (
                                 props.char.pathId === 3 ? erud : (
@@ -82,7 +82,7 @@ export const Char = observer((props) => {
                                 )
                             ))
                     } />}
-                    {app.game === 'Zzz' && < img style={{ width: '50px' }} src={
+                    {app.game === 'Zzz' && < img style={{ width: '50px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={
                         props.char.talentMaterialId === 1 ? zzzFire :
                             (props.char.talentMaterialId === 2 ? zzzElectro : (
                                 props.char.talentMaterialId === 3 ? zzzPhys : (
@@ -90,13 +90,13 @@ export const Char = observer((props) => {
                                 )
                             ))
                     } />}
-                    {props.char.stoneTypeId === 1 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? anemo : wind}></img>}
-                    {props.char.stoneTypeId === 6 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? pyro : fire}></img>}
-                    {props.char.stoneTypeId === 5 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? hydro : phys}></img>}
-                    {props.char.stoneTypeId === 4 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? dendro : kvant}></img>}
-                    {props.char.stoneTypeId === 7 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? kryo : ice}></img>}
-                    {props.char.stoneTypeId === 3 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? electro : elec}></img>}
-                    {props.char.stoneTypeId === 2 && <img alt='element' style={{ width: '50px', margin: '0 5px' }} src={app.game === 'Genshin' ? geo : mnim}></img>}
+                    {props.char.stoneTypeId === 1 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? anemo : wind}></img>}
+                    {props.char.stoneTypeId === 6 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? pyro : fire}></img>}
+                    {props.char.stoneTypeId === 5 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? hydro : phys}></img>}
+                    {props.char.stoneTypeId === 4 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? dendro : kvant}></img>}
+                    {props.char.stoneTypeId === 7 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? kryo : ice}></img>}
+                    {props.char.stoneTypeId === 3 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? electro : elec}></img>}
+                    {props.char.stoneTypeId === 2 && <img alt='element' style={{ width: '50px', margin: '0 5px', borderRadius: '25px', backgroundColor: 'black', border: 'red 3px solid' }} src={app.game === 'Genshin' ? geo : mnim}></img>}
                 </StyledBox>
                 <img alt='character'
                     style={{ maxWidth: '120px', height: '120px', borderRadius: '15px' }}
