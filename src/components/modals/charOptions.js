@@ -9,6 +9,9 @@ import { StyledBox, StyledTitle } from '../../styledComponents/styled-components
 import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise, updateZzzCharInfo } from '../../http/zzz/charAPI';
 import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise, updateHonkaiCharInfo } from '../../http/honkai/charAPI';
 import { genshinProps, honkaiProps, zzzProps } from '../../utils/props';
+import { getBossMaterialById, getEnemyMaterialById, getLocalSpecialtyById, getStoneById, getTalentById, getWBMaterialById } from '../../http/materialAPI';
+import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiWBMaterialById } from '../../http/honkai/materialAPI';
+import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../../http/zzz/materialAPI';
 
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
@@ -30,6 +33,21 @@ export const CharOptions = observer((props) => {
     const [talent2, setTalent2] = useState()
     const [talent3, setTalent3] = useState()
     const [wbmat, setWbmat] = useState()
+
+    const [bm, setBm] = useState()
+    const [em, setEm] = useState()
+    const [wbm, setWbm] = useState()
+    const [tm, setTm] = useState()
+    const [lsm, setLsm] = useState()
+    const [sm, setSm] = useState()
+
+    const [weaponTooltip, setWeaponTooltip] = useState(false)
+    const [artTooltip, setArtTooltip] = useState(false)
+    const [weaponInfo, setWeaponInfo] = useState('')
+    const [weaponName, setWeaponName] = useState('')
+    const [artInfo1, setArtInfo1] = useState('')
+    const [artInfo2, setArtInfo2] = useState('')
+    const [artName, setArtName] = useState('')
 
     const [editor, setEditor] = useState(false)
     const [weapon, setWeapon] = useState()
@@ -217,6 +235,47 @@ export const CharOptions = observer((props) => {
             }
         })
     }, [update])
+    //Запрос материалов для карточки
+    useEffect(() => {
+        let getStone
+        let getLS
+        let getBossMaterial
+        let getEnemyMaterial
+        let getTalentMaterial
+        let getWeekBossMaterial
+        switch (app.game) {
+            case 'Genshin':
+                getStone = getStoneById
+                getLS = getLocalSpecialtyById
+                getBossMaterial = getBossMaterialById
+                getEnemyMaterial = getEnemyMaterialById
+                getTalentMaterial = getTalentById
+                getWeekBossMaterial = getWBMaterialById
+                break;
+            case 'Honkai':
+                getBossMaterial = getHonkaiBossMaterialById
+                getEnemyMaterial = getHonkaiEnemyMaterialById
+                getTalentMaterial = getHonkaiTalentById
+                getWeekBossMaterial = getHonkaiWBMaterialById
+                break;
+            case 'Zzz':
+                getBossMaterial = getZzzBossMaterialById
+                getEnemyMaterial = getZzzEnemyMaterialById
+                getTalentMaterial = getZzzTalentById
+                getWeekBossMaterial = getZzzWBMaterialById
+                break;
+            default:
+                break;
+        }
+        if (app.game === 'Genshin') {
+            getStone(char?.stoneTypeId).then(res => setSm(res.data))
+            getLS(char?.localSpecialtyId).then(res => setLsm(res.data))
+        }
+        getBossMaterial(char?.bossMaterialId).then(res => setBm(res.data))
+        getEnemyMaterial(char?.enemyMaterialId).then(res => setEm(res.data))
+        getTalentMaterial(char?.talentMaterialId).then(res => setTm(res.data))
+        getWeekBossMaterial(char?.weekBossMaterialId).then(res => setWbm(res.data))
+    }, [char])
     return (
         <Modal
             {...props}
@@ -231,7 +290,7 @@ export const CharOptions = observer((props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ display: "flex", alignItems: 'center', justifyContent: 'space-around', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <StyledBox display='flex' align='center' jstf='space-between'>
+                <StyledBox display='flex' align='center' jstf='center' width='100%'>
                     {editor ?
                         // Редактор
                         <StyledBox>
@@ -649,101 +708,245 @@ export const CharOptions = observer((props) => {
                                         {thirdTeam?.map(e => <Button variant='danger' onClick={() => setThirdTeam(thirdTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
                                     </StyledBox>
                                 </StyledBox>
-                                <Button className='mt-3' onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить Информацию</Button>
                             </Form>
                         </StyledBox> :
                         // Карточка персонажа
-                        <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                            {char?.charInfo && char?.charInfo?.info && <StyledBox
-                                display='flex' dir='column' align='start'
-                                margin='10px 50px'
-                            >
-                                <StyledTitle fz='20px' color='yellow'>Информация</StyledTitle>
-                                {char?.charInfo.info}
-                            </StyledBox>}
-                            <StyledBox display='flex' jstf='space-between' width='80%' align='center'>
-                                <StyledBox display='flex' gap='15px'>
-                                    {weapon != undefined && <StyledBox margin='20px 0'>
-                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
-                                    </StyledBox>}
-                                    {recFiveStarWeapon != undefined && <StyledBox margin='20px 0'>
-                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFiveStarWeapon?.img}></img>
-                                    </StyledBox>}
-                                    {recFourStarWeapon != undefined && <StyledBox margin='20px 0'>
-                                        <img style={{ height: app.game === 'Honkai' ? '150px' : '100px', width: '100px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFourStarWeapon?.img}></img>
-                                    </StyledBox>}
+                        <StyledBox width='100%' color='yellow' display='flex' dir='column' align='center'>
+                            <StyledBox border='solid 1px yellow' gap='35px' padding='10px 50px' display='flex' width='100%' align='center' jstf='center'>
+                                {char?.charInfo && char?.charInfo?.info && <StyledBox
+                                    display='flex' dir='column' align='start'
+                                >
+                                    <StyledTitle fz='20px' color='yellow'>Информация</StyledTitle>
+                                    {char?.charInfo.info}
+                                </StyledBox>}
+                                <StyledBox align='center' display='flex' jstf='center'>
+                                    <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
                                 </StyledBox>
-                                <StyledBox display='flex' gap='15px' dir='column' align='center'>
-                                    <StyledBox display='flex'>
-                                        {firstArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
-                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetfirstHalf?.img}></img>
+                            </StyledBox>
+                            <StyledBox margin='5px 0' border='solid 1px yellow' padding='10px 5px' display='flex' jstf='space-between' width='100%' align='center'>
+                                <StyledBox display='flex' gap='10px' dir='row' jstf='center' align='center' width='33%'>
+                                    {weapon != undefined && <StyledBox onMouseEnter={() => {
+                                        setWeaponTooltip(true)
+                                        setWeaponInfo(weapon?.weaponInfo?.info)
+                                        setWeaponName(weapon?.name)
+                                    }} onMouseLeave={() => setWeaponTooltip(false)}>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '75px', width: '75px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
+                                    </StyledBox>}
+                                    {recFiveStarWeapon != undefined && <StyledBox onMouseEnter={() => {
+                                        setWeaponTooltip(true)
+                                        setWeaponInfo(recFiveStarWeapon?.weaponInfo?.info)
+                                        setWeaponName(recFiveStarWeapon?.name)
+                                    }} onMouseLeave={() => setWeaponTooltip(false)}>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '75px', width: '75px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFiveStarWeapon?.img}></img>
+                                    </StyledBox>}
+                                    {recFourStarWeapon != undefined && <StyledBox onMouseEnter={() => {
+                                        setWeaponTooltip(true)
+                                        setWeaponInfo(recFourStarWeapon?.weaponInfo?.info)
+                                        setWeaponName(recFourStarWeapon?.name)
+                                    }} onMouseLeave={() => setWeaponTooltip(false)}>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '75px', width: '75px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + recFourStarWeapon?.img}></img>
+                                    </StyledBox>}
+                                    {weaponTooltip && weaponInfo &&
+                                        <StyledBox style={{
+                                            backgroundColor: 'black', width: '400px',
+                                            position: 'absolute', right: '0%', top: '110%', zIndex: '100000',
+                                            border: '2px solid yellow', borderRadius: '12px',
+                                            padding: '5px', whiteSpace: 'normal', overflowWrap: 'anywhere'
+                                        }}>
+                                            <StyledTitle fz='20px'>{weaponName}</StyledTitle>
+                                            <StyledTitle fz='16px'>{weaponInfo}</StyledTitle>
                                         </StyledBox>}
-                                        {firstArtSetSecondHalf != undefined
-                                            && firstArtSetfirstHalf?.id !== firstArtSetSecondHalf?.id &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetSecondHalf?.img}></img>
+                                </StyledBox>
+                                <StyledBox display='flex' dir='column' gap='10px' jstf='center' align='center' width='33%'>
+                                    <StyledBox display='flex' gap='15px'>
+                                        <StyledBox display='flex'>
+                                            {firstArtSetfirstHalf != undefined && <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + firstArtSetfirstHalf?.twoPartsEffect)
+                                                if (firstArtSetSecondHalf === undefined
+                                                    || firstArtSetfirstHalf?.id === firstArtSetSecondHalf?.id || app.game === 'Zzz') {
+                                                    setArtInfo2('4 части: ' + firstArtSetfirstHalf?.fourPartsEffect)
+                                                }
+                                                setArtName(firstArtSetfirstHalf?.name)
+                                            }} onMouseLeave={() => { setArtTooltip(false); setArtInfo2('') }}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetfirstHalf?.img}></img>
                                             </StyledBox>}
-                                    </StyledBox>
-                                    <StyledBox display='flex'>
-                                        {secondArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
-                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetfirstHalf?.img}></img>
-                                        </StyledBox>}
-                                        {secondArtSetSecondHalf != undefined
-                                            && secondArtSetfirstHalf?.id !== secondArtSetSecondHalf?.id &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetSecondHalf?.img}></img>
+                                            {firstArtSetSecondHalf != undefined
+                                                && firstArtSetfirstHalf?.id !== firstArtSetSecondHalf?.id &&
+                                                <StyledBox display='flex' align='center' onMouseEnter={() => {
+                                                    setArtTooltip(true)
+                                                    setArtInfo1('2 части: ' + firstArtSetSecondHalf?.twoPartsEffect)
+                                                    setArtName(firstArtSetSecondHalf?.name)
+                                                }} onMouseLeave={() => setArtTooltip(false)}>
+                                                    +<img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstArtSetSecondHalf?.img}></img>
+                                                </StyledBox>}
+                                        </StyledBox>
+                                        <StyledBox display='flex'>
+                                            {secondArtSetfirstHalf != undefined && <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + secondArtSetfirstHalf?.twoPartsEffect)
+                                                if (secondArtSetSecondHalf === undefined
+                                                    || secondArtSetfirstHalf?.id === secondArtSetSecondHalf?.id || app.game === 'Zzz') {
+                                                    setArtInfo2('4 части: ' + secondArtSetfirstHalf?.fourPartsEffect)
+                                                }
+                                                setArtName(secondArtSetfirstHalf?.name)
+                                            }} onMouseLeave={() => { setArtTooltip(false); setArtInfo2('') }}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetfirstHalf?.img}></img>
                                             </StyledBox>}
-                                    </StyledBox>
-                                    <StyledBox display='flex'>
-                                        {thirdArtSetfirstHalf != undefined && <StyledBox margin='20px 0'>
-                                            <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetfirstHalf?.img}></img>
-                                        </StyledBox>}
-                                        {thirdArtSetSecondHalf != undefined
-                                            && thirdArtSetfirstHalf?.id !== thirdArtSetSecondHalf?.id &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetSecondHalf?.img}></img>
+                                            {secondArtSetSecondHalf != undefined
+                                                && secondArtSetfirstHalf?.id !== secondArtSetSecondHalf?.id &&
+                                                <StyledBox display='flex' align='center' onMouseEnter={() => {
+                                                    setArtTooltip(true)
+                                                    setArtInfo1('2 части: ' + secondArtSetSecondHalf?.twoPartsEffect)
+                                                    setArtName(secondArtSetSecondHalf?.name)
+                                                }} onMouseLeave={() => setArtTooltip(false)}>
+                                                    +<img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondArtSetSecondHalf?.img}></img>
+                                                </StyledBox>}
+                                        </StyledBox>
+                                        <StyledBox display='flex'>
+                                            {thirdArtSetfirstHalf != undefined && <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + thirdArtSetfirstHalf?.twoPartsEffect)
+                                                if (thirdArtSetSecondHalf === undefined
+                                                    || thirdArtSetfirstHalf?.id === thirdArtSetSecondHalf?.id || app.game === 'Zzz') {
+                                                    setArtInfo2('4 части: ' + thirdArtSetfirstHalf?.fourPartsEffect)
+                                                }
+                                                setArtName(thirdArtSetfirstHalf?.name)
+                                            }} onMouseLeave={() => { setArtTooltip(false); setArtInfo2('') }}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetfirstHalf?.img}></img>
                                             </StyledBox>}
+                                            {thirdArtSetSecondHalf != undefined
+                                                && thirdArtSetfirstHalf?.id !== thirdArtSetSecondHalf?.id &&
+                                                <StyledBox display='flex' align='center' onMouseEnter={() => {
+                                                    setArtTooltip(true)
+                                                    setArtInfo1('2 части: ' + thirdArtSetSecondHalf?.twoPartsEffect)
+                                                    setArtName(thirdArtSetSecondHalf?.name)
+                                                }} onMouseLeave={() => setArtTooltip(false)}>
+                                                    +<img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdArtSetSecondHalf?.img}></img>
+                                                </StyledBox>}
+                                        </StyledBox>
                                     </StyledBox>
                                     <StyledBox display='flex'>
                                         {firstPlanarSet != undefined &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstPlanarSet?.img}></img>
+                                            <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + firstPlanarSet?.twoPartsEffect)
+                                                setArtName(firstPlanarSet?.name)
+                                            }} onMouseLeave={() => setArtTooltip(false)}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + firstPlanarSet?.img}></img>
                                             </StyledBox>}
                                         {secondPlanarSet != undefined &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondPlanarSet?.img}></img>
+                                            <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + secondPlanarSet?.twoPartsEffect)
+                                                setArtName(secondPlanarSet?.name)
+                                            }} onMouseLeave={() => setArtTooltip(false)}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + secondPlanarSet?.img}></img>
                                             </StyledBox>}
                                         {thirdPlanarSet != undefined &&
-                                            <StyledBox margin='20px 0'>
-                                                <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdPlanarSet?.img}></img>
+                                            <StyledBox onMouseEnter={() => {
+                                                setArtTooltip(true)
+                                                setArtInfo1('2 части: ' + thirdPlanarSet?.twoPartsEffect)
+                                                setArtName(thirdPlanarSet?.name)
+                                            }} onMouseLeave={() => setArtTooltip(false)}>
+                                                <img style={{ height: '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/arts/" : (app.game === 'Zzz' ? '/zzz/arts/' : '/honkai/arts/')) + thirdPlanarSet?.img}></img>
                                             </StyledBox>}
                                     </StyledBox>
+                                    {artTooltip && artInfo1 &&
+                                        <StyledBox style={{
+                                            backgroundColor: 'black', width: '400px',
+                                            position: 'absolute', top: '110%', zIndex: '100000',
+                                            border: '2px solid yellow', borderRadius: '12px',
+                                            padding: '10px', whiteSpace: 'normal', overflowWrap: 'anywhere'
+                                        }}><StyledTitle fz='20px'>{artName}</StyledTitle>
+                                            <StyledTitle fz='16px'>{artInfo1}</StyledTitle>
+                                            <StyledTitle fz='16px'>{artInfo2}</StyledTitle>
+                                        </StyledBox>}
+                                </StyledBox>
+                                <StyledBox width='33%'>
+                                    <StyledBox display='flex' gap='30px' jstf='center'>
+                                        {firstArtProp.id != 0 && <StyledBox display='flex' dir='column'>
+                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Шапка' : (app.game === 'Honkai' ? 'Куртка' : '4 Диск')}</StyledTitle>
+                                            <StyledTitle fz='14px'>{firstArtProp.name}</StyledTitle>
+                                        </StyledBox>}
+                                        {secondArtProp.id != 0 && <StyledBox display='flex' dir='column'>
+                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Кубок' : (app.game === 'Honkai' ? 'Сфера' : '5 Диск')}</StyledTitle>
+                                            <StyledTitle fz='14px'>{secondArtProp.name}</StyledTitle>
+                                        </StyledBox>}
+                                    </StyledBox>
+                                    <StyledBox display='flex' gap='30px' jstf='center'>
+                                        {thirdArtProp.id != 0 && <StyledBox display='flex' dir='column'>
+                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Часы' : (app.game === 'Honkai' ? 'Сапоги' : '6 Диск')}</StyledTitle>
+                                            <StyledTitle fz='14px'>{thirdArtProp.name}</StyledTitle>
+                                        </StyledBox>}
+                                        {app.game === 'Honkai' && fourthArtProp.id != 0 && <StyledBox display='flex' dir='column'>
+                                            <StyledTitle dec='underline' fz='18px'>Веревка</StyledTitle>
+                                            <StyledTitle fz='14px'>{fourthArtProp.name}</StyledTitle>
+                                        </StyledBox>}
+                                    </StyledBox>
+                                    {charProps.length > 0 && <StyledBox display='flex' dir='column'>
+                                        <StyledTitle dec='underline' fz='18px'>Сабстаты</StyledTitle>
+                                        <StyledBox display='flex' dir='column' fz='18px'>{char?.charInfo?.charProps?.map(e => <StyledTitle fz='14px'>{e.name}</StyledTitle>)}</StyledBox>
+                                    </StyledBox>}
                                 </StyledBox>
                             </StyledBox>
-                            <Button onClick={() => setEditor(true)} style={{ width: '130px' }} variant='outline-warning'>Редактировать Информацию</Button>
+                            <StyledBox border='solid 1px yellow' width='100%'>
+                                <StyledTitle fz='20px' >Материалы</StyledTitle>
+                                <StyledBox jstf='center' display='flex' gap='10px' margin='5px 0'>
+                                    {app.game === 'Genshin' && < img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + "/stones/" + sm?.img4}></img>}
+                                    {app.game === 'Genshin' && < img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + "/localSpecialtys/" + lsm?.img}></img>}
+                                    <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/enemyMaterials/" : (app.game === 'Zzz' ? '/zzz/enemyMaterials/' : '/honkai/enemyMaterials/')) + em?.img3}></img>
+                                    <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/talents/" : (app.game === 'Zzz' ? '/zzz/talents/' : '/honkai/talents/')) + tm?.img3}></img>
+                                    <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/bossMaterials/" : (app.game === 'Zzz' ? '/zzz/bossMaterials/' : '/honkai/bossMaterials/')) + bm?.img}></img>
+                                    <img style={{ height: '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weekBossMaterials/" : (app.game === 'Zzz' ? '/zzz/weekBossMaterials/' : '/honkai/weekBossMaterials/')) + wbm?.img}></img>
+                                </StyledBox>
+                            </StyledBox>
+                            {(firstTeam.length > 0 || secondTeam.length > 0 || thirdTeam.length > 0) && <StyledBox border='solid 1px yellow' width='100%' margin='5px 0' padding='5px 0'>
+                                {(firstTeam.length > 0 || secondTeam.length > 0 || thirdTeam.length > 0) &&
+                                    <StyledTitle fz='20px' >Команды</StyledTitle>}
+                                <StyledBox display='flex' gap='40px' align='center' jstf='center'>
+                                    {firstTeam.length > 0 && <StyledBox display='flex' gap='5px'>
+                                        {firstTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[0]?.img}></img>}
+                                        {firstTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[1]?.img}></img>}
+                                        {firstTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[2]?.img}></img>}
+                                        {firstTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[3]?.img}></img>}
+                                    </StyledBox>}
+                                    {secondTeam.length > 0 && <StyledBox display='flex' gap='5px'>
+                                        {secondTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[0]?.img}></img>}
+                                        {secondTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[1]?.img}></img>}
+                                        {secondTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[2]?.img}></img>}
+                                        {secondTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[3]?.img}></img>}
+                                    </StyledBox>}
+                                    {thirdTeam.length > 0 && <StyledBox display='flex' gap='5px'>
+                                        {thirdTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[0]?.img}></img>}
+                                        {thirdTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[1]?.img}></img>}
+                                        {thirdTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[2]?.img}></img>}
+                                        {thirdTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[3]?.img}></img>}
+                                    </StyledBox>}
+                                </StyledBox>
+                            </StyledBox>}
                         </StyledBox>
                     }
-                    {!editor && <StyledBox>
-                        <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
-                    </StyledBox>}
                 </StyledBox>
-            </Modal.Body>
-            <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
-                <Button
+            </Modal.Body >
+            <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow', alignItems: 'center' }}>
+                {!editor && <Button
                     variant={disableCol ? 'danger' : 'outline-warning'}
                     onClick={() => { disableCol ? removeFromCol() : addToCol() }}>
                     {disableCol ? 'Удалить из Коллекции' : 'Добавить в Коллекцию'}
-                </Button>
-                <Button
+                </Button>}
+                {!editor && <Button
                     variant={disableRise ? 'danger' : 'outline-warning'}
                     onClick={() => { disableRise ? removeFromRise() : addToRise() }}>
                     {disableRise ? 'Удалить из Прокачки' : 'Добавить в Прокачку'}
-                </Button>
-                {!disableRise && app.game === 'Genshin' && <Button
+                </Button>}
+                {!disableRise && app.game === 'Genshin' && !editor && <Button
                     variant={changeMats ? 'warning' : 'outline-warning'}
                     onClick={() => setChangeMats(!changeMats)}>
                     {changeMats ? 'Выбор Материалов' : 'Авто Выбор Материалов'}
                 </Button>}
+                {!editor && <Button onClick={() => setEditor(true)} style={{ width: '130px' }} variant='outline-warning'>Редактировать</Button>}
+                {editor && <Button onClick={() => updateInfo()} style={{ width: '130px' }} variant='outline-warning'>Сохранить</Button>}
                 <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 {changeMats && <StyledBox>
                     <Form className="d-flex align-items-center" style={{ flexDirection: 'column' }} >
@@ -789,5 +992,5 @@ export const CharOptions = observer((props) => {
                     </Form>
                 </StyledBox>}
             </Modal.Footer>
-        </Modal>)
+        </Modal >)
 })

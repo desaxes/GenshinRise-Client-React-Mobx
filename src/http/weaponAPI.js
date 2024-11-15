@@ -135,3 +135,12 @@ export const removeMaxValuesForWeapon = async (id) => {
         console.log(e)
     }
 }
+export const updateWeaponInfo = async (data) => {
+    try {
+        const res = await $host.put('genshin/weapons/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

@@ -108,3 +108,13 @@ export const removeHonkaiWeaponFromRise = async (id) => {
         console.log(e)
     }
 }
+
+export const updateHonkaiWeaponInfo = async (data) => {
+    try {
+        const res = await $host.put('honkai/weapons/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

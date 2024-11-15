@@ -108,3 +108,12 @@ export const removeZzzWeaponFromRise = async (id) => {
         console.log(e)
     }
 }
+export const updateZzzWeaponInfo = async (data) => {
+    try {
+        const res = await $host.put('zzz/weapons/update', data)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
