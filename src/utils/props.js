@@ -74,7 +74,11 @@ export const genshinProps = [
     {
         id: 19,
         name: 'Бонус Физ Урона'
-    }
+    },
+    {
+        id: 20,
+        name: 'КШ/КУ'
+    },
 ]
 export const honkaiProps = [
     {
@@ -156,7 +160,11 @@ export const honkaiProps = [
     {
         id: 20,
         name: 'Эффект Пробития'
-    }
+    },
+    {
+        id: 21,
+        name: 'КШ/КУ'
+    },
 ]
 export const zzzProps = [
     {
@@ -225,10 +233,14 @@ export const zzzProps = [
     },
     {
         id: 17,
-        name: 'Шанс Пробивания'
+        name: 'Процент Пробивания'
     },
     {
         id: 18,
         name: 'Импульс'
-    }
+    },
+    {
+        id: 19,
+        name: 'КШ/КУ'
+    },
 ]

@@ -296,13 +296,13 @@ export const CharOptions = observer((props) => {
                         <StyledBox>
                             <Form style={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
                                 <Form.Control style={{ width: '400px' }} as="textarea" rows={10} value={info} onChange={e => { setInfo(e.target.value) }} className='mt-2 mb-2' placeholder='Enter info' />
-                                {/* Сигнатурка */}
+                                {/* Первое оружие */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {weapon === undefined ? 'Сигнатурное Оружие' : weapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                        {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
+                                        {weapons.weapons.weapons.map(e =>
                                             <Dropdown.Item
                                                 onClick={() => { setWeapon(e) }}
                                                 key={e.id}>
@@ -314,13 +314,13 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                {/* 5звездочное оружие */}
+                                {/* Второе оружие */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {recFiveStarWeapon === undefined ? 'Рекомендованное Легендарное Оружие' : recFiveStarWeapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                        {weapons.weapons.weapons.filter(e => e.stars === 5).map(e =>
+                                        {weapons.weapons.weapons.map(e =>
                                             <Dropdown.Item
                                                 onClick={() => { setRecFiveStarWeapon(e) }}
                                                 key={e.id}>
@@ -332,13 +332,13 @@ export const CharOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                {/* 4звездочное оружие */}
+                                {/* Третье оружие */}
                                 <Dropdown className='mt-2 mb-2'>
                                     <Dropdown.Toggle variant='outline-warning'>
                                         {recFourStarWeapon === undefined ? 'Рекомендованное Эпическое Оружие' : recFourStarWeapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                        {weapons.weapons.weapons.filter(e => e.stars === 4).map(e =>
+                                        {weapons.weapons.weapons.map(e =>
                                             <Dropdown.Item
                                                 onClick={() => { setRecFourStarWeapon(e) }}
                                                 key={e.id}>
@@ -354,7 +354,7 @@ export const CharOptions = observer((props) => {
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
-                                            {firstArtSetfirstHalf === undefined ? 'Первый сет артефактов (2 части)' : firstArtSetfirstHalf?.name}
+                                            {firstArtSetfirstHalf === undefined ? 'Первый сет артефактов' + (app.game === 'Zzz' ? '(4 части)' : '(2 части)') : firstArtSetfirstHalf?.name}
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                             {arts.arts?.filter(e => !e.planar).map(e =>
@@ -391,7 +391,7 @@ export const CharOptions = observer((props) => {
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
-                                            {secondArtSetfirstHalf === undefined ? 'Второй сет артефактов (2 части)' : secondArtSetfirstHalf?.name}
+                                            {secondArtSetfirstHalf === undefined ? 'Второй сет артефактов ' + (app.game === 'Zzz' ? '(4 части)' : '(2 части)') : secondArtSetfirstHalf?.name}
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                             {arts.arts?.filter(e => !e.planar).map(e =>
@@ -428,7 +428,7 @@ export const CharOptions = observer((props) => {
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
-                                            {thirdArtSetfirstHalf === undefined ? 'Третий сет артефактов (2 части)' : thirdArtSetfirstHalf?.name}
+                                            {thirdArtSetfirstHalf === undefined ? 'Третий сет артефактов' + (app.game === 'Zzz' ? '(4 части)' : '(2 части)') : thirdArtSetfirstHalf?.name}
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                             {arts.arts?.filter(e => !e.planar).map(e =>
@@ -525,9 +525,9 @@ export const CharOptions = observer((props) => {
                                             {(app.game === 'Genshin' ?
                                                 genshinProps :
                                                 (app.game === 'Honkai' ? honkaiProps : zzzProps)).filter(
-                                                    e => (app.game === 'Genshin' ? [2, 4, 6, 7, 9, 10, 11] :
-                                                        (app.game === 'Honkai' ? [2, 4, 6, 7, 9, 10, 11] :
-                                                            [2, 4, 6, 7, 9, 10])).includes(e.id)
+                                                    e => (app.game === 'Genshin' ? [2, 4, 6, 7, 9, 10, 11, 20] :
+                                                        (app.game === 'Honkai' ? [2, 4, 6, 7, 9, 10, 11, 21] :
+                                                            [2, 4, 6, 7, 9, 10, 19])).includes(e.id)
                                                 ).map(e =>
                                                     <Dropdown.Item
                                                         onClick={() => { setFirstArtProp(e) }}
@@ -684,7 +684,7 @@ export const CharOptions = observer((props) => {
                                 <StyledBox>
                                     <Dropdown className='mt-2 mb-2'>
                                         <Dropdown.Toggle variant='outline-warning'>
-                                            Первая Команда
+                                            Третья Команда
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                             {chars.chars.chars.map(e =>

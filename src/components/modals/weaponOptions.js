@@ -179,9 +179,21 @@ export const WeaponOptions = observer((props) => {
                 {!editor && <StyledBox display='flex' gap='40px' dir='row' jstf='center' width='100%' padding='10px 50px' align='center'>
                     <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? "/zzz/weapons/" : '/honkai/weapons/')) + weapon?.img}></img>
                     <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                        {attack && <StyledBox>
-                            <StyledTitle fz='24px'>Атака</StyledTitle>
-                            <StyledTitle fz='18px'>{attack}</StyledTitle>
+                        {attack && <StyledBox display='flex' gap='40px'>
+                            <StyledBox>
+                                <StyledTitle fz='24px'>Атака</StyledTitle>
+                                <StyledTitle fz='18px'>{attack}</StyledTitle>
+                            </StyledBox>
+                            {app.game === 'Honkai' && <StyledBox display='flex' gap='40px'>
+                                <StyledBox>
+                                    <StyledTitle fz='24px'>Защита</StyledTitle>
+                                    <StyledTitle fz='18px'>{def}</StyledTitle>
+                                </StyledBox>
+                                <StyledBox>
+                                    <StyledTitle fz='24px'>HP</StyledTitle>
+                                    <StyledTitle fz='18px'>{hp}</StyledTitle>
+                                </StyledBox>
+                            </StyledBox>}
                         </StyledBox>}
                         <StyledBox>
                             <StyledTitle fz='24px'>{prop.name}</StyledTitle>
@@ -199,7 +211,7 @@ export const WeaponOptions = observer((props) => {
                         <Form.Control style={{ width: '400px' }} type='number' value={attack} onChange={e => { setAttack(e.target.value) }} className='mt-2 mb-2' placeholder='Атака' />
                         {app.game === 'Honkai' && <Form.Control style={{ width: '400px' }} type='number' value={def} onChange={e => { setDef(e.target.value) }} className='mt-2 mb-2' placeholder='Защита' />}
                         {app.game === 'Honkai' && <Form.Control style={{ width: '400px' }} type='number' value={hp} onChange={e => { setHp(e.target.value) }} className='mt-2 mb-2' placeholder='HP' />}
-                        <StyledBox display='flex' gap='10px'>
+                        {app.game != 'Honkai' && <StyledBox display='flex' gap='10px'>
                             <Form.Control style={{ width: '200px' }} value={propValue} onChange={e => { setPropValue(e.target.value) }} className='mt-2 mb-2' placeholder='Значение хар-ки' />
                             <Dropdown className='mt-2 mb-2'>
                                 <Dropdown.Toggle variant='outline-warning'>
@@ -217,7 +229,7 @@ export const WeaponOptions = observer((props) => {
                                             </Dropdown.Item>)}
                                 </Dropdown.Menu>
                             </Dropdown>
-                        </StyledBox>
+                        </StyledBox>}
                     </Form>
                 </StyledBox>}
             </Modal.Body>
