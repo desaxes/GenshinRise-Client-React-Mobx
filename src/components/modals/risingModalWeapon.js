@@ -21,6 +21,12 @@ export const RisingModalWeapon = observer((props) => {
     const [ewmat1, setEwmat1] = useState(weapon && weapon.enemyWMat1Count)
     const [ewmat2, setEwmat2] = useState(weapon && weapon.enemyWMat2Count)
     const [ewmat3, setEwmat3] = useState(weapon && weapon.enemyWMat3Count)
+    const [currentGame, setCurrentGame] = useState(props.currentGame)
+    useEffect(() => {
+        if (app.game != currentGame) {
+            props.onHide()
+        }
+    }, [app.game])
     const [max, setMax] = useState()
     const saveResult = () => {
         if (app.game === 'Genshin') {

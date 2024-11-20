@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from './link';
-import { ADMIN_ROUTE, BANNER_ROUTE, CHAR_ROUTE, COLLECT_ROUTE, MAIN_PAGE, RES_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, WEAPON_ROUTE } from '../utils/constants';
+import { ADMIN_ROUTE, ARTS_ROUTE, BANNER_ROUTE, CHAR_ROUTE, COLLECT_ROUTE, MAIN_PAGE, RES_ROUTE, RISE_ROUTE, ROLL_ROUTE, STAT_ROUTE, WEAPON_ROUTE } from '../utils/constants';
 import { StyledBox } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite'
 import { useLocation } from 'react-router-dom';
@@ -19,15 +19,15 @@ export const NavBar = observer(() => {
     }, [app, app.game])
     // const [state, setState] = useState('GenshinRise')
     return (
-        <Navbar style={{border:'solid 2px yellow',position: 'fixed', zIndex: '1000000', top: '0', width: '100%', marginBottom: '200px' }} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
-            <Container  fluid>  
+        <Navbar style={{ border: 'solid 2px yellow', position: 'fixed', zIndex: '1000000', top: '0', width: '100%', marginBottom: '200px' }} bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
+            <Container fluid>
                 <Dropdown style={{ margin: '0px 30px 0 10px' }}>
                     <Dropdown.Toggle style={{ color: 'yellow', border: 'yellow 2px solid', background: 'transparent', fontSize: '24px', fontWeight: 'bold' }} variant="success" id="dropdown-basic">
                         {app.game}Rise
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => {app.setGame('Genshin')}} href="#/action-1">Genshin</Dropdown.Item>
+                        <Dropdown.Item onClick={() => { app.setGame('Genshin') }} href="#/action-1">Genshin</Dropdown.Item>
                         <Dropdown.Item onClick={() => app.setGame('Honkai')} href="#/action-2">Honkai</Dropdown.Item>
                         <Dropdown.Item onClick={() => app.setGame('Zzz')} href="#/action-3">ZZZ</Dropdown.Item>
                     </Dropdown.Menu>
@@ -61,6 +61,13 @@ export const NavBar = observer(() => {
                                         bg={location.pathname === WEAPON_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === WEAPON_ROUTE ? 'black' : 'white'}
                                     >Оружие</Link>
+                                </Col>
+                                <Col mb={'auto'} className='mb-2'>
+                                    <Link to={ARTS_ROUTE}
+                                        border='2px yellow solid' fz='18px' weight='bold' href="#action1"
+                                        bg={location.pathname === ARTS_ROUTE ? 'yellow' : 'transparent'}
+                                        color={location.pathname === ARTS_ROUTE ? 'black' : 'white'}
+                                    >Артефакты</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={RISE_ROUTE}

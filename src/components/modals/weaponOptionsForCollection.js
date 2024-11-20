@@ -9,6 +9,12 @@ import { addHonkaiWeaponToCol, getHonkaiWeaponsFromCol, removeHonkaiWeaponFromCo
 export const WeaponOptionsForCollection = observer((props) => {
     const { weapons, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
+    const [currentGame, setCurrentGame] = useState(props.currentGame)
+    useEffect(() => {
+        if (app.game != currentGame) {
+            props.onHide()
+        }
+    }, [app.game])
     const addToCol = () => {
         if (app.game === 'Genshin') {
             addWeaponToCol(weapon).then(res => setDisableCol(true))

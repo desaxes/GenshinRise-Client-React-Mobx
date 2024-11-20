@@ -127,3 +127,13 @@ export const updateZzzCharInfo = async (data) => {
         console.log(e)
     }
 }
+export const getZzzCharForWeapon = async (id) => {
+    try {
+        const res = await $host.get('zzz/characters/weapon/' + id)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+

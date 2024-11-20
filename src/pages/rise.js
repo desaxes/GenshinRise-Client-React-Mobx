@@ -73,11 +73,13 @@ const Rise = observer(() => {
                     show={true}
                     onHide={() => setModalOptions(false)}
                     charId={id}
+                    currentGame={app.game}
                 />}
                 {modalOptions && modalType === 'weapon' && <RisingModalWeapon
                     show={true}
                     onHide={() => setModalOptions(false)}
                     weaponId={id}
+                    currentGame={app.game}
                 />}
             </Container>
         </>

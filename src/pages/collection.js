@@ -48,7 +48,7 @@ const Collection = observer(() => {
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
-            <Container style={{textShadow: '2px 2px 2px black'}}>
+            <Container style={{ textShadow: '2px 2px 2px black' }}>
                 <StyledTitle className='mt-3' color='yellow'>Коллекция</StyledTitle>
                 <StyledTitle fz='24px' className='mt-3' color='yellow'>Персонажи</StyledTitle>
                 <Row className='pb-3'>
@@ -74,11 +74,13 @@ const Collection = observer(() => {
                     show={true}
                     onHide={() => setModalOptions(false)}
                     charId={id}
+                    currentGame={app.game}
                 />}
                 {modalOptions && modalType === 'weapon' && <WeaponOptionsForCollection
                     show={true}
                     onHide={() => setModalOptions(false)}
                     weaponId={id}
+                    currentGame={app.game}
                 />}
             </Container>
         </>

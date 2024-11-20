@@ -28,6 +28,12 @@ export const RisingModal = observer((props) => {
     const [talent3, setTalent3] = useState(char && char.talentMaterial3Count)
     const [wbmat, setWbmat] = useState(char && char.weekBossMaterialCount)
     const [max, setMax] = useState()
+    const [currentGame, setCurrentGame] = useState(props.currentGame)
+    useEffect(() => {
+        if (app.game != currentGame) {
+            props.onHide()
+        }
+    }, [app.game])
     const saveResult = () => {
         if (app.game === 'Genshin') {
             updateCharFromRise({

@@ -127,3 +127,12 @@ export const updateHonkaiCharInfo = async (data) => {
         console.log(e)
     }
 }
+export const getHonkaiCharForWeapon = async (id) => {
+    try {
+        const res = await $host.get('honkai/characters/weapon/' + id)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}

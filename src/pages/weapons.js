@@ -16,9 +16,11 @@ import { WeaponOptions } from '../components/modals/weaponOptions';
 import { getZzzWeapons } from '../http/zzz/weaponAPI';
 import { getHonkaiWeaponStatistic } from '../http/honkai/rollAPI';
 import { getHonkaiWeapons } from '../http/honkai/weaponAPI';
+import { getZzzChars } from '../http/zzz/charAPI';
+import { getHonkaiChars } from '../http/honkai/charAPI';
 
 const Weapons = observer(() => {
-    const { weapons, app } = useContext(AppContext)
+    const { weapons, app, chars } = useContext(AppContext)
     const [weaponId, setWeaponId] = useState()
     const [modalOptions, setModalOptions] = useState(false)
     const createModal = (id) => {
@@ -47,14 +49,17 @@ const Weapons = observer(() => {
         }
         if (app.game === 'Genshin') {
             getWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
+            getChars().then(res => chars.setChars(res.data))
         }
         else if (app.game === 'Zzz') {
             getZzzWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
+            getZzzChars().then(res => chars.setChars(res.data))
         }
         else if (app.game === 'Honkai') {
             getHonkaiWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
+            getHonkaiChars().then(res => chars.setChars(res.data))
         }
-    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons,weapons.pathId])
+    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons, weapons.pathId])
     let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
@@ -139,6 +144,7 @@ const Weapons = observer(() => {
                     show={true}
                     onHide={() => setModalOptions(false)}
                     weaponId={weaponId}
+                    currentGame={app.game}
                 />
                 }
             </Container >

@@ -9,6 +9,12 @@ import { getHonkaiCharFromColById, getHonkaiCharsFromCol, removeHonkaiCharFromCo
 export const CharOptionsForCollection = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const [disableCol, setDisableCol] = useState(false)
+    const [currentGame, setCurrentGame] = useState(props.currentGame)
+    useEffect(() => {
+        if (app.game != currentGame) {
+            props.onHide()
+        }
+    }, [app.game])
     const addToCol = () => {
         if (app.game === "Genshin") {
             addCharToCol(char).then(res => setDisableCol(true))

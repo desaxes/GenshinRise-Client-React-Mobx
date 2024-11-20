@@ -240,6 +240,7 @@ const Characters = observer(() => {
                     show={true}
                     onHide={() => setModalOptions(false)}
                     charId={charId}
+                    currentGame={app.game}
                 />}
             </Container>
         </>

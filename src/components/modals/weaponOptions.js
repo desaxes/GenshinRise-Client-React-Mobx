@@ -9,9 +9,13 @@ import { addMaxValuesForWeapon, addWeaponToCol, addWeaponToRise, getWeaponById, 
 import { addZzzWeaponToCol, addZzzWeaponToRise, getZzzWeaponById, getZzzWeaponFromColById, getZzzWeaponFromRiseById, removeZzzWeaponFromCol, updateZzzWeaponInfo } from '../../http/zzz/weaponAPI';
 import { addHonkaiWeaponToCol, addHonkaiWeaponToRise, getHonkaiWeaponById, getHonkaiWeaponFromColById, getHonkaiWeaponFromRiseById, removeHonkaiWeaponFromCol, removeHonkaiWeaponFromRise, updateHonkaiWeaponInfo } from '../../http/honkai/weaponAPI';
 import { genshinProps, honkaiProps, zzzProps } from '../../utils/props';
+import { getCharForWeapon } from '../../http/charAPI';
+import { getHonkaiCharForWeapon } from '../../http/honkai/charAPI';
+import { getZzzCharForWeapon } from '../../http/zzz/charAPI';
 export const WeaponOptions = observer((props) => {
-    const { weapons, app } = useContext(AppContext)
+    const { weapons, app, chars } = useContext(AppContext)
     const [weapon, setWeapon] = useState()
+    const [owner, setOwner] = useState()
 
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -35,6 +39,7 @@ export const WeaponOptions = observer((props) => {
     const [propValue, setPropValue] = useState('')
     const [prop, setProp] = useState({ id: 0, name: '' })
     const [update, setUpdate] = useState(false)
+    const [currentGame, setCurrentGame] = useState(props.currentGame)
 
     const updateInfo = () => {
         let formData = new FormData()
@@ -56,24 +61,33 @@ export const WeaponOptions = observer((props) => {
         }
         setUpdate(!update)
     }
-
+    useEffect(() => {
+        if (app.game != currentGame) {
+            props.onHide()
+        }
+    }, [app.game])
     useEffect(() => {
         let getWeapon
+        let getOwner
         switch (app.game) {
             case 'Genshin':
                 getWeapon = getWeaponById
+                getOwner = getCharForWeapon
                 break;
             case 'Honkai':
                 getWeapon = getHonkaiWeaponById
+                getOwner = getHonkaiCharForWeapon
                 break;
             case 'Zzz':
                 getWeapon = getZzzWeaponById
+                getOwner = getZzzCharForWeapon
                 break;
             default:
                 break;
         }
         getWeapon(props.weaponId).then(res => {
             setWeapon(res.data)
+            getOwner(props.weaponId).then(res => setOwner(res.data))
             if (res.data.weaponInfo) {
                 if (res.data.weaponInfo.info) { setInfo(res.data.weaponInfo.info) }
                 if (res.data.weaponInfo.attack) { setAttack(res.data.weaponInfo.attack) }
@@ -162,6 +176,8 @@ export const WeaponOptions = observer((props) => {
             getHonkaiWeaponFromRiseById(props.weaponId).then(res => { res.data && setDisableRise(true) })
         }
     }, [props.weaponId, app.game])
+    let characters = chars.chars.chars?.filter(e => e.charInfo?.recWeapons?.some(w => w.id === props.weaponId))
+    console.log(characters)
     return (
         <Modal
             {...props}
@@ -203,6 +219,20 @@ export const WeaponOptions = observer((props) => {
                             <StyledTitle fz='24px'>Способность</StyledTitle>
                             <StyledTitle fz='18px'>{info}</StyledTitle>
                         </StyledBox>}
+                        <StyledBox gap='30px' display='flex' align='center' jstf='center' width='100%' margin='20px 0'>
+                            {owner && <StyledBox display='flex' dir='column' align='center'>
+                                <StyledTitle fz='18px'>Владелец</StyledTitle>
+                                <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + owner?.img}></img>
+                            </StyledBox>}
+                            {characters.length > 0 && <StyledBox display='flex' dir='column' align='center'>
+                                <StyledTitle fz='18px'>Подходит Персонажам</StyledTitle>
+                                <StyledBox display='flex' gap='5px'>
+                                    {characters?.map(e =>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
+                                    )}
+                                </StyledBox>
+                            </StyledBox>}
+                        </StyledBox>
                     </StyledBox>
                 </StyledBox>}
                 {editor && <StyledBox>
