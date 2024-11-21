@@ -2,13 +2,13 @@ import { useContext, useEffect, useState } from "react"
 import { getEventStatistic, getStandartStatistic, getStatistic, getWeaponStatistic } from "../http/rollAPI"
 import { StyledBox, StyledImg, StyledTitle } from "../styledComponents/styled-components"
 import { Button, Col, Container, Row } from "react-bootstrap"
-import { getCharFromColById, getCharStatistic, getCharsFromCol } from "../http/charAPI"
+import { getCharFromColById, getCharStatistic, getCharsFromCol, getCharsWithSortByPatchCounter, getCharsWithSortByPatchNumber, getCharsWithSortByRelease } from "../http/charAPI"
 import { AppContext } from ".."
 import { getZzzEventStatistic, getZzzStandartStatistic, getZzzWeaponStatistic } from "../http/zzz/rollAPI"
 import { observer } from "mobx-react-lite"
-import { getZzzCharsFromCol, getZzzCharStatistic } from "../http/zzz/charAPI"
+import { getZzzCharsFromCol, getZzzCharStatistic, getZzzCharsWithSortByPatchCounter, getZzzCharsWithSortByPatchNumber, getZzzCharsWithSortByRelease } from "../http/zzz/charAPI"
 import { getHonkaiEventStatistic, getHonkaiStandartStatistic, getHonkaiWeaponStatistic } from "../http/honkai/rollAPI"
-import { getHonkaiCharsFromCol, getHonkaiCharStatistic } from "../http/honkai/charAPI"
+import { getHonkaiCharsFromCol, getHonkaiCharStatistic, getHonkaiCharsWithSortByPatchCounter, getHonkaiCharsWithSortByPatchNumber, getHonkaiCharsWithSortByRelease } from "../http/honkai/charAPI"
 
 import anemo from '../img/elements/anemo.webp'
 import pyro from '../img/elements/pyro.png'
@@ -55,6 +55,9 @@ const Statistic = observer(() => {
     const [charStatistic, setCharStatistic] = useState([])
     const [regionStatistic, setRegionStatistic] = useState([])
     const [col, setCol] = useState()
+    const [charsPN, setCharsPN] = useState()
+    const [charsPC, setCharsPC] = useState()
+    const [charsR, setCharsR] = useState()
     const { app } = useContext(AppContext)
     useEffect(() => {
         if (app.game === 'Genshin') {
@@ -67,6 +70,9 @@ const Statistic = observer(() => {
             getWeaponStatistic().then(res => {
                 res && setWRolls(res.data)
             })
+            getCharsWithSortByPatchNumber().then(res => setCharsPN(res.data))
+            getCharsWithSortByPatchCounter().then(res => setCharsPC(res.data))
+            getCharsWithSortByRelease().then(res => setCharsR(res.data))
         }
         else if (app.game === 'Zzz') {
             getZzzStandartStatistic().then(res => {
@@ -78,6 +84,9 @@ const Statistic = observer(() => {
             getZzzWeaponStatistic().then(res => {
                 res && setWRolls(res.data)
             })
+            getZzzCharsWithSortByPatchNumber().then(res => setCharsPN(res.data))
+            getZzzCharsWithSortByPatchCounter().then(res => setCharsPC(res.data))
+            getZzzCharsWithSortByRelease().then(res => setCharsR(res.data))
         }
         else if (app.game === 'Honkai') {
             getHonkaiStandartStatistic().then(res => {
@@ -89,6 +98,9 @@ const Statistic = observer(() => {
             getHonkaiWeaponStatistic().then(res => {
                 res && setWRolls(res.data)
             })
+            getHonkaiCharsWithSortByPatchNumber().then(res => setCharsPN(res.data))
+            getHonkaiCharsWithSortByPatchCounter().then(res => setCharsPC(res.data))
+            getHonkaiCharsWithSortByRelease().then(res => setCharsR(res.data))
         }
     }, [app.game])
     useEffect(() => {
@@ -219,7 +231,7 @@ const Statistic = observer(() => {
                         {charTableCell[12]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                    <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={polearm} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={polearm} /></Col>
                         {charTableCell[13]}
                         {charTableCell[14]}
                         {charTableCell[15]}
@@ -392,6 +404,57 @@ const Statistic = observer(() => {
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{app.game === 'Genshin' ? 'Снежная' : (app.game === 'Zzz' ? 'Сыны Калидона' : 'КММ')}</StyledTitle>{regionTableRow[6]}</StyledBox>
                     {app.game === 'Honkai' && <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{'Разное'}</StyledTitle>{regionTableRow[7]}{regionTableRow[8]}{regionTableRow[9]}{regionTableRow[10]}{regionTableRow[11]} {regionTableRow[12]} </StyledBox>}
                 </StyledBox>
+                <Row style={{ margin: '30px 0' }}>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'Последнее Появление в Баннере'}</StyledTitle>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsPN?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) == e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
+                        </Col> : '')}
+                    </Row>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsPN?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) == e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
+                        </Col> : '')}
+                    </Row>
+                </Row>
+                <Row style={{ margin: '30px 0' }}>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'Кол-во Появлений в Баннерах'}</StyledTitle>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsPC?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{e.charInfo?.patchCounter}</StyledTitle>
+                        </Col> : '')}
+                    </Row>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsPC?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{e.charInfo?.patchCounter}</StyledTitle>
+                        </Col> : '')}
+                    </Row>
+                </Row>
+                <Row style={{ margin: '30px 0' }}>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'Порядок выхода персонажей'}</StyledTitle>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsR?.chars?.filter(e => e.stars === 5).map(e => e.charInfo?.firstPatch && <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) == e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
+                        </Col>)}
+                    </Row>
+                    <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
+                    <Row style={{ justifyContent: 'center' }}>
+                        {charsR?.chars?.filter(e => e.stars === 4).map(e => e.charInfo?.firstPatch && <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img style={{ width: '60px', margin: '15px 0' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) == e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
+                        </Col>)}
+                    </Row>
+                </Row>
             </Container>
         </>
     )

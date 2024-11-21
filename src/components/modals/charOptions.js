@@ -70,6 +70,9 @@ export const CharOptions = observer((props) => {
     const [secondTeam, setSecondTeam] = useState([])
     const [thirdTeam, setThirdTeam] = useState([])
     const [info, setInfo] = useState('')
+    const [firstPatch, setFirstPatch] = useState(0)
+    const [lastPatch, setLastPatch] = useState(0)
+    const [patchCounter, setPatchCounter] = useState(0)
     const [char, setChar] = useState()
     const [update, setUpdate] = useState(false)
     const [currentGame, setCurrentGame] = useState(props.currentGame)
@@ -166,6 +169,9 @@ export const CharOptions = observer((props) => {
         formData.append('secondTeam', JSON.stringify(secondTeam))
         formData.append('thirdTeam', JSON.stringify(thirdTeam))
         formData.append('info', info)
+        formData.append('firstPatch', firstPatch)
+        formData.append('lastPatch', lastPatch)
+        formData.append('patchCounter', patchCounter)
         if (app.game === 'Genshin') {
             updateCharInfo(formData).then(res => { setEditor(false); setUpdate(!update) })
         }
@@ -229,6 +235,9 @@ export const CharOptions = observer((props) => {
                 if (res.data.charInfo.secondTeam) { setSecondTeam(res.data.charInfo.secondTeam) }
                 if (res.data.charInfo.thirdTeam) { setThirdTeam(res.data.charInfo.thirdTeam) }
                 if (res.data.charInfo.charProps) { setCharProps(res.data.charInfo.charProps) }
+                if (res.data.charInfo.firstPatch) { setFirstPatch(res.data.charInfo.firstPatch) }
+                if (res.data.charInfo.lastPatch) { setLastPatch(res.data.charInfo.lastPatch) }
+                if (res.data.charInfo.patchCounter) { setPatchCounter(res.data.charInfo.patchCounter) }
             }
         })
     }, [update])
@@ -304,6 +313,9 @@ export const CharOptions = observer((props) => {
                                         {weapon === undefined ? 'Сигнатурное Оружие' : weapon?.name}
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                        <Dropdown.Item style={{
+                                            display: 'flex', justifyContent: 'center', fontWeight: 'bold'
+                                        }} onClick={() => { setWeapon() }}>Сброс</Dropdown.Item>
                                         {weapons.weapons.weapons.map(e =>
                                             <Dropdown.Item
                                                 onClick={() => { setWeapon(e) }}
@@ -731,6 +743,11 @@ export const CharOptions = observer((props) => {
                                         {thirdTeam?.map(e => <Button variant='danger' onClick={() => setThirdTeam(thirdTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
                                     </StyledBox>
                                 </StyledBox>
+                                <StyledBox display='flex' gap='10px'>
+                                    <Form.Control value={firstPatch} id='1' onChange={e => setFirstPatch(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Выход персонажа' />
+                                    <Form.Control value={lastPatch} id='2' onChange={e => setLastPatch(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Последнее появление' />
+                                    <Form.Control value={patchCounter} id='3' onChange={e => setPatchCounter(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Кол-во поялвений' />
+                                </StyledBox>
                             </Form>
                         </StyledBox> :
                         // Карточка персонажа
@@ -891,31 +908,33 @@ export const CharOptions = observer((props) => {
                                             <StyledTitle fz='16px'>{artInfo2}</StyledTitle>
                                         </StyledBox>}
                                 </StyledBox>
-                                <StyledBox display='flex' dir='column' align='center' gap='10px' padding='20px 10px' width='33%' border='yellow solid 2px' br='16px'>
-                                    <StyledTitle dec='underline' fz='20px'>Рекомендуемые Статы</StyledTitle>
-                                    <Row style={{ justifyContent: 'center' }}>
-                                        {firstArtProp.id != 0 && <Col md={6}>
-                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Шапка' : (app.game === 'Honkai' ? 'Куртка' : '4 Диск')}</StyledTitle>
-                                            <StyledTitle fz='14px'>{firstArtProp.name}</StyledTitle>
-                                        </Col>}
-                                        {secondArtProp.id != 0 && <Col md={6}>
-                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Кубок' : (app.game === 'Honkai' ? 'Сфера' : '5 Диск')}</StyledTitle>
-                                            <StyledTitle fz='14px'>{secondArtProp.name}</StyledTitle>
-                                        </Col>}
-                                        {thirdArtProp.id != 0 && <Col md={6}>
-                                            <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Часы' : (app.game === 'Honkai' ? 'Сапоги' : '6 Диск')}</StyledTitle>
-                                            <StyledTitle fz='14px'>{thirdArtProp.name}</StyledTitle>
-                                        </Col>}
-                                        {app.game === 'Honkai' && fourthArtProp.id != 0 && <Col md={6}>
-                                            <StyledTitle dec='underline' fz='18px'>Веревка</StyledTitle>
-                                            <StyledTitle fz='14px'>{fourthArtProp.name}</StyledTitle>
-                                        </Col>}
-                                    </Row>
-                                    {charProps.length > 0 && <StyledBox display='flex' dir='column'>
-                                        <StyledTitle dec='underline' fz='18px'>Сабстаты</StyledTitle>
-                                        <Row style={{ justifyContent: 'center' }}>{char?.charInfo?.charProps?.map(e => <Col md={'auto'}><StyledTitle fz='14px'>{e.name}</StyledTitle></Col>)}</Row>
+                                {(charProps.length > 0 || firstArtProp.id != 0 || secondArtProp.id != 0 ||
+                                    thirdArtProp.id != 0 || (app.game === 'Honkai' && fourthArtProp.id != 0)) &&
+                                    <StyledBox display='flex' dir='column' align='center' gap='10px' padding='20px 10px' width='33%' border='yellow solid 2px' br='16px'>
+                                        <StyledTitle dec='underline' fz='20px'>Рекомендуемые Статы</StyledTitle>
+                                        <Row style={{ justifyContent: 'center' }}>
+                                            {firstArtProp.id != 0 && <Col md={6}>
+                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Шапка' : (app.game === 'Honkai' ? 'Куртка' : '4 Диск')}</StyledTitle>
+                                                <StyledTitle fz='14px'>{firstArtProp.name}</StyledTitle>
+                                            </Col>}
+                                            {secondArtProp.id != 0 && <Col md={6}>
+                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Кубок' : (app.game === 'Honkai' ? 'Сфера' : '5 Диск')}</StyledTitle>
+                                                <StyledTitle fz='14px'>{secondArtProp.name}</StyledTitle>
+                                            </Col>}
+                                            {thirdArtProp.id != 0 && <Col md={6}>
+                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Часы' : (app.game === 'Honkai' ? 'Сапоги' : '6 Диск')}</StyledTitle>
+                                                <StyledTitle fz='14px'>{thirdArtProp.name}</StyledTitle>
+                                            </Col>}
+                                            {app.game === 'Honkai' && fourthArtProp.id != 0 && <Col md={6}>
+                                                <StyledTitle dec='underline' fz='18px'>Веревка</StyledTitle>
+                                                <StyledTitle fz='14px'>{fourthArtProp.name}</StyledTitle>
+                                            </Col>}
+                                        </Row>
+                                        {charProps.length > 0 && <StyledBox display='flex' dir='column'>
+                                            <StyledTitle dec='underline' fz='18px'>Сабстаты</StyledTitle>
+                                            <Row style={{ justifyContent: 'center' }}>{char?.charInfo?.charProps?.map(e => <Col md={'auto'}><StyledTitle fz='14px'>{e.name}</StyledTitle></Col>)}</Row>
+                                        </StyledBox>}
                                     </StyledBox>}
-                                </StyledBox>
                             </StyledBox>
                             <StyledBox border='solid 1px yellow' width='100%'>
                                 <StyledTitle fz='20px' >Материалы</StyledTitle>

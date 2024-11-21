@@ -18,6 +18,33 @@ export const getChars = async (query) => {
         console.log(e)
     }
 }
+export const getCharsWithSortByPatchNumber = async (query) => {
+    try {
+        const res = await $host.get('genshin/characters/sort/number?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getCharsWithSortByPatchCounter = async (query) => {
+    try {
+        const res = await $host.get('genshin/characters/sort/counter?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getCharsWithSortByRelease = async (query) => {
+    try {
+        const res = await $host.get('genshin/characters/sort/release?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getCharById = async (id) => {
     try {
         const res = await $host.get('genshin/characters/' + id)

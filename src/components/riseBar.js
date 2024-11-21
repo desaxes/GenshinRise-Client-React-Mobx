@@ -180,7 +180,8 @@ export const RiseBar = observer((props) => {
                     marginBottom: '-22%',
                     padding: '0  5px',
                     border: '4px solid yellow',
-                    borderRadius: '15px'
+                    borderRadius: '15px',
+                    zIndex:'10000'
                 }}>
                     {material.name}
                 </div>}

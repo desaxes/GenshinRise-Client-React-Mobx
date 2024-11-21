@@ -22,6 +22,7 @@ import { getHonkaiArts } from '../http/honkai/artsAPI';
 const Characters = observer(() => {
     const { chars, app, weapons, arts } = useContext(AppContext)
     const [charId, setCharId] = useState()
+    const [currentGame, setCurrentGame] = useState()
     const [modalOptions, setModalOptions] = useState(false)
     const createModal = (id) => {
         setCharId(id)
@@ -30,6 +31,26 @@ const Characters = observer(() => {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
+    useEffect(() => {
+        setCurrentGame(app.game)
+    }, [])
+    //Сброс фильтров
+    useEffect(() => {
+        if (currentGame != app.game) {
+            chars.setElement('')
+            chars.setMaterial('')
+            chars.setPath('')
+            chars.setTalent('')
+            chars.setWeapon('')
+            chars.setRegion('')
+            chars.setStars('')
+            chars.setSex('')
+            chars.setSize('')
+            chars.setSearchBy('')
+            setCurrentGame(app.game)
+        }
+    }, [app.game])
+    //Установка фильтров
     useEffect(() => {
         let query = ''
         if (chars.element !== '') {

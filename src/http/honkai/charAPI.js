@@ -18,6 +18,33 @@ export const getHonkaiChars = async (query) => {
         console.log(e)
     }
 }
+export const getHonkaiCharsWithSortByPatchNumber = async (query) => {
+    try {
+        const res = await $host.get('honkai/characters/sort/number?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getHonkaiCharsWithSortByPatchCounter = async (query) => {
+    try {
+        const res = await $host.get('honkai/characters/sort/counter?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getHonkaiCharsWithSortByRelease = async (query) => {
+    try {
+        const res = await $host.get('honkai/characters/sort/release?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getHonkaiCharById = async (id) => {
     try {
         const res = await $host.get('honkai/characters/' + id)

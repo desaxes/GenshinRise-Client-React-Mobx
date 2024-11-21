@@ -18,6 +18,33 @@ export const getZzzChars = async (query) => {
         console.log(e)
     }
 }
+export const getZzzCharsWithSortByPatchNumber = async (query) => {
+    try {
+        const res = await $host.get('zzz/characters/sort/number?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getZzzCharsWithSortByPatchCounter = async (query) => {
+    try {
+        const res = await $host.get('zzz/characters/sort/counter?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+export const getZzzCharsWithSortByRelease = async (query) => {
+    try {
+        const res = await $host.get('zzz/characters/sort/release?limit=100&' + query)
+        return res
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 export const getZzzCharById = async (id) => {
     try {
         const res = await $host.get('zzz/characters/' + id)

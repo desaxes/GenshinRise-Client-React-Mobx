@@ -44,8 +44,8 @@ const Collection = observer(() => {
             getHonkaiWeaponsFromCol().then(res => { res && weapons.setWeapons(res.data) })
         }
     }, [chars, weapons, app.game])
-    let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
-    let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
+    let characters = chars.chars.chars.map(e => <Char gridpart={2} key={e.id} char={e} onShow={createModal} />)
+    let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={2} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
