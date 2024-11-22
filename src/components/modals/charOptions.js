@@ -13,6 +13,14 @@ import { getBossMaterialById, getEnemyMaterialById, getLocalSpecialtyById, getSt
 import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiWBMaterialById } from '../../http/honkai/materialAPI';
 import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../../http/zzz/materialAPI';
 
+import clock from '../../img/arts/genshin/clock.webp'
+import crown from '../../img/arts/genshin/crown.webp'
+import goblet from '../../img/arts/genshin/goblet.webp'
+import body from '../../img/arts/hsr/body.webp'
+import feet from '../../img/arts/hsr/feet.webp'
+import sphere from '../../img/arts/hsr/sphere.webp'
+import rope from '../../img/arts/hsr/rope.webp'
+
 export const CharOptions = observer((props) => {
     const [disableCol, setDisableCol] = useState(false)
     const [changeMats, setChangeMats] = useState(false)
@@ -914,20 +922,26 @@ export const CharOptions = observer((props) => {
                                         <StyledTitle dec='underline' fz='20px'>Рекомендуемые Статы</StyledTitle>
                                         <Row style={{ justifyContent: 'center' }}>
                                             {firstArtProp.id != 0 && <Col md={6}>
-                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Шапка' : (app.game === 'Honkai' ? 'Куртка' : '4 Диск')}</StyledTitle>
-                                                <StyledTitle fz='14px'>{firstArtProp.name}</StyledTitle>
+                                                {app.game != 'Zzz' ?
+                                                    <img style={{ width: '40px', height: '40px' }} fz='18px' src={app.game === 'Genshin' ? crown : (app.game === 'Honkai' && body)} /> :
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', border: 'yellow solid 6px', borderRadius: '50%', width: '40px', height: '40px', color: 'white', fontWeight: 'bold', backgroundColor: 'red' }}>4</div>}
+                                                <StyledTitle style={{ margin: '5px 0' }} fz='14px'>{firstArtProp.name}</StyledTitle>
                                             </Col>}
                                             {secondArtProp.id != 0 && <Col md={6}>
-                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Кубок' : (app.game === 'Honkai' ? 'Сфера' : '5 Диск')}</StyledTitle>
-                                                <StyledTitle fz='14px'>{secondArtProp.name}</StyledTitle>
+                                                {app.game != 'Zzz' ?
+                                                    <img style={{ width: '40px', height: '40px' }} fz='18px' src={app.game === 'Genshin' ? goblet : (app.game === 'Honkai' && sphere)} /> :
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', border: 'yellow solid 6px', borderRadius: '50%', width: '40px', height: '40px', color: 'white', fontWeight: 'bold', backgroundColor: 'red' }}>5</div>}
+                                                <StyledTitle style={{ margin: '5px 0' }} fz='14px'>{secondArtProp.name}</StyledTitle>
                                             </Col>}
                                             {thirdArtProp.id != 0 && <Col md={6}>
-                                                <StyledTitle dec='underline' fz='18px'>{app.game === 'Genshin' ? 'Часы' : (app.game === 'Honkai' ? 'Сапоги' : '6 Диск')}</StyledTitle>
-                                                <StyledTitle fz='14px'>{thirdArtProp.name}</StyledTitle>
+                                                {app.game != 'Zzz' ?
+                                                    <img style={{ width: '40px', height: '40px' }} fz='18px' src={app.game === 'Genshin' ? clock : (app.game === 'Honkai' && feet)} /> :
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', border: 'yellow solid 6px', borderRadius: '50%', width: '40px', height: '40px', color: 'white', fontWeight: 'bold', backgroundColor: 'red' }}>6</div>}
+                                                <StyledTitle style={{ margin: '5px 0' }} fz='14px'>{thirdArtProp.name}</StyledTitle>
                                             </Col>}
                                             {app.game === 'Honkai' && fourthArtProp.id != 0 && <Col md={6}>
-                                                <StyledTitle dec='underline' fz='18px'>Веревка</StyledTitle>
-                                                <StyledTitle fz='14px'>{fourthArtProp.name}</StyledTitle>
+                                                <img style={{ width: '40px', height: '40px' }} dec='underline' fz='18px' src={rope} />
+                                                <StyledTitle style={{ margin: '5px 0' }} fz='14px'>{fourthArtProp.name}</StyledTitle>
                                             </Col>}
                                         </Row>
                                         {charProps.length > 0 && <StyledBox display='flex' dir='column'>
