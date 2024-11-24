@@ -63,9 +63,9 @@ export const addHonkaiCharToCol = async (data) => {
         console.log('character already exists')
     }
 }
-export const getHonkaiCharsFromCol = async () => {
+export const getHonkaiCharsFromCol = async (query) => {
     try {
-        const res = await $host.get('honkai/collection?limit=100')
+        const res = await $host.get('honkai/collection?limit=100&' + query)
         return res
     }
     catch (e) {

@@ -177,7 +177,6 @@ export const WeaponOptions = observer((props) => {
         }
     }, [props.weaponId, app.game])
     let characters = chars.chars.chars?.filter(e => e.charInfo?.recWeapons?.some(w => w.id === props.weaponId))
-    console.log(characters)
     return (
         <Modal
             {...props}

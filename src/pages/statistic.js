@@ -329,17 +329,17 @@ const Statistic = observer(() => {
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[35]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[36]}
+                        {charTableCell[37]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={izo} /></Col>
-                        {charTableCell[37]}
                         {charTableCell[38]}
                         {charTableCell[39]}
                         {charTableCell[40]}
                         {charTableCell[41]}
                         {charTableCell[42]}
+                        {charTableCell[43]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                 </StyledBox>}

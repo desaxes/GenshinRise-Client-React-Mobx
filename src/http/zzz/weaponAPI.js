@@ -36,9 +36,9 @@ export const addZzzWeaponToCol = async (data) => {
         console.log('character already exists')
     }
 }
-export const getZzzWeaponsFromCol = async () => {
+export const getZzzWeaponsFromCol = async (query) => {
     try {
-        const res = await $host.get('zzz/weaponcollection?limit=500')
+        const res = await $host.get('zzz/weaponcollection?limit=500&'+query)
         return res
     }
     catch (e) {

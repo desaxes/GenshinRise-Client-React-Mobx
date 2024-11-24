@@ -36,9 +36,9 @@ export const addWeaponToCol = async (data) => {
         console.log('character already exists')
     }
 }
-export const getWeaponsFromCol = async () => {
+export const getWeaponsFromCol = async (query) => {
     try {
-        const res = await $host.get('genshin/weaponcollection?limit=500')
+        const res = await $host.get('genshin/weaponcollection?limit=500&' + query)
         return res
     }
     catch (e) {

@@ -36,9 +36,9 @@ export const addHonkaiWeaponToCol = async (data) => {
         console.log('character already exists')
     }
 }
-export const getHonkaiWeaponsFromCol = async () => {
+export const getHonkaiWeaponsFromCol = async (query) => {
     try {
-        const res = await $host.get('honkai/weaponcollection?limit=500')
+        const res = await $host.get('honkai/weaponcollection?limit=500&'+query)
         return res
     }
     catch (e) {

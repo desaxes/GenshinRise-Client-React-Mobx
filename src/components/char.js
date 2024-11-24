@@ -86,7 +86,7 @@ export const Char = observer((props) => {
                         props.char.talentMaterialId === 1 ? zzzFire :
                             (props.char.talentMaterialId === 2 ? zzzElectro : (
                                 props.char.talentMaterialId === 3 ? zzzPhys : (
-                                    props.char.talentMaterialId === 4 ? zzzEther : zzzIce
+                                    props.char.talentMaterialId === 4 ? zzzIce : zzzEther
                                 )
                             ))
                     } />}

@@ -7,7 +7,7 @@ import { getChars } from '../http/charAPI';
 import { Char } from '../components/char';
 import { CharOptions } from '../components/modals/charOptions';
 import { Button } from 'react-bootstrap/esm/';
-import { StyledTitle } from '../styledComponents/styled-components';
+import { StyledBox, StyledTitle } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite';
 import Form from 'react-bootstrap/Form';
 import { getWeapons } from '../http/weaponAPI';
@@ -22,11 +22,24 @@ import { getHonkaiChars } from '../http/honkai/charAPI';
 const Weapons = observer(() => {
     const { weapons, app, chars } = useContext(AppContext)
     const [weaponId, setWeaponId] = useState()
+    const [propId, setPropId] = useState(0)
+    const [currentGame, setCurrentGame] = useState()
     const [modalOptions, setModalOptions] = useState(false)
     const createModal = (id) => {
         setWeaponId(id)
         setModalOptions(true)
     }
+    useEffect(() => {
+        if (currentGame != app.game) {
+            weapons.setWeapon('')
+            weapons.setMaterial('')
+            weapons.setPathId('')
+            weapons.setStars('')
+            weapons.setSearchBy('')
+            setPropId(0)
+            setCurrentGame(app.game)
+        }
+    }, [app.game])
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
@@ -60,7 +73,7 @@ const Weapons = observer(() => {
             getHonkaiChars().then(res => chars.setChars(res.data))
         }
     }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons, weapons.pathId])
-    let weaponsArray = weapons.weapons.weapons.map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
+    let weaponsArray = weapons.weapons.weapons.filter(e => (app.game != 'Honkai' && propId != 0) ? e.weaponInfo?.prop?.id === propId : e).map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
@@ -100,7 +113,7 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(6)} variant={weapons.pathId === 6 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Сохранение</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(7)} variant={weapons.pathId === 7 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Изобилие</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId('')} variant={weapons.pathId === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
-                        </Row>}pathId
+                        </Row>}
                         <StyledTitle color='yellow' fz='22px'>
                             Редкость
                         </StyledTitle>
@@ -110,6 +123,24 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars(5)} variant={weapons.stars === 5 ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>5★</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars('')} variant={weapons.stars === '' ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>
+                        {app.game != 'Honkai' && <StyledBox>
+                            <StyledTitle color='yellow' fz='22px'>
+                                Основная Хар-ка
+                            </StyledTitle>
+                            <Row className='mb-2' style={{ justifyContent: 'space-between' }}>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(1)} variant={propId === 1 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>HP</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(3)} variant={propId === 3 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Сила Атаки</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(5)} variant={propId === 5 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Защита</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(7)} variant={propId === 7 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>{app.game === 'Genshin' ? 'МС' : (app.game === 'Zzz' && 'ЗА')}</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(8)} variant={propId === 8 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>ВЭ</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(9)} variant={propId === 9 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Крит. Шанс</Button></Col>
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(10)} variant={propId === 10 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Крит. Урон</Button></Col>
+                                {app.game === 'Genshin' && <Col md='auto' className='mt-1'><Button onClick={() => setPropId(19)} variant={propId === 19 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Физ. Урон</Button></Col>}
+                                {app.game === 'Zzz' && <Col md='auto' className='mt-1'><Button onClick={() => setPropId(17)} variant={propId === 17 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Пробивание</Button></Col>}
+                                {app.game === 'Zzz' && <Col md='auto' className='mt-1'><Button onClick={() => setPropId(18)} variant={propId === 18 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Импульс</Button></Col>}
+                                <Col md='auto' className='mt-1'><Button onClick={() => setPropId(0)} variant={propId === 0 ? 'warning' : 'outline-warning'} style={{ fontWeight: 'bold', width: '140px' }}>Все</Button></Col>
+                            </Row>
+                        </StyledBox>}
                         {/* <Dropdown>
                                 <Dropdown.Toggle variant='outline-success'>
                                     {'Элемент'}

@@ -73,9 +73,9 @@ export const addCharToCol = async (data) => {
         console.log('character already exists')
     }
 }
-export const getCharsFromCol = async () => {
+export const getCharsFromCol = async (query) => {
     try {
-        const res = await $host.get('genshin/collection?limit=100')
+        const res = await $host.get('genshin/collection?limit=100&'+query)
         return res
     }
     catch (e) {
