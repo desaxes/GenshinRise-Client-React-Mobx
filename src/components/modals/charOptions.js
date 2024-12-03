@@ -53,6 +53,7 @@ export const CharOptions = observer((props) => {
     const [artTooltip, setArtTooltip] = useState(false)
     const [weaponInfo, setWeaponInfo] = useState('')
     const [weaponName, setWeaponName] = useState('')
+    const [weaponStars, setWeaponStars] = useState(0)
     const [artInfo1, setArtInfo1] = useState('')
     const [artInfo2, setArtInfo2] = useState('')
     const [artName, setArtName] = useState('')
@@ -777,6 +778,7 @@ export const CharOptions = observer((props) => {
                                         setWeaponTooltip(true)
                                         setWeaponInfo(weapon?.weaponInfo?.info)
                                         setWeaponName(weapon?.name)
+                                        setWeaponStars(weapon?.stars)
                                     }} onMouseLeave={() => setWeaponTooltip(false)}>
 
                                         <img style={{ height: app.game === 'Honkai' ? '90px' : '75px', width: '75px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + weapon?.img}></img>
@@ -788,6 +790,7 @@ export const CharOptions = observer((props) => {
                                                 setWeaponTooltip(true)
                                                 setWeaponInfo(e.weaponInfo?.info)
                                                 setWeaponName(e.name)
+                                                setWeaponStars(e.stars)
                                             }} onMouseLeave={() => setWeaponTooltip(false)}>
                                                 <img style={{ height: app.game === 'Honkai' ? '65px' : '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
                                             </Col>)}
@@ -800,6 +803,7 @@ export const CharOptions = observer((props) => {
                                             border: '2px solid yellow', borderRadius: '12px',
                                             padding: '5px', whiteSpace: 'normal', overflowWrap: 'anywhere'
                                         }}>
+                                            <StyledTitle fz='20px'>{weaponStars === 5 ? '★★★★★' : (weaponStars === 4 ? '★★★★' : '★★★')}</StyledTitle>
                                             <StyledTitle fz='20px'>{weaponName}</StyledTitle>
                                             <StyledTitle fz='16px'>{weaponInfo}</StyledTitle>
                                         </StyledBox>}

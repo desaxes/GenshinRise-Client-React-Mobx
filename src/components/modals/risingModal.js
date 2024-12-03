@@ -219,6 +219,20 @@ export const RisingModal = observer((props) => {
                                 materialBase={5} materialId={char.talentMaterialId} quality={3} current={talent3} max={max ? max.talentMaterial3Count : (app.game === 'Genshin' ? 114 : (app.game === 'Zzz' ? 250 : 139))} />
                         </Col>
                     </Row>
+                    <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '50px' }}>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
+                            <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (7050030) : (app.game === 'Honkai' ? (char.stars === 5 ? 3888000 : 3226400) : (3700000))}</StyledTitle>
+                        </Col>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
+                            <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/charExp.webp'} />
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (419) : (app.game === 'Honkai' ? (290) : (300))}</StyledTitle>
+                        </Col>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
+                            <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/talMat.webp'} />
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (3) : (app.game === 'Honkai' ? (5) : (5))}</StyledTitle>
+                        </Col>
+                    </Row>
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button variant='outline-warning' onClick={saveResult}>Сохранить</Button>

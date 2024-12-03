@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { Button, Col, Row } from 'react-bootstrap/esm/';
 import { RiseBar } from './../riseBar';
-import { StyledImg } from '../../styledComponents/styled-components';
+import { StyledImg, StyledTitle } from '../../styledComponents/styled-components';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { getMaxValuesForWeapon, getWeaponsFromRise, removeMaxValuesForWeapon, removeWeaponFromRise, updateWeaponFromRise } from '../../http/weaponAPI';
@@ -178,7 +178,16 @@ export const RisingModalWeapon = observer((props) => {
                                 materialBase={3} materialId={weapon.enemyMaterialId} quality={3} current={emat3} max={max ? max.enemyMat3Count : (weapon.stars === 4 ? 12 : 14)} />}
                         </Col>
                     </Row>
-
+                    <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '50px' }}>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
+                            <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (weapon.stars === 5 ? 1131445 : 754265) : (app.game === 'Honkai' ? (weapon.stars === 5 ? 883000 : 707000) : (weapon.stars === 5 ? 320000 : 320000))}</StyledTitle>
+                        </Col>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
+                            <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/weaponExp.webp'} />
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (weapon.stars === 5 ? 907 : 605) : (app.game === 'Honkai' ? (weapon.stars === 5 ? 166 : 133) : (weapon.stars === 5 ? 188 : 151))}</StyledTitle>
+                        </Col>
+                    </Row>
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button variant='outline-warning' onClick={saveResult}>Сохранить</Button>
