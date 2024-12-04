@@ -66,7 +66,7 @@ export const CreateArt = observer((props) => {
                     <Form.Control id='1' onChange={select1} className='mt-2 mb-2' type='file' />
                     {app.game === 'Honkai' && < Form.Check
                         label='Планарный сет' style={{ color: 'yellow' }}
-                        type="switch" onChange={() => { setPlanar(true); }}
+                        type="switch" onChange={() => { setPlanar(!planar);console.log(planar) }}
                     />}
                 </Form>
             </Modal.Body>

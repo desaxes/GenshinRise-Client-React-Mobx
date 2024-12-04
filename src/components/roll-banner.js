@@ -14,6 +14,9 @@ import zzzGem from '../img/gems/zzz/gems.webp'
 import genshinRoll from '../img/gems/genshin/roll.webp'
 import honkaiRoll from '../img/gems/honkai/roll.webp'
 import zzzRoll from '../img/gems/zzz/roll.webp'
+import genshinSRoll from '../img/gems/genshin/sRoll.webp'
+import honkaiSRoll from '../img/gems/honkai/sRoll.webp'
+import zzzSRoll from '../img/gems/zzz/sRoll.webp'
 
 export const RollBanner = observer((props) => {
     const { app } = useContext(AppContext)
@@ -112,15 +115,15 @@ export const RollBanner = observer((props) => {
                     <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Последняя десятка</StyledTitle>
                     <StyledBox gap='12px' display='flex' dir='row'>{Rolls}</StyledBox>
                     {rolls?.rolls.length ? <StyledBox margin='25px 0'>
-                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Последняя Молитва : {rolls.rolls[0].year}.{rolls.rolls[0].month}.{rolls.rolls[0].day}</StyledTitle>
+                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Последняя Крутка : {rolls.rolls[0].year}.{rolls.rolls[0].month}.{rolls.rolls[0].day}</StyledTitle>
                         <StyledTitle
                             color='yellow' fz='22px'
                             dec='underline' fs='italic'>
-                            Молитв с последней Леги : {legCount} <StyledImg width={'30px'} src={app.game === 'Genshin' ? genshinRoll : (app.game === 'Honkai' ? honkaiRoll : zzzRoll)} /> /
-                            До гаранта нужно ≈ {(90 - legCount) * 160} <StyledImg width={'30px'} src={app.game === 'Genshin' ? genshinGem : (app.game === 'Honkai' ? honkaiGem : zzzGem)} />
+                            Круток с последней Леги : {legCount} <StyledImg width={'30px'} src={app.game === 'Genshin' ? (props.bannerType === 'standart' ? genshinSRoll : genshinRoll) : (app.game === 'Honkai' ? (props.bannerType === 'standart' ? honkaiSRoll : honkaiRoll) : (props.bannerType === 'standart' ? zzzSRoll : zzzRoll))} /> /
+                            До гаранта нужно ≈ {(90 - legCount) * 160} <StyledImg width={'30px'} src={app.game === 'Genshin' ? (genshinGem) : (app.game === 'Honkai' ? (honkaiGem) : (zzzGem))} />
                         </StyledTitle>
-                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Всего Молитв : {rollCount}</StyledTitle>
-                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Среднее кол-во молитв для Леги : {middleValue} / Среднее кол-во молитв для Эпиков : {middleEpicValue}</StyledTitle>
+                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Всего Круток : {rollCount}</StyledTitle>
+                        <StyledTitle color='yellow' fz='22px' dec='underline' fs='italic'>Среднее кол-во круток для Леги : {middleValue} / Среднее кол-во круток для Эпиков : {middleEpicValue}</StyledTitle>
                         <Row md={'auto'} className='mt-3 mb-3 d-flex justify-content-center'
                         >
                             {LegRolls}
@@ -129,7 +132,7 @@ export const RollBanner = observer((props) => {
                     <Button onClick={() => createModal('standart')}
                         variant="outline-warning" style={{ position: 'absolute', right: '10px', bottom: '10px' }}>+</Button>
                     <Button onClick={() => createArchiveModal('standart')}
-                        variant="outline-warning" style={{ position: 'absolute', left: '10px', bottom: '10px' }}>Все Молитвы</Button>
+                        variant="outline-warning" style={{ position: 'absolute', left: '10px', bottom: '10px' }}>Все Крутки</Button>
                 </StyledBox>
                 {modalOptions && <CreateRoll
                     show={true}

@@ -95,7 +95,7 @@ export const NavBar = observer(() => {
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === ROLL_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === ROLL_ROUTE ? 'black' : 'white'}
-                                    >Молитвы</Link>
+                                    >Крутки</Link>
                                 </Col>
                                 <Col mb={'auto'} className='mb-2'>
                                     <Link to={STAT_ROUTE}

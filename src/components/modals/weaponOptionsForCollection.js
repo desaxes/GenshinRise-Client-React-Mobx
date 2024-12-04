@@ -141,13 +141,13 @@ export const WeaponOptionsForCollection = observer((props) => {
                         <StyledBox gap='30px' display='flex' align='center' jstf='center' width='100%' margin='20px 0'>
                             {owner && <StyledBox display='flex' dir='column' align='center'>
                                 <StyledTitle fz='18px'>Владелец</StyledTitle>
-                                <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + owner?.img}></img>
+                                <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: owner.stars === 5 ? 'orange' : (owner.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + owner?.img}></img>
                             </StyledBox>}
                             {characters.length > 0 && <StyledBox display='flex' dir='column' align='center'>
                                 <StyledTitle fz='18px'>Подходит Персонажам</StyledTitle>
                                 <StyledBox display='flex' gap='5px'>
                                     {characters?.map(e =>
-                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                     )}
                                 </StyledBox>
                             </StyledBox>}

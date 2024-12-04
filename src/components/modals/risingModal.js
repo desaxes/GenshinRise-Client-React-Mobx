@@ -8,6 +8,7 @@ import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { getZzzCharsFromRise, removeZzzCharFromRise, updateZzzCharFromRise } from '../../http/zzz/charAPI';
 import { getHonkaiCharsFromRise, removeHonkaiCharFromRise, updateHonkaiCharFromRise } from '../../http/honkai/charAPI';
+import { Link } from 'react-router-dom';
 export const RisingModal = observer((props) => {
     const { chars, app } = useContext(AppContext)
     const char = chars.chars.chars.find(e => e.id === props.charId)
@@ -230,12 +231,36 @@ export const RisingModal = observer((props) => {
                         </Col>
                         <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: '10px' }} md='auto'>
                             <img style={{ width: '75px', height: '75px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/talMat.webp'} />
-                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (3) : (app.game === 'Honkai' ? (5) : (5))}</StyledTitle>
+                            <StyledTitle color='yellow' fz='18px'>{app.game === 'Genshin' ? (3) : (app.game === 'Honkai' ? (char.stars === 5 ? 8 : 5) : (5))}</StyledTitle>
+                        </Col>
+                    </Row>
+                    <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px' }}>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }} md='auto'>
+                            <StyledTitle mar='0' color='yellow' fz='18px'>+Артефакты ({app.game === 'Genshin' ? 'x5 * 270 k' : (app.game === 'Honkai' ? 'x6 * 114 k' : 'x6 * ')}) = {app.game === 'Genshin' ? ('1.3 m') : (app.game === 'Honkai' ? '684 k' : (3700000))}</StyledTitle>
+                            <img style={{ width: '35px', height: '35px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
+                        </Col>
+                    </Row>
+                    <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px' }}>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }} md='auto'>
+                            <StyledTitle mar='0' color='yellow' fz='18px'>+Оружие = {app.game === 'Genshin' ? ('750 k - 1.1 m') : (app.game === 'Honkai' ? ('707 k - 883 k') : ('320 k'))}</StyledTitle>
+                            <img style={{ width: '35px', height: '35px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
+                        </Col>
+                    </Row>
+                    <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px' }}>
+                        <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }} md='auto'>
+                            <StyledTitle mar='0' color='yellow' fz='18px'>Общее = {app.game === 'Genshin' ? ('9.5 m') : (app.game === 'Honkai' ? ('5.4 m') : ('320 k'))}</StyledTitle>
+                            <img style={{ width: '35px', height: '35px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
                         </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button variant='outline-warning' onClick={saveResult}>Сохранить</Button>
+                    <Button variant='outline-danger'><Link style={{ textDecoration: 'none', color: 'white' }} to={
+                        app.game === 'Genshin' ? 'https://act.hoyolab.com/ys/event/calculator-sea/?lang=ru-ru#/character' :
+                            (app.game === 'Honkai' ? 'https://act.hoyolab.com/sr/event/calculator/index.html?hyl_presentation_style=fullscreen&utm_campaign=calculator&utm_id=6&utm_medium=tools&utm_source=hoyolab&lang=ru-ru&bbs_theme=dark&bbs_theme_device=1#/home?target=Character' :
+                                'https://zzz.seelie.me/characters'
+                            )
+                    }>Калькулятор</Link></Button>
                     <Button variant='outline-danger' onClick={removeChar}>Удалить Персонажа</Button>
                     <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 </Modal.Footer>

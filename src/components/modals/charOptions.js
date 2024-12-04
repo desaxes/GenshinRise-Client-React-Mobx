@@ -792,7 +792,7 @@ export const CharOptions = observer((props) => {
                                                 setWeaponName(e.name)
                                                 setWeaponStars(e.stars)
                                             }} onMouseLeave={() => setWeaponTooltip(false)}>
-                                                <img style={{ height: app.game === 'Honkai' ? '65px' : '70px', width: '70px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
+                                                <img style={{ height: app.game === 'Honkai' ? '65px' : '70px', width: '70px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
                                             </Col>)}
                                         </Row>
                                     </StyledBox>

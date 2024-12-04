@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { getMaxValuesForWeapon, getWeaponsFromRise, removeMaxValuesForWeapon, removeWeaponFromRise, updateWeaponFromRise } from '../../http/weaponAPI';
 import { getZzzWeaponsFromRise, removeZzzWeaponFromRise, updateZzzWeaponFromRise } from '../../http/zzz/weaponAPI';
 import { getHonkaiWeaponsFromRise, removeHonkaiWeaponFromRise, updateHonkaiWeaponFromRise } from '../../http/honkai/weaponAPI';
+import { Link } from 'react-router-dom';
 export const RisingModalWeapon = observer((props) => {
     const { weapons, app } = useContext(AppContext)
     const weapon = weapons.weapons.weapons.find(e => e.id === props.weaponId)
@@ -191,6 +192,12 @@ export const RisingModalWeapon = observer((props) => {
                 </Modal.Body>
                 <Modal.Footer style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                     <Button variant='outline-warning' onClick={saveResult}>Сохранить</Button>
+                    <Button variant='outline-danger'><Link style={{ textDecoration: 'none', color: 'white' }} to={
+                        app.game === 'Genshin' ? 'https://act.hoyolab.com/ys/event/calculator-sea/?lang=ru-ru#/weapon' :
+                            (app.game === 'Honkai' ? 'https://act.hoyolab.com/sr/event/calculator/index.html?hyl_presentation_style=fullscreen&utm_campaign=calculator&utm_id=6&utm_medium=tools&utm_source=hoyolab&lang=ru-ru&bbs_theme=dark&bbs_theme_device=1#/home?target=Equipment' :
+                                'https://zzz.seelie.me/weapons'
+                            )
+                    }>Калькулятор</Link></Button>
                     <Button variant='outline-danger' onClick={removeWeapon}>Удалить Оружие</Button>
                     <Button variant='outline-danger' onClick={props.onHide}>Закрыть</Button>
                 </Modal.Footer>

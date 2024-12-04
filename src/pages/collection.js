@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/esm/Container'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import { AppContext } from '..';
-import { getCharsFromCol } from '../http/charAPI';
+import { getChars, getCharsFromCol } from '../http/charAPI';
 import { Char } from '../components/char';
 import { observer } from 'mobx-react-lite';
 import { CharOptionsForCollection } from '../components/modals/charOptionForCollection';
@@ -11,9 +11,9 @@ import { StyledBox, StyledTitle } from '../styledComponents/styled-components';
 import { getWeapons, getWeaponsFromCol } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { WeaponOptionsForCollection } from '../components/modals/weaponOptionsForCollection';
-import { getZzzCharsFromCol } from '../http/zzz/charAPI';
+import { getZzzChars, getZzzCharsFromCol } from '../http/zzz/charAPI';
 import { getZzzWeapons, getZzzWeaponsFromCol } from '../http/zzz/weaponAPI';
-import { getHonkaiCharsFromCol } from '../http/honkai/charAPI';
+import { getHonkaiChars, getHonkaiCharsFromCol } from '../http/honkai/charAPI';
 import { getHonkaiWeapons, getHonkaiWeaponsFromCol } from '../http/honkai/weaponAPI';
 import { Button, Form } from 'react-bootstrap';
 import { getGenshinArts } from '../http/artsAPI';
@@ -127,15 +127,24 @@ const Collection = observer(() => {
         }
         if (app.game === 'Genshin') {
             if (mod === 'chars') { getCharsFromCol(query).then(res => { res && chars.setChars(res.data) }) }
-            else if (mod === 'weapons') { getWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) }) }
+            else if (mod === 'weapons') {
+                getWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) })
+                getChars().then(res => chars.setChars(res.data))
+            }
         }
         else if (app.game === 'Zzz') {
             if (mod === 'chars') { getZzzCharsFromCol(query).then(res => { res && chars.setChars(res.data) }) }
-            else if (mod === 'weapons') { getZzzWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) }) }
+            else if (mod === 'weapons') {
+                getZzzWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) })
+                getHonkaiChars().then(res => chars.setChars(res.data))
+            }
         }
         else if (app.game === 'Honkai') {
             if (mod === 'chars') { getHonkaiCharsFromCol(query).then(res => { res && chars.setChars(res.data) }) }
-            else if (mod === 'weapons') { getHonkaiWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) }) }
+            else if (mod === 'weapons') {
+                getHonkaiWeaponsFromCol(query).then(res => { res && weapons.setWeapons(res.data) })
+                getZzzChars().then(res => chars.setChars(res.data))
+            }
         }
     }, [app.game, chars.material, chars.talent, chars.element,
     chars.weapon, chars.region, chars.stars, chars.sex,

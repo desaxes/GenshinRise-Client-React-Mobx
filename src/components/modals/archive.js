@@ -105,7 +105,7 @@ export const Archive = observer((props) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-
+            style={{padding:'70px 0'}}
         >
             <Modal.Header style={{ backgroundColor: '#212529', border: '2px solid yellow' }} closeButton>
                 <Modal.Title style={{ color: 'yellow' }} id="contained-modal-title-vcenter" >

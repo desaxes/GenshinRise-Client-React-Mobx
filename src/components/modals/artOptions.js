@@ -44,7 +44,7 @@ export const ArtOptions = observer((props) => {
         e.charInfo?.thirdArtSetSecondHalfId === props.artId ||
         e.charInfo?.firstPlanarSetId === props.artId ||
         e.charInfo?.secondPlanarSetId === props.artId ||
-        e.charInfo?.thirdPlanarSetId === props.artId 
+        e.charInfo?.thirdPlanarSetId === props.artId
     )
     return (
         <Modal
@@ -78,7 +78,7 @@ export const ArtOptions = observer((props) => {
                             <StyledTitle fz='18px'>Подходит Персонажам</StyledTitle>
                             <StyledBox display='flex' gap='5px'>
                                 {characters?.map(e =>
-                                    <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
+                                    <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
                                 )}
                             </StyledBox>
                         </StyledBox>}
