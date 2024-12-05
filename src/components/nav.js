@@ -41,70 +41,70 @@ export const NavBar = observer(() => {
                     >
                         <StyledBox jstf='space-around' display='flex' align='center' padding='5px 10px' gap='30px'>
                             <Row style={{ display: 'flex', alignItems: 'center' }}>
-                                <Col mb={'auto'}>
+                                <Col mb={'auto'} >
                                     <Link to={MAIN_PAGE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === MAIN_PAGE ? 'yellow' : 'transparent'}
                                         color={location.pathname === MAIN_PAGE ? 'black' : 'white'}
                                     >Главная</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={CHAR_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action2"
                                         bg={location.pathname === CHAR_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === CHAR_ROUTE ? 'black' : 'white'}
                                     >Персонажи</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={WEAPON_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action3"
                                         bg={location.pathname === WEAPON_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === WEAPON_ROUTE ? 'black' : 'white'}
                                     >Оружие</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={ARTS_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === ARTS_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === ARTS_ROUTE ? 'black' : 'white'}
                                     >Артефакты</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={RISE_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action4"
                                         bg={location.pathname === RISE_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === RISE_ROUTE ? 'black' : 'white'}
                                     >Возвышение</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={COLLECT_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action5"
                                         bg={location.pathname === COLLECT_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === COLLECT_ROUTE ? 'black' : 'white'}
                                     >Коллекция</Link>
                                 </Col>
-                                {app.game === 'Genshin' && <Col mb={'auto'} className='mb-2'>
+                                {app.game === 'Genshin' && <Col mb={'auto'} >
                                     <Link to={RES_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === RES_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === RES_ROUTE ? 'black' : 'white'}
                                     >Ресурсы</Link>
                                 </Col>}
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={ROLL_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === ROLL_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === ROLL_ROUTE ? 'black' : 'white'}
                                     >Крутки</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={STAT_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === STAT_ROUTE ? 'yellow' : 'transparent'}
                                         color={location.pathname === STAT_ROUTE ? 'black' : 'white'}
                                     >Статистика</Link>
                                 </Col>
-                                <Col mb={'auto'} className='mb-2'>
+                                <Col mb={'auto'} >
                                     <Link to={BANNER_ROUTE}
                                         border='2px yellow solid' fz='18px' weight='bold' href="#action1"
                                         bg={location.pathname === BANNER_ROUTE ? 'yellow' : 'transparent'}

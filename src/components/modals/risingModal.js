@@ -236,7 +236,7 @@ export const RisingModal = observer((props) => {
                     </Row>
                     <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px' }}>
                         <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }} md='auto'>
-                            <StyledTitle mar='0' color='yellow' fz='18px'>+Артефакты ({app.game === 'Genshin' ? 'x5 * 270 k' : (app.game === 'Honkai' ? 'x6 * 114 k' : 'x6 * ')}) = {app.game === 'Genshin' ? ('1.3 m') : (app.game === 'Honkai' ? '684 k' : (3700000))}</StyledTitle>
+                            <StyledTitle mar='0' color='yellow' fz='18px'>+Артефакты ({app.game === 'Genshin' ? 'x5 * 270 k' : (app.game === 'Honkai' ? 'x6 * 114 k' : 'x6 * 72 k')}) = {app.game === 'Genshin' ? ('1.3 m') : (app.game === 'Honkai' ? '684 k' : ('432 k'))}</StyledTitle>
                             <img style={{ width: '35px', height: '35px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
                         </Col>
                     </Row>
@@ -248,7 +248,7 @@ export const RisingModal = observer((props) => {
                     </Row>
                     <Row style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px' }}>
                         <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }} md='auto'>
-                            <StyledTitle mar='0' color='yellow' fz='18px'>Общее = {app.game === 'Genshin' ? ('9.5 m') : (app.game === 'Honkai' ? ('5.4 m') : ('320 k'))}</StyledTitle>
+                            <StyledTitle mar='0' color='yellow' fz='18px'>Общее = {app.game === 'Genshin' ? ('9.5 m') : (app.game === 'Honkai' ? ('5.4 m') : ('4.5 m'))}</StyledTitle>
                             <img style={{ width: '35px', height: '35px' }} src={process.env.REACT_APP_API_URL + '/resources/' + app.game + '/money.webp'} />
                         </Col>
                     </Row>

@@ -146,7 +146,7 @@ export const CharOptionsForCollection = observer((props) => {
                 setFirstPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.firstPlanarSetId))
                 setSecondPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.secondPlanarSetId))
                 setThirdPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.thirdPlanarSetId))
-                if (res.data.charInfo.recWeapons) { setRecWeapons(res.data.charInfo.recWeapons) }
+                if (res.data.charInfo.recWeapons) { setRecWeapons(weapons.weapons.weapons.filter(e => res.data.charInfo.recWeapons.some(w => w.id === e.id))) }
                 if (res.data.charInfo.firstArtProp) { setFirstArtProp(res.data.charInfo.firstArtProp) }
                 if (res.data.charInfo.secondArtProp) { setSecondArtProp(res.data.charInfo.secondArtProp) }
                 if (res.data.charInfo.thirdArtProp) { setThirdArtProp(res.data.charInfo.thirdArtProp) }
@@ -251,7 +251,7 @@ export const CharOptionsForCollection = observer((props) => {
                                             setWeaponName(e.name)
                                             setWeaponStars(e.stars)
                                         }} onMouseLeave={() => setWeaponTooltip(false)}>
-                                            <img style={{ height: app.game === 'Honkai' ? '65px' : '70px', width: '70px',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
+                                            <img style={{ height: app.game === 'Honkai' ? '65px' : '70px', width: '70px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
                                         </Col>)}
                                     </Row>
                                 </StyledBox>

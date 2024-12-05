@@ -159,7 +159,7 @@ export const CharOptions = observer((props) => {
         let formData = new FormData()
         formData.append('id', char.id)
         formData.append('ownWeaponId', weapon?.id)
-        formData.append('recWeapons', JSON.stringify(recWeapons))
+        formData.append('recWeapons', JSON.stringify(recWeapons.map(e => { return { id: e.id } })))
         formData.append('firstArtSetfirstHalfId', firstArtSetfirstHalf?.id)
         formData.append('firstArtSetSecondHalfId', firstArtSetSecondHalf?.id)
         formData.append('secondArtSetfirstHalfId', secondArtSetfirstHalf?.id)
@@ -235,7 +235,7 @@ export const CharOptions = observer((props) => {
                 setFirstPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.firstPlanarSetId))
                 setSecondPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.secondPlanarSetId))
                 setThirdPlanarSet(arts.arts.find(e => e.id === res.data.charInfo.thirdPlanarSetId))
-                if (res.data.charInfo.recWeapons) { setRecWeapons(res.data.charInfo.recWeapons) }
+                if (res.data.charInfo.recWeapons) { setRecWeapons(weapons.weapons.weapons.filter(e => res.data.charInfo.recWeapons.some(w => w.id === e.id))) }
                 if (res.data.charInfo.firstArtProp) { setFirstArtProp(res.data.charInfo.firstArtProp) }
                 if (res.data.charInfo.secondArtProp) { setSecondArtProp(res.data.charInfo.secondArtProp) }
                 if (res.data.charInfo.thirdArtProp) { setThirdArtProp(res.data.charInfo.thirdArtProp) }
