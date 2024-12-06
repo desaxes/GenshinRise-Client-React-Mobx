@@ -3,12 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap/esm/';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
-import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
-import { addMaxValuesForWeapon, addWeaponToCol, addWeaponToRise, getWeaponById, getWeaponFromColById, getWeaponFromRiseById, removeMaxValuesForWeapon, removeWeaponFromCol, removeWeaponFromRise, updateWeaponInfo } from '../../http/weaponAPI';
-import { addZzzWeaponToCol, addZzzWeaponToRise, getZzzWeaponById, getZzzWeaponFromColById, getZzzWeaponFromRiseById, removeZzzWeaponFromCol, updateZzzWeaponInfo } from '../../http/zzz/weaponAPI';
-import { addHonkaiWeaponToCol, addHonkaiWeaponToRise, getHonkaiWeaponById, getHonkaiWeaponFromColById, getHonkaiWeaponFromRiseById, removeHonkaiWeaponFromCol, removeHonkaiWeaponFromRise, updateHonkaiWeaponInfo } from '../../http/honkai/weaponAPI';
-import { genshinProps, honkaiProps, zzzProps } from '../../utils/props';
+import { addWeaponToCol, getWeaponById, getWeaponFromColById, removeWeaponFromCol } from '../../http/weaponAPI';
+import { addZzzWeaponToCol, getZzzWeaponById, getZzzWeaponFromColById, removeZzzWeaponFromCol } from '../../http/zzz/weaponAPI';
+import { addHonkaiWeaponToCol, getHonkaiWeaponById, getHonkaiWeaponFromColById, removeHonkaiWeaponFromCol } from '../../http/honkai/weaponAPI';
 import { getCharForWeapon } from '../../http/charAPI';
 import { getHonkaiCharForWeapon } from '../../http/honkai/charAPI';
 import { getZzzCharForWeapon } from '../../http/zzz/charAPI';
@@ -27,7 +25,7 @@ export const WeaponOptionsForCollection = observer((props) => {
     const [currentGame, setCurrentGame] = useState(props.currentGame)
 
     useEffect(() => {
-        if (app.game != currentGame) {
+        if (app.game !== currentGame) {
             props.onHide()
         }
     }, [app.game])

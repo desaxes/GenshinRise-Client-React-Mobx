@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { Button, Col, Row } from 'react-bootstrap/esm/';
-import { addCharToCol, addCharToRise, addMaxValues, getCharById, getCharFromColById, getCharFromRiseById, removeCharFromCol, removeCharFromRise, removeMaxValues, updateCharInfo } from '../../http/charAPI';
+import { addCharToCol, getCharById, getCharFromColById, getCharFromRiseById, removeCharFromCol } from '../../http/charAPI';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
-import { Form, Dropdown } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
-import { addZzzCharToCol, addZzzCharToRise, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol, removeZzzCharFromRise, updateZzzCharInfo } from '../../http/zzz/charAPI';
-import { addHonkaiCharToCol, addHonkaiCharToRise, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol, removeHonkaiCharFromRise, updateHonkaiCharInfo } from '../../http/honkai/charAPI';
-import { genshinProps, honkaiProps, zzzProps } from '../../utils/props';
+import { addZzzCharToCol, getZzzCharById, getZzzCharFromColById, getZzzCharFromRiseById, removeZzzCharFromCol } from '../../http/zzz/charAPI';
+import { addHonkaiCharToCol, getHonkaiCharById, getHonkaiCharFromColById, getHonkaiCharFromRiseById, removeHonkaiCharFromCol } from '../../http/honkai/charAPI';
 import { getBossMaterialById, getEnemyMaterialById, getLocalSpecialtyById, getStoneById, getTalentById, getWBMaterialById } from '../../http/materialAPI';
 import { getHonkaiBossMaterialById, getHonkaiEnemyMaterialById, getHonkaiTalentById, getHonkaiWBMaterialById } from '../../http/honkai/materialAPI';
 import { getZzzBossMaterialById, getZzzEnemyMaterialById, getZzzTalentById, getZzzWBMaterialById } from '../../http/zzz/materialAPI';

@@ -33,10 +33,10 @@ const Characters = observer(() => {
     }, [])
     useEffect(() => {
         setCurrentGame(app.game)
-    }, [])
+    }, [app.game])
     //Сброс фильтров
     useEffect(() => {
-        if (currentGame != app.game) {
+        if (currentGame !== app.game) {
             chars.setElement('')
             chars.setMaterial('')
             chars.setPath('')
@@ -49,7 +49,7 @@ const Characters = observer(() => {
             chars.setSearchBy('')
             setCurrentGame(app.game)
         }
-    }, [app.game])
+    }, [app.game, chars, currentGame])
     //Установка фильтров
     useEffect(() => {
         let query = ''
@@ -107,17 +107,17 @@ const Characters = observer(() => {
             getHonkaiWeapons().then(res => weapons.setWeapons(res.data))
             getHonkaiArts().then(res => arts.setArts(res.data))
         }
-    }, [app.game])
+    }, [app.game, arts, weapons])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
                 <Row className='mt-3 pb-5'>
                     <Col md={3} className='mt-5'>
-                        {app.game != 'Zzz' && <StyledTitle color='yellow' fz='22px'>
+                        {app.game !== 'Zzz' && <StyledTitle color='yellow' fz='22px'>
                             Стихия
                         </StyledTitle >}
-                        {app.game != 'Zzz' && <Row className='mb-2'>
+                        {app.game !== 'Zzz' && <Row className='mb-2'>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(1)} variant={chars.element === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Анемо' : 'Ветер'}</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(2)} variant={chars.element === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Гео' : 'Мнимый'}</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(3)} variant={chars.element === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Электро</Button></Col>
@@ -176,7 +176,7 @@ const Characters = observer(() => {
                         <StyledTitle color='yellow' fz='22px'>
                             {app.game === 'Genshin' ? 'Регион' : 'Фракция'}
                         </StyledTitle>
-                        {app.game != 'Honkai' && <Row className='mb-2'>
+                        {app.game !== 'Honkai' && <Row className='mb-2'>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(1)} variant={chars.region === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Мондштадт' : 'Хитрые Зайцы'}</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(2)} variant={chars.region === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Ли Юэ' : 'Комбинат Белобог'}</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(3)} variant={chars.region === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Инадзума' : 'Виктория'}</Button></Col>

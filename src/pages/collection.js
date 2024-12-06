@@ -15,7 +15,7 @@ import { getZzzChars, getZzzCharsFromCol } from '../http/zzz/charAPI';
 import { getZzzWeapons, getZzzWeaponsFromCol } from '../http/zzz/weaponAPI';
 import { getHonkaiChars, getHonkaiCharsFromCol } from '../http/honkai/charAPI';
 import { getHonkaiWeapons, getHonkaiWeaponsFromCol } from '../http/honkai/weaponAPI';
-import { Button, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { getGenshinArts } from '../http/artsAPI';
 import { getZzzArts } from '../http/zzz/artsAPI';
 import { getHonkaiArts } from '../http/honkai/artsAPI';
@@ -52,9 +52,9 @@ const Collection = observer(() => {
                 getHonkaiArts().then(res => arts.setArts(res.data))
             }
         }
-    }, [app.game])
+    }, [app.game, arts, mod, weapons])
     useEffect(() => {
-        if (currentGame != app.game) {
+        if (currentGame !== app.game) {
             chars.setElement('')
             chars.setMaterial('')
             chars.setPath('')
@@ -73,7 +73,7 @@ const Collection = observer(() => {
             setPropId(0)
             setCurrentGame(app.game)
         }
-    }, [app.game])
+    }, [app.game, chars, currentGame, weapons])
     useEffect(() => {
         let query = ''
         if (mod === 'chars') {
@@ -152,7 +152,7 @@ const Collection = observer(() => {
     weapons.material, weapons.weapon, weapons.stars, weapons.searchBy,
         weapons, weapons.pathId, mod])
     let characters = chars.chars.chars.map(e => <Char gridpart={3} key={e.id} char={e} onShow={createModal} />)
-    let weaponsArray = weapons.weapons.weapons.filter(e => (app.game != 'Honkai' && propId != 0) ? e.weaponInfo?.prop?.id === propId : e).map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
+    let weaponsArray = weapons.weapons.weapons.filter(e => (app.game !== 'Honkai' && propId !== 0) ? e.weaponInfo?.prop?.id === propId : e).map(e => <Weapon gridpart={3} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
@@ -168,10 +168,10 @@ const Collection = observer(() => {
                 {mod === 'chars' &&
                     <Row className='mt-3 pb-5'>
                         <Col md={3} className='mt-5'>
-                            {app.game != 'Zzz' && <StyledTitle color='yellow' fz='22px'>
+                            {app.game !== 'Zzz' && <StyledTitle color='yellow' fz='22px'>
                                 Стихия
                             </StyledTitle >}
-                            {app.game != 'Zzz' && <Row className='mb-2'>
+                            {app.game !== 'Zzz' && <Row className='mb-2'>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(1)} variant={chars.element === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Анемо' : 'Ветер'}</Button></Col>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(2)} variant={chars.element === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Гео' : 'Мнимый'}</Button></Col>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setElement(3)} variant={chars.element === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Электро</Button></Col>
@@ -230,7 +230,7 @@ const Collection = observer(() => {
                             <StyledTitle color='yellow' fz='22px'>
                                 {app.game === 'Genshin' ? 'Регион' : 'Фракция'}
                             </StyledTitle>
-                            {app.game != 'Honkai' && <Row className='mb-2'>
+                            {app.game !== 'Honkai' && <Row className='mb-2'>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(1)} variant={chars.region === 1 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Мондштадт' : 'Хитрые Зайцы'}</Button></Col>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(2)} variant={chars.region === 2 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Ли Юэ' : 'Комбинат Белобог'}</Button></Col>
                                 <Col md='auto' className='mt-1'><Button onClick={() => chars.setRegion(3)} variant={chars.region === 3 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>{app.game === 'Genshin' ? 'Инадзума' : 'Виктория'}</Button></Col>
@@ -337,7 +337,7 @@ const Collection = observer(() => {
                                 <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars(5)} variant={weapons.stars === 5 ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>5★</Button></Col>
                                 <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars('')} variant={weapons.stars === '' ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>Все</Button></Col>
                             </Row>
-                            {app.game != 'Honkai' && <StyledBox>
+                            {app.game !== 'Honkai' && <StyledBox>
                                 <StyledTitle color='yellow' fz='22px'>
                                     Основная Хар-ка
                                 </StyledTitle>

@@ -4,8 +4,6 @@ import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import { AppContext } from '..';
 import { getChars } from '../http/charAPI';
-import { Char } from '../components/char';
-import { CharOptions } from '../components/modals/charOptions';
 import { Button } from 'react-bootstrap/esm/';
 import { StyledBox, StyledTitle } from '../styledComponents/styled-components';
 import { observer } from 'mobx-react-lite';
@@ -14,7 +12,6 @@ import { getWeapons } from '../http/weaponAPI';
 import { Weapon } from '../components/weapon';
 import { WeaponOptions } from '../components/modals/weaponOptions';
 import { getZzzWeapons } from '../http/zzz/weaponAPI';
-import { getHonkaiWeaponStatistic } from '../http/honkai/rollAPI';
 import { getHonkaiWeapons } from '../http/honkai/weaponAPI';
 import { getZzzChars } from '../http/zzz/charAPI';
 import { getHonkaiChars } from '../http/honkai/charAPI';
@@ -30,7 +27,7 @@ const Weapons = observer(() => {
         setModalOptions(true)
     }
     useEffect(() => {
-        if (currentGame != app.game) {
+        if (currentGame !== app.game) {
             weapons.setWeapon('')
             weapons.setMaterial('')
             weapons.setPathId('')
@@ -39,7 +36,7 @@ const Weapons = observer(() => {
             setPropId(0)
             setCurrentGame(app.game)
         }
-    }, [app.game])
+    }, [app.game, currentGame, weapons])
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
@@ -72,8 +69,8 @@ const Weapons = observer(() => {
             getHonkaiWeapons(query).then(res => { res && weapons.setWeapons(res.data) })
             getHonkaiChars().then(res => chars.setChars(res.data))
         }
-    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons, weapons.pathId])
-    let weaponsArray = weapons.weapons.weapons.filter(e => (app.game != 'Honkai' && propId != 0) ? e.weaponInfo?.prop?.id === propId : e).map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
+    }, [app.game, weapons.material, weapons.weapon, weapons.stars, weapons.searchBy, weapons, weapons.pathId, chars])
+    let weaponsArray = weapons.weapons.weapons.filter(e => (app.game !== 'Honkai' && propId !== 0) ? e.weaponInfo?.prop?.id === propId : e).map(e => <Weapon gridpart={4} key={e.id} weapon={e} onShow={createModal} />)
     return (
         <>
             <Container style={{ textShadow: '2px 2px 2px black' }}>
@@ -123,7 +120,7 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars(5)} variant={weapons.stars === 5 ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>5★</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setStars('')} variant={weapons.stars === '' ? 'warning' : 'outline-warning'} style={{ width: '80px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>
-                        {app.game != 'Honkai' && <StyledBox>
+                        {app.game !== 'Honkai' && <StyledBox>
                             <StyledTitle color='yellow' fz='22px'>
                                 Основная Хар-ка
                             </StyledTitle>

@@ -36,7 +36,7 @@ export const Arts = observer((props) => {
             getHonkaiArts().then(res => { res && setArts(res.data) })
             getHonkaiChars().then(res => chars.setChars(res.data))
         }
-    }, [app.game])
+    }, [app.game, arts, chars])
     let artsArray = arts?.map(e => <Art gridpart={3} key={e.id} art={e} onShow={createModal} />)
     return (
         <>

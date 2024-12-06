@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react"
-import { getEventStatistic, getStandartStatistic, getStatistic, getWeaponStatistic } from "../http/rollAPI"
+import { getEventStatistic, getStandartStatistic, getWeaponStatistic } from "../http/rollAPI"
 import { StyledBox, StyledImg, StyledTitle } from "../styledComponents/styled-components"
 import { Button, Col, Container, Row } from "react-bootstrap"
-import { getCharFromColById, getCharStatistic, getCharsFromCol, getCharsWithSortByPatchCounter, getCharsWithSortByPatchNumber, getCharsWithSortByRelease } from "../http/charAPI"
+import { getCharStatistic, getCharsFromCol, getCharsWithSortByPatchCounter, getCharsWithSortByPatchNumber, getCharsWithSortByRelease } from "../http/charAPI"
 import { AppContext } from ".."
 import { getZzzEventStatistic, getZzzStandartStatistic, getZzzWeaponStatistic } from "../http/zzz/rollAPI"
 import { observer } from "mobx-react-lite"
@@ -134,7 +134,7 @@ const Statistic = observer(() => {
             ).map(
                 i =>
                     <StyledImg opacity={col?.some(e => e === i.id) ? '100%' : '30%'}
-                        style={{ margin: '5px',background: i.stars === 5 ? 'orange' : (i.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px'  }} width={app.game !='Zzz'?'55px':'75px'}
+                        style={{ margin: '5px', background: i.stars === 5 ? 'orange' : (i.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} width={app.game !== 'Zzz' ? '55px' : '75px'}
                         src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + i.img} />)}
         </Col>)
     const regionTableRow = regionStatistic?.map(
@@ -145,38 +145,38 @@ const Statistic = observer(() => {
             ).map(
                 i =>
                     <StyledImg br='15px' opacity={col?.some(e => e === i.id) ? '100%' : '30%'}
-                        style={{ margin: '5px',background: i.stars === 5 ? 'orange' : (i.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} width={'70px'}
+                        style={{ margin: '5px', background: i.stars === 5 ? 'orange' : (i.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} width={'70px'}
                         src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + i.img} />)}
         </Col>)
 
     const srollsComp = sRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const erollsComp = eRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const wrollsComp = wRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game != 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     return (
@@ -202,16 +202,16 @@ const Statistic = observer(() => {
                 {app.game === 'Genshin' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={anemo} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={geo} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={electro} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={dendro} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={hydro} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={pyro} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={kryo} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={anemo} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={geo} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={electro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={dendro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={hydro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={pyro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={kryo} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={onehand} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="weapon-type" style={{ width: '70px' }} src={onehand} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -221,7 +221,7 @@ const Statistic = observer(() => {
                         {charTableCell[6]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={twohand} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="weapon-type" style={{ width: '70px' }} src={twohand} /></Col>
                         {charTableCell[7]}
                         {charTableCell[8]}
                         {charTableCell[9]}
@@ -231,7 +231,7 @@ const Statistic = observer(() => {
                         {charTableCell[12]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={polearm} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="weapon-type" style={{ width: '70px' }} src={polearm} /></Col>
                         {charTableCell[13]}
                         {charTableCell[14]}
                         {charTableCell[15]}
@@ -241,7 +241,7 @@ const Statistic = observer(() => {
                         {charTableCell[19]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={bow} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="weapon-type" style={{ width: '70px' }} src={bow} /></Col>
                         {charTableCell[20]}
                         {charTableCell[21]}
                         {charTableCell[22]}
@@ -251,7 +251,7 @@ const Statistic = observer(() => {
                         {charTableCell[26]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={cata} /></Col>
+                        <Col style={{ color: 'yellow', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="weapon-type" style={{ width: '70px' }} src={cata} /></Col>
                         {charTableCell[27]}
                         {charTableCell[28]}
                         {charTableCell[29]}
@@ -264,16 +264,16 @@ const Statistic = observer(() => {
                 {app.game === 'Honkai' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={wind} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={mnim} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={elec} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={kvant} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={phys} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={fire} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={ice} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={wind} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={mnim} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={elec} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={kvant} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={phys} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={fire} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={ice} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={raz} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={raz} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -283,7 +283,7 @@ const Statistic = observer(() => {
                         {charTableCell[6]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={ohot} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={ohot} /></Col>
                         {charTableCell[7]}
                         {charTableCell[8]}
                         {charTableCell[9]}
@@ -293,7 +293,7 @@ const Statistic = observer(() => {
                         {charTableCell[13]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={erud} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={erud} /></Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[14]}
                         {charTableCell[15]}
@@ -303,7 +303,7 @@ const Statistic = observer(() => {
                         {charTableCell[19]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={harm} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={harm} /></Col>
                         {charTableCell[20]}
                         {charTableCell[21]}
                         {charTableCell[22]}
@@ -313,7 +313,7 @@ const Statistic = observer(() => {
                         {charTableCell[26]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={neb} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={neb} /></Col>
                         {charTableCell[27]}
                         {charTableCell[28]}
                         {charTableCell[29]}
@@ -323,7 +323,7 @@ const Statistic = observer(() => {
                         {charTableCell[33]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={save} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={save} /></Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[34]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -333,7 +333,7 @@ const Statistic = observer(() => {
                         {charTableCell[37]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '70px' }} src={izo} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="path" style={{ width: '70px' }} src={izo} /></Col>
                         {charTableCell[38]}
                         {charTableCell[39]}
                         {charTableCell[40]}
@@ -346,14 +346,14 @@ const Statistic = observer(() => {
                 {app.game === 'Zzz' && <StyledBox className='mt-3 mb-5'>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzFire} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzElectro} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzPhys} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzIce} /></Col>
-                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img style={{ width: '40px' }} src={zzzEther} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={zzzFire} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={zzzElectro} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={zzzPhys} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={zzzIce} /></Col>
+                        <Col style={{ color: 'yellow', textAlign: 'center', borderLeft: 'yellow solid 2px' }}><img alt="element" style={{ width: '40px' }} src={zzzEther} /></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={anomaly} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={anomaly} /></Col>
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
@@ -361,7 +361,7 @@ const Statistic = observer(() => {
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={attack} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={attack} /></Col>
                         {charTableCell[3]}
                         {charTableCell[4]}
                         {charTableCell[5]}
@@ -369,7 +369,7 @@ const Statistic = observer(() => {
                         {charTableCell[7]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={stun} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={stun} /></Col>
                         {charTableCell[8]}
                         {charTableCell[9]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -377,7 +377,7 @@ const Statistic = observer(() => {
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={support} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={support} /></Col>
                         {charTableCell[11]}
                         {charTableCell[12]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
@@ -385,7 +385,7 @@ const Statistic = observer(() => {
                         {charTableCell[14]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
-                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '40px' }} src={defense} /></Col>
+                        <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={defense} /></Col>
                         {charTableCell[15]}
                         {charTableCell[16]}
                         {charTableCell[17]}
@@ -408,16 +408,16 @@ const Statistic = observer(() => {
                     <StyledTitle fz='26px' align='center' color="yellow">{'Последнее Появление в Баннере'}</StyledTitle>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsPN?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
-                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) == e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
+                        {charsPN?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) === e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
                         </Col> : '')}
                     </Row>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsPN?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
-                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) == e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
+                        {charsPN?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.lastPatch && e.charInfo?.lastPatch !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.lastPatch) === e.charInfo?.lastPatch ? e.charInfo?.lastPatch + '.0' : e.charInfo?.lastPatch}</StyledTitle>
                         </Col> : '')}
                     </Row>
                 </Row>
@@ -425,15 +425,15 @@ const Statistic = observer(() => {
                     <StyledTitle fz='26px' align='center' color="yellow">{'Кол-во Появлений в Баннерах'}</StyledTitle>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsPC?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                        {charsPC?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
                             <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{e.charInfo?.patchCounter}</StyledTitle>
                         </Col> : '')}
                     </Row>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsPC?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter != 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                        {charsPC?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.patchCounter && e.charInfo?.patchCounter !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
                             <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{e.charInfo?.patchCounter}</StyledTitle>
                         </Col> : '')}
                     </Row>
@@ -442,17 +442,17 @@ const Statistic = observer(() => {
                     <StyledTitle fz='26px' align='center' color="yellow">{'Порядок выхода персонажей'}</StyledTitle>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsR?.chars?.filter(e => e.stars === 5).map(e => e.charInfo?.firstPatch && <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
-                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) == e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
-                        </Col>)}
+                        {charsR?.chars?.filter(e => e.stars === 5).map(e => (e.charInfo?.firstPatch && e.charInfo?.firstPatch !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) === e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
+                        </Col> : '')}
                     </Row>
                     <StyledTitle fz='26px' align='center' color="yellow">{'★★★★'}</StyledTitle>
                     <Row style={{ justifyContent: 'center' }}>
-                        {charsR?.chars?.filter(e => e.stars === 4).map(e => e.charInfo?.firstPatch && <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                            <img style={{ width: '60px', margin: '15px 0',background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
-                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) == e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
-                        </Col>)}
+                        {charsR?.chars?.filter(e => e.stars === 4).map(e => (e.charInfo?.firstPatch && e.charInfo?.firstPatch !== 0) ? <Col md='auto' style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                            <img alt="character" style={{ width: '60px', margin: '15px 0', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img} />
+                            <StyledTitle style={{ position: 'absolute', bottom: '-7%', border: 'solid yellow 1px', backgroundColor: 'red', padding: '0 5px', borderRadius: '16px', right: '0' }} color='yellow' fz='22px'>{Math.floor(e.charInfo?.firstPatch) === e.charInfo?.firstPatch ? e.charInfo?.firstPatch + '.0' : e.charInfo?.firstPatch}</StyledTitle>
+                        </Col> : '')}
                     </Row>
                 </Row>
             </Container>
