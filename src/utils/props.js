@@ -165,6 +165,10 @@ export const honkaiProps = [
         id: 21,
         name: 'КШ/КУ'
     },
+    {
+        id: 22,
+        name: 'Сопротивление Эффектам'
+    },
 ]
 export const zzzProps = [
     {

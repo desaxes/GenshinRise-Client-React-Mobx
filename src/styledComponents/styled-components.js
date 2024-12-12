@@ -57,6 +57,7 @@ opacity:${props => props.opacity};
 line-height:${props => props.lh};
 text-decoration:${props => props.dec};
 font-style:${props => props.fs};
+font-weight:${props => props.fw};
 margin:${props => props.mar};
 cursor:${props => props.cursor};
 `

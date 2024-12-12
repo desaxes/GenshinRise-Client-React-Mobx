@@ -151,32 +151,32 @@ const Statistic = observer(() => {
 
     const srollsComp = sRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const erollsComp = eRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const wrollsComp = wRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     return (
@@ -357,38 +357,38 @@ const Statistic = observer(() => {
                         {charTableCell[0]}
                         {charTableCell[1]}
                         {charTableCell[2]}
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
+                        {charTableCell[3]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={attack} /></Col>
-                        {charTableCell[3]}
                         {charTableCell[4]}
                         {charTableCell[5]}
                         {charTableCell[6]}
                         {charTableCell[7]}
+                        {charTableCell[8]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={stun} /></Col>
-                        {charTableCell[8]}
                         {charTableCell[9]}
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[10]}
+                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
+                        {charTableCell[11]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={support} /></Col>
-                        {charTableCell[11]}
                         {charTableCell[12]}
-                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[13]}
+                        <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         {charTableCell[14]}
+                        {charTableCell[15]}
                     </Row>
                     <Row style={{ border: 'yellow solid 2px' }}>
                         <Col style={{ color: 'yellow', borderLeft: 'yellow solid 2px', height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img alt="spec" style={{ width: '40px' }} src={defense} /></Col>
-                        {charTableCell[15]}
                         {charTableCell[16]}
                         {charTableCell[17]}
+                        {charTableCell[18]}
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                         <Col style={{ borderLeft: 'yellow solid 2px', height: '160px' }}></Col>
                     </Row>

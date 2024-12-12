@@ -208,7 +208,7 @@ export const CharOptionsForCollection = observer((props) => {
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            style={{ padding: '70px' }}
+            style={{ padding: '70px', textShadow: '2px 2px 2px black' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>

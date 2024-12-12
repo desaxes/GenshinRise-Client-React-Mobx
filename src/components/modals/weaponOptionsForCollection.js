@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
-import { Button } from 'react-bootstrap/esm/';
+import { Button, Col, Row } from 'react-bootstrap/esm/';
 import { AppContext } from '../..';
 import { observer } from 'mobx-react-lite';
 import { StyledBox, StyledTitle } from '../../styledComponents/styled-components';
@@ -101,7 +101,7 @@ export const WeaponOptionsForCollection = observer((props) => {
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-
+            style={{ textShadow: '2px 2px 2px black' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -110,44 +110,50 @@ export const WeaponOptionsForCollection = observer((props) => {
             </Modal.Header>
             <Modal.Body style={{ display: "flex", justifyContent: 'center', backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <StyledBox display='flex' gap='40px' dir='row' jstf='center' width='100%' padding='10px 50px' align='center'>
-                    <img alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? "/zzz/weapons/" : '/honkai/weapons/')) + weapon?.img}></img>
+
                     <StyledBox color='yellow' display='flex' dir='column' align='center'>
-                        {attack && <StyledBox display='flex' gap='40px'>
-                            <StyledBox>
-                                <StyledTitle fz='24px'>Атака</StyledTitle>
-                                <StyledTitle fz='18px'>{attack}</StyledTitle>
+                        <StyledBox margin='0 0 16px 0' display='flex' dir='row' align='center' jstf='space-between' width='100%'>
+                            <StyledBox padding='0 5px' display='flex' align='end' dir='row' style={{ background: weapon?.stars === 5 ? 'orange' : (weapon?.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }}>
+                                <img style={{ width: '150px' }} alt='weapon' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? "/zzz/weapons/" : '/honkai/weapons/')) + weapon?.img}></img>
+                                {owner && <StyledBox display='flex' dir='column' align='center'>
+                                    <img style={{ height: app.game === 'Honkai' ? '125px' : '100px', width: '100px', borderRadius: '16px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + owner?.img}></img>
+                                </StyledBox>}
                             </StyledBox>
-                            {app.game === 'Honkai' && <StyledBox display='flex' gap='40px'>
+                            <StyledBox style={{textShadow:weapon?.stars===4? '2px 2px 2px black': '2px 2px 2px white'}} display='flex' dir='column' align='center' border='2px solid white' br='16px' padding='24px' bg={weapon?.stars === 5 ? 'orange' : (weapon?.stars === 4 ? '#4600f6' : '#4682B4')} color={weapon?.stars === 5 ? 'black' : (weapon?.stars === 4 ? 'white' : 'black')}>
+                                {attack && <StyledBox display='flex' gap='40px'>
+                                    <StyledBox>
+                                        <StyledTitle dec='underline' fz='24px'>Атака</StyledTitle>
+                                        <StyledTitle fz='18px'>{attack}</StyledTitle>
+                                    </StyledBox>
+                                    {app.game === 'Honkai' && <StyledBox display='flex' gap='40px'>
+                                        <StyledBox>
+                                            <StyledTitle dec='underline' fz='24px'>HP</StyledTitle>
+                                            <StyledTitle fz='18px'>{hp}</StyledTitle>
+                                        </StyledBox>
+                                        <StyledBox>
+                                            <StyledTitle dec='underline' fz='24px'>Защита</StyledTitle>
+                                            <StyledTitle fz='18px'>{def}</StyledTitle>
+                                        </StyledBox>
+                                    </StyledBox>}
+                                </StyledBox>}
                                 <StyledBox>
-                                    <StyledTitle fz='24px'>Защита</StyledTitle>
-                                    <StyledTitle fz='18px'>{def}</StyledTitle>
+                                    <StyledTitle dec='underline' fz='24px'>{prop.name}</StyledTitle>
+                                    <StyledTitle fz='18px'>{propValue}</StyledTitle>
                                 </StyledBox>
-                                <StyledBox>
-                                    <StyledTitle fz='24px'>HP</StyledTitle>
-                                    <StyledTitle fz='18px'>{hp}</StyledTitle>
-                                </StyledBox>
-                            </StyledBox>}
-                        </StyledBox>}
-                        <StyledBox>
-                            <StyledTitle fz='24px'>{prop.name}</StyledTitle>
-                            <StyledTitle fz='18px'>{propValue}</StyledTitle>
+                            </StyledBox>
                         </StyledBox>
                         {info && <StyledBox>
                             <StyledTitle fz='24px'>Способность</StyledTitle>
                             <StyledTitle fz='18px'>{info}</StyledTitle>
                         </StyledBox>}
                         <StyledBox gap='30px' display='flex' align='center' jstf='center' width='100%' margin='20px 0'>
-                            {owner && <StyledBox display='flex' dir='column' align='center'>
-                                <StyledTitle fz='18px'>Владелец</StyledTitle>
-                                <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: owner.stars === 5 ? 'orange' : (owner.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + owner?.img}></img>
-                            </StyledBox>}
                             {characters.length > 0 && <StyledBox display='flex' dir='column' align='center'>
                                 <StyledTitle fz='18px'>Подходит Персонажам</StyledTitle>
-                                <StyledBox display='flex' gap='5px'>
+                                <Row >
                                     {characters?.map(e =>
-                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
+                                        <Col style={{ marginBottom: '10px' }}><img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img></Col>
                                     )}
-                                </StyledBox>
+                                </Row>
                             </StyledBox>}
                         </StyledBox>
                     </StyledBox>

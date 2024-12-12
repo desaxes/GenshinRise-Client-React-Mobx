@@ -18,6 +18,7 @@ const Banners = observer(() => {
     const [bannerModal, setBannerModal] = useState(false)
     const [banners, setBanners] = useState()
     const [id, setId] = useState()
+    const [update, setUpdate] = useState()
     const [currentChar, setCurrentChar] = useState('')
     const { app, chars } = useContext(AppContext)
     const createModal = () => {
@@ -90,7 +91,8 @@ const Banners = observer(() => {
                 getHonkaiChars().then(res => chars.setChars(res.data))
             })
         }
-    }, [app.game, currentChar])
+        setUpdate(false)
+    }, [app.game, currentChar, update])
     // let bans
     // if (currentChar) {
 
@@ -110,6 +112,7 @@ const Banners = observer(() => {
                 {modalOptions && <CreateBanner
                     show={true}
                     onHide={() => setModalOptions(false)}
+                    setUpdate={setUpdate}
                 />}
                 {bannerModal && <BannerModal
                     show={true}

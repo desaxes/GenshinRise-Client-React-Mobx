@@ -79,9 +79,6 @@ export const CharOptions = observer((props) => {
     const [secondTeam, setSecondTeam] = useState([])
     const [thirdTeam, setThirdTeam] = useState([])
     const [info, setInfo] = useState('')
-    const [firstPatch, setFirstPatch] = useState(0)
-    const [lastPatch, setLastPatch] = useState(0)
-    const [patchCounter, setPatchCounter] = useState(0)
     const [char, setChar] = useState()
     const [update, setUpdate] = useState(false)
     const [currentGame, setCurrentGame] = useState(props.currentGame)
@@ -178,9 +175,6 @@ export const CharOptions = observer((props) => {
         formData.append('secondTeam', JSON.stringify(secondTeam))
         formData.append('thirdTeam', JSON.stringify(thirdTeam))
         formData.append('info', info)
-        formData.append('firstPatch', firstPatch)
-        formData.append('lastPatch', lastPatch)
-        formData.append('patchCounter', patchCounter)
         if (app.game === 'Genshin') {
             updateCharInfo(formData).then(res => { setEditor(false); setUpdate(!update) })
         }
@@ -244,9 +238,6 @@ export const CharOptions = observer((props) => {
                 if (res.data.charInfo.secondTeam) { setSecondTeam(res.data.charInfo.secondTeam) }
                 if (res.data.charInfo.thirdTeam) { setThirdTeam(res.data.charInfo.thirdTeam) }
                 if (res.data.charInfo.charProps) { setCharProps(res.data.charInfo.charProps) }
-                if (res.data.charInfo.firstPatch) { setFirstPatch(res.data.charInfo.firstPatch) }
-                if (res.data.charInfo.lastPatch) { setLastPatch(res.data.charInfo.lastPatch) }
-                if (res.data.charInfo.patchCounter) { setPatchCounter(res.data.charInfo.patchCounter) }
             }
         })
     }, [update])
@@ -302,7 +293,7 @@ export const CharOptions = observer((props) => {
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            style={{ padding: '70px' }}
+            style={{ padding: '70px',textShadow: '2px 2px 2px black' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -345,7 +336,14 @@ export const CharOptions = observer((props) => {
                                     <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                         {weapons.weapons.weapons.map(e =>
                                             <Dropdown.Item
-                                                onClick={() => { setRecWeapons([...recWeapons, e]) }}
+                                                onClick={() => {
+                                                    if (recWeapons.some(w => w.id === e.id)) {
+                                                        return
+                                                    }
+                                                    else {
+                                                        setRecWeapons([...recWeapons, e])
+                                                    }
+                                                }}
                                                 key={e.id}>
                                                 <StyledBox display='flex' align='center' jstf='center' >
                                                     <img alt='stone' style={{ maxWidth: '40px' }}
@@ -358,42 +356,6 @@ export const CharOptions = observer((props) => {
                                 <Row display='flex' gap='5px'>
                                     {recWeapons?.map(e => <Col md={'auto'}><img style={{ height: app.game === 'Honkai' ? '90px' : '75px', width: '75px' }} alt='weapon' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img} onClick={() => setRecWeapons(recWeapons.filter(p => p.id != e.id))} /></Col>)}
                                 </Row>
-                                {/* Второе оружие */}
-                                {/* <Dropdown className='mt-2 mb-2'>
-                                    <Dropdown.Toggle variant='outline-warning'>
-                                        {recFiveStarWeapon === undefined ? 'Рекомендованное Легендарное Оружие' : recFiveStarWeapon?.name}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                        {weapons.weapons.weapons.map(e =>
-                                            <Dropdown.Item
-                                                onClick={() => { setRecFiveStarWeapon(e) }}
-                                                key={e.id}>
-                                                <StyledBox display='flex' align='center' jstf='center' >
-                                                    <img alt='stone' style={{ maxWidth: '40px' }}
-                                                        src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
-                                                    <p style={{ fontWeight: 'bold' }}>{e.name}</p>
-                                                </StyledBox>
-                                            </Dropdown.Item>)}
-                                    </Dropdown.Menu>
-                                </Dropdown> */}
-                                {/* Третье оружие */}
-                                {/* <Dropdown className='mt-2 mb-2'>
-                                    <Dropdown.Toggle variant='outline-warning'>
-                                        {recFourStarWeapon === undefined ? 'Рекомендованное Эпическое Оружие' : recFourStarWeapon?.name}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                        {weapons.weapons.weapons.map(e =>
-                                            <Dropdown.Item
-                                                onClick={() => { setRecFourStarWeapon(e) }}
-                                                key={e.id}>
-                                                <StyledBox display='flex' align='center' jstf='center' >
-                                                    <img alt='stone' style={{ maxWidth: '40px' }}
-                                                        src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? '/weapons/' : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e.img}></img>
-                                                    <p style={{ fontWeight: 'bold' }}>{e.name}</p>
-                                                </StyledBox>
-                                            </Dropdown.Item>)}
-                                    </Dropdown.Menu>
-                                </Dropdown> */}
                                 {/* 1 сет артов */}
                                 <StyledBox display='flex' gap='5px'>
                                     <Dropdown className='mt-2 mb-2'>
@@ -752,11 +714,6 @@ export const CharOptions = observer((props) => {
                                         {thirdTeam?.map(e => <Button variant='danger' onClick={() => setThirdTeam(thirdTeam.filter(p => p.id != e.id))}>{e.name}</Button>)}
                                     </StyledBox>
                                 </StyledBox>
-                                <StyledBox display='flex' gap='10px'>
-                                    <Form.Control value={firstPatch} id='1' onChange={e => setFirstPatch(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Выход персонажа' />
-                                    <Form.Control value={lastPatch} id='2' onChange={e => setLastPatch(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Последнее появление' />
-                                    <Form.Control value={patchCounter} id='3' onChange={e => setPatchCounter(e.target.value)} className='mt-2 mb-2' type='number' placeholder='Кол-во поялвений' />
-                                </StyledBox>
                             </Form>
                         </StyledBox> :
                         // Карточка персонажа
@@ -769,7 +726,7 @@ export const CharOptions = observer((props) => {
                                     {char?.charInfo.info}
                                 </StyledBox>}
                                 <StyledBox align='center' display='flex' jstf='center'>
-                                    <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
+                                    <img style={{ height: app.game === 'Honkai' ? '200px' : '150px', width: '150px',background: char?.stars === 5 ? 'orange' : (char?.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + char?.img}></img>
                                 </StyledBox>
                             </StyledBox>
                             <StyledBox margin='5px 0' border='solid 1px yellow' padding='10px 5px' display='flex' jstf='space-between' width='100%' align='center'>
@@ -970,22 +927,22 @@ export const CharOptions = observer((props) => {
                                     <StyledTitle fz='20px' >Команды</StyledTitle>}
                                 <StyledBox display='flex' gap='40px' align='center' jstf='center'>
                                     {firstTeam.length > 0 && <StyledBox display='flex' gap='5px'>
-                                        {firstTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[0]?.img}></img>}
-                                        {firstTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[1]?.img}></img>}
-                                        {firstTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[2]?.img}></img>}
-                                        {firstTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[3]?.img}></img>}
+                                        {firstTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[0]?.img}></img>}
+                                        {firstTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[1]?.img}></img>}
+                                        {firstTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[2]?.img}></img>}
+                                        {firstTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + firstTeam[3]?.img}></img>}
                                     </StyledBox>}
                                     {secondTeam.length > 0 && <StyledBox display='flex' gap='5px'>
-                                        {secondTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[0]?.img}></img>}
-                                        {secondTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[1]?.img}></img>}
-                                        {secondTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[2]?.img}></img>}
-                                        {secondTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[3]?.img}></img>}
+                                        {secondTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[0]?.img}></img>}
+                                        {secondTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[1]?.img}></img>}
+                                        {secondTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[2]?.img}></img>}
+                                        {secondTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + secondTeam[3]?.img}></img>}
                                     </StyledBox>}
                                     {thirdTeam.length > 0 && <StyledBox display='flex' gap='5px'>
-                                        {thirdTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[0]?.img}></img>}
-                                        {thirdTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[1]?.img}></img>}
-                                        {thirdTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[2]?.img}></img>}
-                                        {thirdTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[3]?.img}></img>}
+                                        {thirdTeam[0] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[0]?.img}></img>}
+                                        {thirdTeam[1] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[1]?.img}></img>}
+                                        {thirdTeam[2] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[2]?.img}></img>}
+                                        {thirdTeam[3] && <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: 'linear-gradient(135deg, #FFCA07FF 0%, #5F00DDFF 100%)', border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + thirdTeam[3]?.img}></img>}
                                     </StyledBox>}
                                 </StyledBox>
                             </StyledBox>}

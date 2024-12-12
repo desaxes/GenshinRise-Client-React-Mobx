@@ -6,6 +6,7 @@ import { StyledBox, StyledTitle } from '../../styledComponents/styled-components
 import { getGenshinArtById } from '../../http/artsAPI';
 import { getHonkaiArtById } from '../../http/honkai/artsAPI';
 import { getZzzArtById } from '../../http/zzz/artsAPI';
+import { Col, Row } from 'react-bootstrap';
 
 export const ArtOptions = observer((props) => {
     const { app, chars } = useContext(AppContext)
@@ -52,7 +53,7 @@ export const ArtOptions = observer((props) => {
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-
+            style={{ textShadow: '2px 2px 2px black' }}
         >
             <Modal.Header closeButton style={{ backgroundColor: '#212529', border: '2px solid yellow' }}>
                 <Modal.Title id="contained-modal-title-vcenter" style={{ color: 'yellow' }}>
@@ -76,11 +77,13 @@ export const ArtOptions = observer((props) => {
                         </StyledBox>}
                         {characters?.length > 0 && <StyledBox display='flex' dir='column' align='center'>
                             <StyledTitle fz='18px'>Подходит Персонажам</StyledTitle>
-                            <StyledBox display='flex' gap='5px'>
+                            <Row display='flex' gap='5px'>
                                 {characters?.map(e =>
-                                    <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
-                                )}
-                            </StyledBox>
+                                    <Col style={{ marginBottom: '10px' }}>
+                                        <img style={{ height: app.game === 'Honkai' ? '90px' : '60px', width: '60px', background: e.stars === 5 ? 'orange' : (e.stars === 4 ? '#4600f6' : '#4682B4'), border: 'white 2px solid', borderRadius: '12px' }} alt='character' src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e.img}></img>
+
+                                    </Col>)}
+                            </Row>
                         </StyledBox>}
                     </StyledBox>
                 </StyledBox>

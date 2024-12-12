@@ -98,6 +98,8 @@ export const CreateBanner = observer((props) => {
             formData.append('patchNumber', patchNumber.toString())
             addHonkaiBanner(formData)
         }
+        props.onHide()
+        props.setUpdate(true)
     }
     useEffect(() => {
         setTimeout(() => setSuccess(false), 2000)
