@@ -274,6 +274,7 @@ export const CreateCharacter = observer((props) => {
                             <Dropdown.Item onClick={() => { setRegion('Секция 6'); setRegionId(5) }}>Секция 6</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setRegion('Особая группа отдела угрозыска'); setRegionId(6) }}>Особая группа отдела угрозыска</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setRegion('Сыны Калидона'); setRegionId(7) }}>Сыны Калидона</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setRegion('Созвездие Лиры'); setRegionId(8) }}>Созвездие Лиры</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>}
                     {app.game === 'Honkai' && <Dropdown className='mt-2 mb-2'>

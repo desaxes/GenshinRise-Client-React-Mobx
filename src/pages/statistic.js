@@ -151,32 +151,32 @@ const Statistic = observer(() => {
 
     const srollsComp = sRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const erollsComp = eRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     const wrollsComp = wRolls.filter(e => e._id.stars > 3).map(e => e._id.isChar ?
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/chars/" : (app.game === 'Zzz' ? '/zzz/chars/' : '/honkai/chars/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>
         :
         <StyledBox className='mb-5'>
-            <StyledImg style={{border:'2px white solid'}} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
+            <StyledImg style={{ border: '2px white solid' }} height={app.game === 'Honkai' && '90px'} width='65px' br={app.game !== 'Honkai' ? '50%' : '16px'} bg={e._id.stars === 5 ? 'orange' : (e._id.stars === 4 ? '#4600f6' : '#4682B4')} src={process.env.REACT_APP_API_URL + (app.game === 'Genshin' ? "/weapons/" : (app.game === 'Zzz' ? '/zzz/weapons/' : '/honkai/weapons/')) + e._id.img} />
             <p style={{ position: 'absolute', top: '100%', right: '38%', fontSize: '20px', color: 'white', fontWeight: 'bold' }}>x{e.count}</p>
         </StyledBox>)
     return (
@@ -402,6 +402,7 @@ const Statistic = observer(() => {
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{app.game === 'Genshin' ? 'Фонтейн' : (app.game === 'Zzz' ? 'Секция 6' : 'Пенакония')}</StyledTitle>{regionTableRow[4]}</StyledBox>
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{app.game === 'Genshin' ? 'Натлан' : (app.game === 'Zzz' ? 'Угрозыск' : 'Охотники за Стеларонами')}</StyledTitle>{regionTableRow[5]}</StyledBox>
                     <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{app.game === 'Genshin' ? 'Снежная' : (app.game === 'Zzz' ? 'Сыны Калидона' : 'КММ')}</StyledTitle>{regionTableRow[6]}</StyledBox>
+                    {app.game != 'Genshin' && <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{app.game === 'Honkai' ? 'Амфореус' : (app.game === 'Zzz' && 'Созвездие Лиры')}</StyledTitle>{app.game==='Honkai'?regionTableRow[13]:regionTableRow[7]}</StyledBox>}
                     {app.game === 'Honkai' && <StyledBox align='center' display='flex'><StyledTitle style={{ width: '150px' }} fz='22px' align='center' color="yellow">{'Разное'}</StyledTitle>{regionTableRow[7]}{regionTableRow[8]}{regionTableRow[9]}{regionTableRow[10]}{regionTableRow[11]} {regionTableRow[12]} </StyledBox>}
                 </StyledBox>
                 <Row style={{ margin: '30px 0' }}>

@@ -109,6 +109,7 @@ const Weapons = observer(() => {
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(5)} variant={weapons.pathId === 5 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Небытие</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(6)} variant={weapons.pathId === 6 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Сохранение</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(7)} variant={weapons.pathId === 7 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Изобилие</Button></Col>
+                            <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId(8)} variant={weapons.pathId === 8 ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Память</Button></Col>
                             <Col md='auto' className='mt-1'><Button onClick={() => weapons.setPathId('')} variant={weapons.pathId === '' ? 'warning' : 'outline-warning'} style={{ width: '130px', fontWeight: 'bold' }}>Все</Button></Col>
                         </Row>}
                         <StyledTitle color='yellow' fz='22px'>

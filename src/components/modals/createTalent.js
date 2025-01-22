@@ -103,6 +103,7 @@ export const CreateTalentBook = (props) => {
                             <Dropdown.Item onClick={() => { setPath("Небытие"); setPathId(5) }}>Небытие</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setPath("Сохранение"); setPathId(6) }}>Сохранение</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setPath("Изобилие"); setPathId(7) }}>Изобилие</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setPath("Память"); setPathId(8) }}>Память</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>}
                     <Form.Control id='1' onChange={select1} className='mt-2 mb-2' type='file' />
